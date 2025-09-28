@@ -1,0 +1,102 @@
+/* Import a Google Font (add this to index.html <head>)
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+*/
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #fce4ec); /* light gradient background */
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Container --- */
+.home-container {
+  text-align: center;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Welcome Title --- */
+.home-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, #6e8efb 0%, #a777e3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* gradient text */
+}
+
+.home-title span {
+  color: #4c6ef5;
+}
+
+/* --- Category Grid --- */
+.category-grid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* --- Category Buttons --- */
+.category-btn {
+  padding: 2rem;
+  background: white;
+  color: #2c3e50;
+  border: none;
+  border-radius: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.category-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+}
+
+/* --- Header Row --- */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+/* Dashboard buttons --- */
+.dashboard-btn, .therapist-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  transition: transform 0.2s, background 0.3s;
+}
+
+/* Parent Dashboard Button */
+.dashboard-btn {
+  background: #4c6ef5;
+}
+.dashboard-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: #364fc7;
+}
+
+/* Therapist Dashboard Button */
+.therapist-btn {
+  background: #8e44ad;
+}
+.therapist-btn:hover {
+  background: #732d91;
+}
