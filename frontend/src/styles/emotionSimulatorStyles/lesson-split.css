@@ -1,0 +1,412 @@
+/* src/pages/emotionSimulator/lesson-split.css */
+
+:root { --theme:#5cc28a; }
+
+.split-wrap{
+  --gap: 20px;
+  min-height: 100vh;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+  padding: clamp(16px,2.5vw,28px);
+  /* background: #833AB4;
+background: linear-gradient(17deg,rgba(131, 58, 180, 0.6) 0%, rgba(253, 29, 29, 0.6) 50%, rgba(252, 176, 69, 0.2) 100%); */
+    /* radial-gradient(1200px 600px at 20% -10%, color-mix(in oklab, var(--theme), rgb(223, 78, 78) 86%) 0, transparent 60%),
+    radial-gradient(900px 500px at 80% 110%, color-mix(in oklab, var(--theme), white 86%) 0, transparent 60%),
+    #f7f8f4; */
+}
+
+.split.card{
+  background:#f9f9f9;
+  border-radius:18px;
+  padding: clamp(14px,2vw,22px);
+  box-shadow: 0 12px 36px rgba(0,0,0,.08);
+}
+
+.title{ margin: 4px 0 14px; font: 800 clamp(20px,2.6vw,30px)/1.2 ui-sans-serif, system-ui; color:#184; }
+.eyebrow{ margin:0; color:#2f6; letter-spacing:.08em; font:700 12px/1 ui-sans-serif }
+
+.bubble{
+  position:relative;
+  background: color-mix(in oklab, var(--theme), white 88%);
+  border-radius:16px;
+  padding:14px 16px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+.bubble .tail{
+  position:absolute; left:18px; top:100%;
+  width:14px; height:14px; background:inherit;
+  transform: translateY(-6px) rotate(45deg);
+}
+
+.row{ display:flex; gap:10px; margin-top:14px; }
+.btn{
+  background:var(--theme); color:#053;
+  border:0; padding:10px 14px; font-weight:800; border-radius:12px; cursor:pointer;
+}
+.btn.ghost{ background:#eef5ef; color:#184; }
+
+.videoCard{ margin-top:12px; }
+.videoThumb video{
+  width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:12px;
+  background:#eef3ee; border:1px solid #e5eee7;
+}
+.caption{ margin:.5rem 0 0; color:#456; font-weight:600; }
+
+.question{ margin:16px 0 8px; color:#234; }
+
+.feelings{ display:flex; gap:10px; flex-wrap:wrap; }
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  background:#f2f6f3; border:1px solid #e2eee7; border-radius:999px;
+  padding:8px 12px; cursor:pointer; font-weight:700; color:#123;
+}
+.chip.is-on{ outline:3px solid color-mix(in oklab, var(--theme), white 50%); }
+
+.game{ position:relative; }
+.cards{ display:flex; flex-wrap:wrap; gap:10px; min-height:90px; }
+.draggable{
+  user-select:none; cursor:grab; padding:10px 12px; border-radius:12px;
+  border:1px dashed #cfe4d6; background:#fafffd; width:calc(50% - 10px);
+  display:flex; align-items:center; gap:10px;
+}
+.draggable .big{ 
+  /* font-size:28px; */
+  width:206px; 
+  height:206px;
+ 
+   
+ }
+.draggable .small{ color:#345; font-weight:700; }
+.draggable.is-hidden{ display:none; }
+
+.basket{
+  position:relative; margin-top:12px; min-height:120px;
+  border:2px dashed color-mix(in oklab, var(--theme), black 20%);
+  border-radius:16px; background: #f2fff7;
+}
+.basketLabel{
+  position:absolute; top:-12px; left:14px;
+  background:#fff; padding:2px 8px; border-radius:999px; font-weight:800; color:#184;
+  border:1px solid #e3efe6;
+}
+.basket .inside{ padding:16px; display:flex; gap:8px; flex-wrap:wrap; }
+.chip.tiny{ background:#fff; border:1px solid #e6efe9; padding:6px 8px; border-radius:999px; font-weight:700; }
+
+.trophy{ margin-top:10px; font-weight:800; color:#184; }
+
+.surpriseBtn{
+  position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+  background:#1b6; color:#fff; border:0; padding:12px 18px; border-radius:999px;
+  font-weight:900; box-shadow:0 12px 26px rgba(0,0,0,.15); cursor:pointer;
+}
+
+.modalWrap{
+  position:fixed; inset:0; background: rgba(0,0,0,.4);
+  display:grid; place-items:center; z-index:50;
+}
+.modal{
+  background:hsl(0, 69%, 44%);
+   border-radius:16px;
+    width:300px;
+    height: 500px;
+  padding:16px; position:relative;
+}
+.modal .x{
+  position:absolute; right:8px; top:-5px; border:0; background:transparent;
+  font-size:28px; 
+  line-height:1; cursor:pointer;
+}
+.modal video{
+   width:100%;
+    border-radius:12px; 
+    background:#000;
+    height: 90%;
+   }
+.center{ text-align:center; margin:.6rem 0 0; }
+
+.confetti{ pointer-events:none; position:fixed; 
+    /* pointer-events: none;   */
+  inset:0; 
+  overflow:hidden; 
+  z-index:60;
+  background: transparent;
+ }
+
+.confetti .piece{
+  position:absolute; top:-10px;
+  animation: fall 2.2s linear forwards, sway 1.2s ease-in-out infinite alternate;
+   /* background: transparent; */
+}
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+@keyframes sway { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+
+@media (max-width: 900px){
+  .split-wrap{ grid-template-columns: 1fr; }
+}
+
+/* --- Cards grid --- */
+.cards{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  min-height: 90px;
+}
+
+/* Each draggable “picture card” */
+.draggable{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e6efe9;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+
+  cursor: grab;
+  user-select: none;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.draggable:active{ cursor: grabbing; transform: translateY(1px) scale(0.995); }
+.draggable.is-hidden{ display: none; }
+
+/* Image/emoji box */
+.thumb{
+  width: 160px;
+  aspect-ratio: 1 / 1;          /* always a square tile */
+  border-radius: 12px;
+  overflow: hidden;
+
+  background: #f8fbf9;
+  border: 1px solid #e5eee7;
+
+  display: grid;
+  place-items: center;
+}
+.thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;           /* keep full image without weird stretching */
+}
+.thumb .emoji{
+  font-size: 64px;
+  line-height: 1;
+}
+
+/* Label under the image */
+.label{
+  width: 100%;
+  text-align: center;
+  font-weight: 800;
+  color: #234;
+  letter-spacing: .2px;
+}
+
+/* Basket layout for dropped thumbnails */
+.basket .inside{
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+/* Mini preview card inside the basket */
+.miniCard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+
+  background: #fff;
+  border: 1px solid #e6efe9;
+  border-radius: 12px;
+  padding: 8px;
+}
+.miniThumb{
+  width: 90px;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+
+  background: #f8fbf9;
+  border: 1px solid #e7f2eb;
+
+  display: grid;
+  place-items: center;
+}
+.miniThumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.miniThumb .emoji{
+  font-size: 42px;
+}
+.miniLabel{
+  font-weight: 700;
+  color: #345;
+  font-size: 13px;
+  text-align: center;
+}
+
+
+/* ============ Monster Buddy ============ */
+.monster{
+  position: absolute;
+  right: -10px;                 /* nudged to the side of the card area */
+  bottom: 10px;
+  width: 170px;
+  height: 190px;
+  pointer-events: none;         /* won't block dragging */
+  z-index: 5;
+  animation: monster-bob 3.2s ease-in-out infinite;
+}
+
+@keyframes monster-bob{
+  0%,100%{ transform: translateY(0) }
+  50%{ transform: translateY(-6px) }
+}
+
+.monster .shadow{
+  position: absolute;
+  bottom: -6px; left: 50%;
+  width: 70px; height: 12px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.18), rgba(0,0,0,0));
+  filter: blur(2px);
+}
+
+/* Body (a rounded blob) */
+.monster-body{
+  position: absolute;
+  left: 50%; top: 16px;
+  transform: translateX(-50%);
+  width: 140px; height: 140px;
+  background: radial-gradient(circle at 30% 20%, #fff8, transparent 30%),
+              linear-gradient(160deg, color-mix(in oklab, var(--theme, #5cc28a), white 8%), color-mix(in oklab, var(--theme, #5cc28a), black 10%));
+  border-radius: 50% 50% 46% 54% / 58% 52% 48% 42%;
+  box-shadow: 0 12px 28px rgba(0,0,0,.14) inset;
+}
+
+/* Eyes */
+.monster .eye{
+  position: absolute;
+  top: 48px;
+  width: 22px; height: 22px;
+  background: white;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(0,0,0,.12) inset;
+}
+.monster .eye.left{  left: 36px; }
+.monster .eye.right{ right: 36px; }
+
+/* pupil */
+.monster .eye::after{
+  content:"";
+  position:absolute;
+  left: 5px; top: 6px;
+  width: 10px; height: 10px;
+  background: #252a34;
+  border-radius: 50%;
+  animation: pupil-look 4s ease-in-out infinite;
+}
+@keyframes pupil-look{
+  0%,100%{ transform: translate(0,0) }
+  20%{ transform: translate(2px, 1px) }
+  40%{ transform: translate(-1px, -1px) }
+  60%{ transform: translate(1px, -2px) }
+  80%{ transform: translate(-2px, 1px) }
+}
+
+/* eyelid for blinking */
+.monster .eye::before{
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(#0a0a0a20, #0a0a0a10);
+  transform-origin: top;
+  animation: blink 5.5s ease-in-out infinite;
+}
+@keyframes blink{
+  0%,8%,100%{ transform: scaleY(0) }
+  4%{ transform: scaleY(1) }
+}
+
+/* Mouth */
+.monster .mouth{
+  position: absolute;
+  left: 50%; top: 84px;
+  transform: translateX(-50%);
+  width: 42px; height: 22px;
+  border-radius: 0 0 24px 24px;
+  background: #263238;
+  overflow: hidden;
+}
+.monster.yay .mouth{
+  height: 30px; width: 48px;
+  transition: .18s ease;
+}
+.monster .mouth::after{
+  content:"";
+  position:absolute; left:50%; bottom: 4px;
+  transform: translateX(-50%);
+  width: 28px; height: 10px;
+  background: #ff6a6a; /* tongue */
+  border-radius: 999px;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,.15));
+}
+
+/* Arms */
+.monster .arm{
+  position: absolute; top: 74px;
+  width: 60px; height: 16px;
+  background: color-mix(in oklab, var(--theme, #5cc28a), black 5%);
+  border-radius: 999px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1) inset;
+}
+.monster .arm.left{
+  left: -30px;
+  transform-origin: right center;
+  transform: rotate(-24deg);
+}
+.monster .arm.right{
+  right: -30px;
+  transform-origin: left center;
+  transform: rotate(24deg);
+}
+
+/* Wave animation (triggered while dragging) */
+.monster.wave .arm.right{
+  animation: wave 0.8s ease-in-out 4;
+}
+@keyframes wave{
+  0%  { transform: rotate(24deg) }
+  50% { transform: rotate(50deg) }
+  100%{ transform: rotate(24deg) }
+}
+
+/* Cheer bounce (triggered on correct drop) */
+.monster.yay{
+  animation: cheer 0.9s ease-out 1, monster-bob 3.2s ease-in-out infinite 0.9s;
+}
+@keyframes cheer{
+  0%{ transform: translateY(0) }
+  35%{ transform: translateY(-16px) }
+  70%{ transform: translateY(2px) }
+  100%{ transform: translateY(0) }
+}
+
+/* Responsive nudge so it doesn't overlap too much on small screens */
+@media (max-width: 900px){
+  .monster{ right: 8px; top: -6px; transform: scale(.9); }
+}
+/* Paint a side-specific background image with a soft white overlay */
+.split.card.side-bg{
+  /* two backgrounds: 1) translucent white overlay 2) the actual image */
+  background:
+    linear-gradient(to bottom, rgba(255, 183, 0, 0.468), rgba(255,255,255,0.1)),
+    var(--side-url) bottom / contain no-repeat;
+}

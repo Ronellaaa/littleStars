@@ -1,0 +1,546 @@
+:root {
+  --sky1: #b7e3ff; /* top sky */
+  --sky2: #e6f4ff; /* horizon */
+  --plane: #191a59; /* plane body */
+  --wing: #1e2749; /* plane wings/tail */
+  --window: #d8f0ff; /* plane windows */
+  --rope: #3a3a3a; /* rope color */
+  --banner: #ffffff; /* flag */
+  --text: #222222; /* flag text */
+}
+
+.cloud {
+  position: absolute;
+  top: 10vh;
+  left: -20vw;
+  width: 32vw;
+  height: 12vw;
+  filter: blur(0.3px);
+  opacity: 0.9;
+}
+.cloud:before,
+.cloud:after {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+.cloud {
+  background: #fff;
+  border-radius: 8vw;
+}
+.cloud:before {
+  width: 14vw;
+  height: 14vw;
+  left: 4vw;
+  top: -6vw;
+  border-radius: 50%;
+}
+.cloud:after {
+  width: 18vw;
+  height: 18vw;
+  left: 12vw;
+  top: -9vw;
+  border-radius: 50%;
+}
+.cloud.c2 {
+  top: 19vh;
+  animation: cloud 70s linear infinite;
+  opacity: 0.85;
+}
+.cloud.c1 {
+  top: 8vh;
+  animation: cloud 50s linear infinite;
+}
+.cloud.c3 {
+  top: 28vh;
+  animation: cloud 60s linear infinite;
+  transform: scale(0.8);
+}
+@keyframes cloud {
+  0% {
+    transform: translateX(-30vw);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
+
+.showcase-page {
+  /* min-height: 100vh; */
+  padding: 56px 64px 36px;
+  transition: background-color 0.45s;
+  font-family: "Poppins", system-ui, sans-serif;
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+  /* opacity: 0.4;
+  z-index: -999; */
+  /* background: #fffaf5; */
+  overflow-x: hidden;
+}
+
+.showcase-page {
+  position: relative;
+}
+.showcase-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* darkness */
+  pointer-events: none;
+}
+/* .showcase-page > * { position: relative; } keep content above the overlay */
+
+.showcase-topbar {
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.backBtn {
+  justify-self: start;
+  background: #fff;
+  border: 1px solid #ece6da;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.showcase-title {
+  text-align: center;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #2b2b2b;
+  z-index: 1000;
+  margin-left: -1300px;
+}
+
+.showcase-hero {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 32px 48px;
+  align-items: center;
+}
+
+.left-info {
+  max-width: 460px;
+  z-index: 1000;
+}
+.feat-title {
+  margin: 0 0 10px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #322b29;
+  z-index: 1000;
+}
+.feat-desc {
+  color: #5a4f4f;
+  margin: 0 0 14px;
+  line-height: 1.6;
+  z-index: 1000;
+}
+
+.assistant-bubble {
+  background: color-mix(in oklab, var(--accent, #38a), white 85%);
+  border: 1px solid color-mix(in oklab, var(--accent, #38a), black 8%);
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 600;
+  color: #243;
+  position: relative;
+}
+.assistant-bubble:after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 100%;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  border-left: inherit;
+  border-bottom: inherit;
+  transform: translateY(-6px) rotate(45deg);
+}
+
+.viewer {
+  position: relative;
+  width: 540px;
+
+  max-width: 100%;
+  aspect-ratio: 1/1;
+  margin-inline: auto;
+}
+.viewer .circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #7d6732;
+}
+.viewer-inner {
+  position: absolute;
+  inset: 6%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.viewer-inner iframe.yt,
+.viewer-inner video.mp4 {
+  width: 170%;
+  height: 150%;
+  margin-left: -200px;
+  margin-top: 170px;
+  border-radius: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #000;
+}
+
+.lottie {
+  width: 100%;
+  height: 220px;
+  border: 0;
+  margin-left: -800px;
+  border-radius: 12px;
+  background: transparent;
+}
+.empty {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px dashed #e5e3d8;
+  color: #7a7565;
+  font-weight: 700;
+}
+
+.showcase-swiper {
+  margin-top: 48px;
+  background: #2d1f1f;
+  border-radius: 28px;
+  padding: 18px 24px 26px;
+}
+.slide-card {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.slide-card .thumb {
+  width: 140px;
+  height: 140px;
+  margin: 8px auto 10px;
+  background: #8f7474;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+.slide-card .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slide-card .thumb-ph {
+  font-weight: 800;
+  color: #556;
+  font-size: 12px;
+}
+.slide-card .slide-title {
+  text-align: center;
+  color: #fafafa;
+  font-size: 13px;
+  font-weight: 700;
+}
+.slide-card.active .thumb {
+  outline: 4px solid var(--accent, #38a);
+  transform: scale(1.04);
+  transition: 0.25s;
+}
+
+@media (max-width: 1024px) {
+  .showcase-hero {
+    grid-template-columns: 1fr;
+  }
+  .left-info {
+    order: 2;
+  }
+  .viewer {
+    order: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .showcase-page {
+    padding: 28px 18px;
+  }
+  .feat-title {
+    font-size: 26px;
+  }
+}
+
+/* Airplane + banner rig */
+.plane-wrap {
+  position: absolute;
+  top: 45%;
+  left: 110%;
+  transform: translateY(-50%);
+  animation: fly 70s linear infinite;
+  will-change: transform;
+  margin-top: -320px;
+}
+@keyframes fly {
+  to {
+    transform: translate(-150vw, 50%);
+  }
+}
+
+.rig {
+  position: relative;
+  animation: bob 2.8s ease-in-out infinite;
+}
+@keyframes bob {
+  0% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(6px);
+  }
+}
+
+/* Plane */
+.plane {
+  position: relative;
+  width: 170px;
+  height: 50px;
+  background: var(--plane);
+  border-radius: 26px 8px 18px 18px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.plane::before {
+  /* nose bulge */
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 11px;
+  width: 30px;
+  height: 24px;
+  background: var(--plane);
+  border-radius: 50%;
+  box-shadow: inset -8px 0 0 rgba(255, 255, 255, 0.12);
+}
+.plane::after {
+  /* tail fin */
+  content: "";
+  position: absolute;
+  right: 1px;
+  top: -20px;
+  width: 28px;
+  height: 22px;
+  background: var(--wing);
+  clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+.wing {
+  position: absolute;
+  left: 28px;
+  bottom: -6px;
+  width: 122px;
+  height: 30px;
+  background: var(--wing);
+  border-radius: 14px;
+  transform: rotate(16deg);
+}
+.window {
+  position: absolute;
+  top: 10px;
+  left: 44px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--window);
+  box-shadow: 18px 0 0 var(--window), 36px 0 0 var(--window);
+}
+
+/* Rope from plane to banner */
+.rope {
+  position: absolute;
+  left: 170px;
+  top: 22px;
+  width: 170px;
+  height: 5px;
+  background: var(--rope);
+  transform-origin: left center;
+  animation: rope 0.9s ease-in-out infinite alternate;
+}
+@keyframes rope {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+
+/* Banner */
+.banner {
+  position: absolute;
+  left: 250px;
+  top: 4px;
+  height: 38px;
+  width: min(60vw, 100px);
+  background: var(--banner);
+  color: var(--text);
+  border-radius: 6px 4px 4px 6px;
+  padding: 0 18px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transform-origin: 0 50%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  animation: flutter 0.9s ease-in-out infinite alternate;
+}
+.banner .tail {
+  position: absolute;
+  right: -20px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 19px solid transparent;
+  border-bottom: 19px solid transparent;
+  border-left: 20px solid var(--banner);
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.06));
+  animation: tail 1s ease-in-out infinite alternate;
+}
+
+.banner span {
+  display: inline-block;
+  font-weight: 800;
+  text-transform: lowercase;
+  letter-spacing: 0.8px;
+  font-size: 18px;
+  animation: textwiggle 1s ease-in-out infinite alternate;
+}
+
+@keyframes flutter {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+@keyframes tail {
+  from {
+    transform: rotate(-6deg);
+  }
+  to {
+    transform: rotate(6deg);
+  }
+}
+@keyframes textwiggle {
+  from {
+    transform: translateY(-1px);
+    letter-spacing: 0.6px;
+  }
+  to {
+    transform: translateY(1px);
+    letter-spacing: 1.2px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.swirls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* z-index: -1; */
+  margin-top: -620px;
+}
+.swirl {
+  animation: swirl-move var(--dur) linear var(--delay) infinite;
+  transform-origin: center;
+}
+@keyframes swirl-move {
+  from {
+    transform: translateX(-18%) translateY(var(--y))
+      translateX(var(--gust, 0px)) scale(var(--scale));
+  }
+  to {
+    transform: translateX(118%) translateY(var(--y))
+      translateX(var(--gust, 0px)) scale(var(--scale));
+  }
+}
+.swirl path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: blur(0.4px);
+  stroke-dasharray: 120 420;
+  animation: swirl-dash calc(var(--dur) * 0.7) linear var(--delay) infinite;
+}
+.swirl .swirl-alt {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.5;
+  stroke-dasharray: 80 360;
+  animation-duration: calc(var(--dur) * 0.9);
+  animation-delay: calc(var(--delay) + 0.6s);
+}
+@keyframes swirl-dash {
+  to {
+    stroke-dashoffset: -540;
+  }
+}
+
+
+
+/* Straight wind streaks */
+.wind {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.stream {
+  position: absolute;
+  top: var(--y);
+  left: -40vw;
+  width: var(--len);
+  height: var(--thick);
+  opacity: var(--glow);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 25%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.35) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  filter: blur(1px);
+  animation: windLeft var(--dur) linear var(--delay) infinite;
+  transform: translateX(var(--gust, 0px));
+}
+@keyframes windLeft {
+  to {
+    left: 110vw;
+  }
+}
+
+
+.backBtn,.nextBtn{
+  padding:10px 14px;border-radius:12px;border:1px solid #cfe2ee;background:#fff;font-weight:700;cursor:pointer;
+}
+.nextBtn{ justify-self:end }
+.backBtn:hover,.nextBtn:hover{ box-shadow:0 0 0 3px #eaf4ff }

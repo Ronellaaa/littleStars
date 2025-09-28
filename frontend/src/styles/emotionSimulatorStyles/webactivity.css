@@ -1,0 +1,336 @@
+/* src/styles/emotionSimulatorStyles/board.css */
+
+:root {
+  --wood: #d3a86b;
+  --wood-dark: #8b5e34;
+  --leaf: #7ec850;
+  --soil: #7a4b29;
+  --accent: #f5b64b;
+  --ok: #4caf50;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.board-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr 320px;
+  gap: 18px;
+  padding: 18px;
+  min-height: calc(100dvh - 24px);
+  background: radial-gradient(
+    ellipse at top,
+    #244861 0%,
+    #def3ff 60%,
+    #ffffff 100%
+  );
+  background-image: url("../../assets/m9.png");
+  background-size: cover;
+}
+
+/* RAILS */
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.left-rail .rail-group,
+.right-rail .rail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wood-btn {
+  background: linear-gradient(#f1c389, var(--wood));
+  border: 3px solid var(--wood-dark);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--wood-dark);
+}
+.wood-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.wood-btn.primary {
+  background: linear-gradient(#ffd28f, #ffb65a);
+}
+
+.wood-sign {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--wood) 0 10px,
+    #e2b780 10px 20px
+  );
+  border: 3px solid var(--wood-dark);
+  border-radius: 16px;
+  box-shadow: 0 4px 0 var(--wood-dark);
+  padding: 12px;
+}
+.wood-sign .sign-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.image-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.scenario-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff8;
+  padding: 8px;
+}
+.scenario-placeholder {
+  width: 100%;
+  height: 220px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #fff6;
+  color: #555;
+}
+.scenario-text {
+  font-weight: 600;
+  text-align: center;
+}
+
+/* CENTER – HANGING BOARD */
+.center-stage {
+  position: relative;
+  display: grid;
+  place-items: start center;
+}
+
+.hanging-board {
+  width: min(920px, 95%);
+  margin-inline: auto;
+  position: relative;
+}
+.hanging-board::before,
+.hanging-board::after {
+  content: "";
+  position: absolute;
+  top: -24px;
+  width: 10px;
+  height: 24px;
+  background: #e1d7c6;
+  left: 12%;
+  box-shadow: 0 0 0 4px #c8bba4 inset;
+}
+.hanging-board::after {
+  left: auto;
+  right: 12%;
+}
+
+.plank {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--wood) 0 16px,
+    #e2b780 16px 34px
+  );
+  border: 4px solid var(--wood-dark);
+  border-radius: 18px;
+  box-shadow: 0 8px 0 var(--wood-dark);
+  padding: 12px;
+  margin-bottom: 14px;
+}
+.plank.slim {
+  padding: 10px 14px;
+}
+
+/* webcam area inside plank */
+.cam {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 14px;
+  background: #222;
+  display: block;
+}
+.cam-off {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* meter */
+.meter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.meter-top {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+}
+.meter-bar {
+  position: relative;
+  height: 18px;
+  border: 2px solid #333;
+  border-radius: 999px;
+  background: #fff9;
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  width: 0;
+  transition: width 0.15s linear;
+  background: linear-gradient(90deg, #ffd089, #ffb84d);
+}
+.meter-fill.ok {
+  background: linear-gradient(90deg, #b7f7aa, #6bd66b);
+}
+.meter-threshold {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 26px;
+  background: #d22;
+  box-shadow: 0 0 0 2px #fff8;
+}
+.meter-sub {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.status {
+  font-weight: 800;
+}
+.status.good {
+  color: var(--ok);
+}
+.stars {
+  font-size: 1.3rem;
+}
+
+/* bottom chips (difficulty + next) */
+.controls-row {
+  display: flex;
+  justify-content: center;
+}
+.chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.wood-chip {
+  padding: 10px 14px;
+  border: 3px solid var(--wood-dark);
+  border-radius: 14px;
+  background: linear-gradient(#ffe4b4, #f6c07c);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--wood-dark);
+}
+.wood-chip.active {
+  outline: 3px solid #3b7d2d;
+  background: linear-gradient(#d5f3c9, #9fe28c);
+}
+.wood-chip.next {
+  background: linear-gradient(#cfe9ff, #9bd0ff);
+}
+
+/* celebration */
+.confetti-pop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 30% 20%, #fff0 0 60%, #fff0),
+    repeating-conic-gradient(from 0deg, #fff0 0 10deg, #0000 10deg 20deg);
+  animation: pop 0.9s ease-out forwards;
+}
+@keyframes pop {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ===== Scenario Card (Non-wood) ===== */
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 22px;
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.scenario-header {
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+/* Cloud skin (soft sky card) */
+.scenario-card.cloud8 {
+  background: linear-gradient(180deg, #eaf6ff 0%, #ffffff 60%);
+}
+.scenario-card.cloud8 .scenario-header {
+  color: #2a6aa5;
+}
+
+/* image + text stay same as before */
+.scenario-img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff;
+  padding: 8px;
+}
+.scenario-placeholder {
+  width: 100%;
+  height: 220px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: #f5f7fa;
+  color: #6b7280;
+}
+.scenario-text {
+  text-align: center;
+  font-weight: 600;
+}
+.scenario-card.basket {
+  background: linear-gradient(#f8e7c1, #f1d59c) padding-box,
+    repeating-linear-gradient(45deg, #d9a55c 0 10px, #f3c987 10px 20px)
+      border-box;
+  border: 8px solid transparent;
+  position: relative;
+}
+
+.scenario-card.basket::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 18px;
+  border-radius: 999px;
+  background: #8c5e34;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}

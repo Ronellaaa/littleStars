@@ -1,0 +1,54 @@
+.learn-loading {
+  width: 100vw;
+  height: 100vh; 
+  background: linear-gradient(135deg, #6a11cb, #2575fc); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: "Comic Sans MS", cursive, sans-serif; 
+}
+
+/* spinner animation */
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.notfound-container {
+  width: 100vw;
+  height: 100vh;
+  background: url("../../assets//notFound.jpg") ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  flex-direction: column;
+}
+
+.notfound-text {
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent for contrast */
+  padding: 20px 40px;
+  border-radius: 16px;
+  font-size: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

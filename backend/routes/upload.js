@@ -1,3 +1,4 @@
+
 import express from "express";
 import multer from "multer";
 import fs from "fs";
@@ -25,3 +26,4 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 export default router;
+

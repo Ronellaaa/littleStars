@@ -1,0 +1,383 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Luckiest+Guy&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.hero-blog-section {
+  background: radial-gradient(
+    circle at -6.4% 0%,
+    rgb(247, 141, 96) 0%,
+    rgb(247, 141, 96) 40.9%,
+    rgb(250, 214, 145) 15.9%,
+    rgb(250, 214, 145) 45.4%,
+    rgb(234, 34, 100) 24.5%,
+    rgb(100, 13, 95) 66%
+  );
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero-blog-content h1 {
+  font-size: 5rem;
+  color: white;
+  text-align: center;
+
+  font-family: "Luckiest Guy";
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.hero-blog-content p {
+  text-align: center;
+  font-size: 1.3rem;
+  color: white;
+  font-family: "Poppins", serif; /* pick which font */
+  font-weight: 400px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+.cta {
+  width: 259px;
+  margin-left: 150px;
+  margin-bottom: 150px;
+  display: flex;
+  align-items: center;
+  padding: 10px 45px;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  color: white;
+  background: #ea2264;
+  transition: 0.5s;
+  box-shadow: 6px 6px 0 black;
+  transform: skewX(-15deg);
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.cta:hover {
+  box-shadow: 10px 10px 0 #fad691;
+}
+
+.cta span {
+  transform: skewX(15deg);
+}
+
+.cta span:nth-child(2) {
+  width: 20px;
+  margin-left: 30px;
+  position: relative;
+  top: 12%;
+  transition: margin-right 0.5s;
+}
+
+.cta:hover span:nth-child(2) {
+  margin-right: 45px;
+}
+
+/* SVG paths */
+path.one {
+  transition: 0.4s;
+  transform: translateX(-60%);
+}
+path.two {
+  transition: 0.5s;
+  transform: translateX(-30%);
+}
+.cta:hover path.one {
+  transform: translateX(0%);
+  animation: color_anim 1s infinite 0.6s;
+}
+.cta:hover path.two {
+  transform: translateX(0%);
+  animation: color_anim 1s infinite 0.4s;
+}
+.cta:hover path.three {
+  animation: color_anim 1s infinite 0.2s;
+}
+
+/* animation */
+@keyframes color_anim {
+  0% {
+    fill: white;
+  }
+  50% {
+    fill: #fad691;
+  }
+  100% {
+    fill: white;
+  }
+}
+.hand-image{
+  height: auto;
+  width: 160px;
+  position: absolute;
+  top: 52%;
+  left: 0%;
+  z-index: 1;
+  transform: scaleX(-1);
+
+}
+
+
+.blog-nav ul {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.75rem 2rem;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 9999px; 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.blog-nav li a {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.blog-nav li a:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #111;
+}
+
+.blog-nav li a.active {
+  background: rgba(255, 255, 255, 0.8);
+  color: #111;
+}
+
+
+.blog-view-section {
+  display: flex;
+  flex-direction: column;     
+  align-items: center;
+  gap: 16px;
+height: auto;
+  padding: 24px 16px;
+  background-image: url(../../assets/blog5.png);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  border-image: fill 1 linear-gradient(hsla(0, 0%, 0%, 0.3), hsla(0, 0%, 0%, 0.3));
+  overflow: clip;
+  position: relative;
+  
+}
+
+
+
+/* Sticky background that stays in place */
+.lottie-bg {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 0;
+  pointer-events: none; /* clicks go through */
+}
+
+/* Fill the sticky viewport */
+.tiger-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+/* Move to the right and shrink as --p goes 0 → 1 */
+.tiger-lottie {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* start: centered & big; end: right & smaller */
+  transform:
+    translate(calc(-50% + 24vw * var(--p)), -50%)
+    scale(calc(1 - 5 * var(--p)));
+  transform-origin: 180% 120%;
+  transition: transform 0.08s linear; /* tiny smoothing */
+  width: min(60vmin, 520px);
+  height: auto;
+}
+
+
+/* Make sure real content sits above the Lottie */
+.blog-nav,
+.blogs-toolbar,
+.blogs-grid,
+.alert,
+.empty {
+  position: relative;
+  z-index: 1;
+}
+
+/* Optional accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .lottie-bg { display: none; }
+}
+.blog-nav { margin-top: 2rem; }
+
+.blogs-grid {
+  width: min(1100px, 95%);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  margin: 12px auto 28px;
+}
+
+/* Loading placeholders */
+.blog-card.skeleton {
+  height: 260px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: linear-gradient(90deg, rgba(255,255,255,0.25) 25%, rgba(255,255,255,0.45) 37%, rgba(255,255,255,0.25) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s infinite linear;
+  box-shadow: 0 8px 18px rgba(0,0,0,.12);
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Alerts / empty */
+.alert.error {
+  color: #111;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+.empty {
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 500px;
+  height: 300px;
+  display: flex;
+align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* Add Blog button area */
+.blogs-container { width: min(1100px, 95%); display:flex; justify-content:flex-end; }
+
+
+/* --- Sticky toolbar container --- */
+.blogs-toolbar {
+  width: min(1200px, 94%);
+  margin: 14px auto 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 10px;                
+  z-index: 5;
+/* 
+  background: rgba(11, 15, 23, 0.55);  
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; */
+}
+
+/* Toolbar title */
+.blogs-heading {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: #e9eeff;
+  opacity: .95;
+}
+
+/* Desktop add button */
+.add-blog-button {
+  text-decoration: none;
+  background: #ea2264;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 8px 18px rgba(234,34,100,.22);
+  font-weight: 700;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.add-blog-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(234,34,100,.28);
+}
+.add-blog-button:active { transform: translateY(0); }
+
+/* Mobile FAB (hidden on larger screens) */
+.fab-add {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+
+  background: #ea2264;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: 0 14px 28px rgba(234,34,100,.35), 0 2px 8px rgba(0,0,0,.35);
+
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+/* Visibility rules */
+@media (min-width: 641px) {
+  .fab-add { display: none; }       
+}
+@media (max-width: 640px) {
+  .add-blog-button { display: none; } 
+}
+
+/* Optional: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .add-blog-button, .fab-add { transition: none !important; }
+}
+
+
+
+
+
+.blog-view-section.no-blogs .lottie-bg {
+  position: sticky;  
+  inset: 0;         
+  height: 100vh;
+  width: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.blog-view-section.no-blogs .empty-state {
+  height: 100vh;  
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* make sure nav/toolbar sit above the fixed bg */
+.blog-view-section.no-blogs .blog-nav,
+.blog-view-section.no-blogs .blogs-toolbar {
+  position: relative;
+  z-index: 1;
+}
