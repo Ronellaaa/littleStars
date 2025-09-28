@@ -1,51 +1,29 @@
-// backend/routes/upload.js
-import { Router } from "express";
+
+import express from "express";
 import multer from "multer";
-import path from "path";
 import fs from "fs";
+import cloudinary from "../config/cloudinary.js";
 
-const router = Router();
+const router = express.Router();
+const upload = multer({ dest: "uploads/" });
 
-// ✅ use a single absolute folder (project-root/uploads)
-const uploadsDir = path.resolve(process.cwd(), "uploads");
-fs.mkdirSync(uploadsDir, { recursive: true });
+router.post("/", upload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded" });
+    }
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname || "");
-    cb(null, Date.now() + "-" + file.fieldname + ext);
-  },
-});
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "speechcards",
+    });
 
-const ALLOWED = new Set([
-  "image/png","image/jpeg","image/gif","image/webp",
-  "video/mp4","video/webm",
-  "application/json" // lottie
-]);
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 20 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (ALLOWED.has(file.mimetype)) cb(null, true);
-    else cb(new Error("File type not allowed: " + file.mimetype));
+    fs.unlinkSync(req.file.path); // clean up local temp file
+    res.json({ success: true, url: result.secure_url });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
-
-// 👉 (optional but recommended) restrict who can upload
-// import { requireAuth, requireRole } from "../middleware/auth.js";
-
-router.post(
-  "/single",
-  // requireAuth, requireRole("mentor"),
-  upload.single("file"),
-  (req, res) => {
-    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-    // Return a URL the frontend can use directly
-    const url = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-    res.json({ url, filename: req.file.filename, mimetype: req.file.mimetype, size: req.file.size });
-  }
-);
 
 export default router;
+

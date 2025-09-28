@@ -1,3 +1,4 @@
+
 // backend/index.js
 import dotenv from "dotenv";
 import express from "express";
@@ -5,10 +6,11 @@ import cors from "cors";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
+import { connectDB } from './config/db.js';
 
 // —— Routers from EmotionSimulator branch ——
 import contentsRouter from "./routes/contents.js";
-import uploadRouter from "./routes/upload.js";
+import uploadRoutes from "./routes/upload.js";
 import attemptsRouter from "./routes/attempts1.js";
 import thresholdsRouter from "./routes/thresholds.js";
 import authRouter from "./routes/auth.js";
@@ -20,17 +22,30 @@ import scenariosRoutes from "./routes/scenarios.js";
 import BlogsRoutes from "./routes/BlogsRoute.js";
 import NurseryVideos from "./routes/NurseryRoute.js";
 
+//Routers from Speech Therapy tool 
+import attemptRoutes from "./routes/AttemptRoute.js";
+import cardRoutes from './routes/SpeechTherapyRoute.js';
+
+
 dotenv.config();
 
 const app = express();
 
-// CORS: allow both localhost and 127.0.0.1 (Vite)
+
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     credentials: false,
   })
 );
+
+const PORT = process.env.PORT || 5000 ||3000;
+
+app.listen(PORT, () => {
+    connectDB();
+    console.log("Server is started at http://localhost:5000");
+});
+
 
 // Body parsing (Express has these built-in; no body-parser needed)
 app.use(express.json());
@@ -65,6 +80,11 @@ app.use("/api/scenarios", scenariosRoutes);
 app.use("/api/blogs", BlogsRoutes);
 app.use("/api/videos", NurseryVideos);
 
+//From Speech Therapy Tool
+app.use("/api/cards", cardRoutes );
+app.use("/api/attempts", attemptRoutes);
+app.use("/api/upload", uploadRoutes);
+
 // 404 fallback
 app.use((req, res) => res.status(404).json({ message: "Not found" }));
 
@@ -82,3 +102,4 @@ try {
   console.error("❌ MongoDB connection failed:", err?.message || err);
   process.exit(1);
 }
+

@@ -1,0 +1,34 @@
+/* CATEGORY PAGE CONTAINER */
+.category-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Page Title */
+.category-title {
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #6e8efb, #a777e3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2.5rem;
+}
+
+/* SpeechCard grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* responsive */
+  gap: 2.5rem;  /* ✅ same spacing as TherapistDashboard */
+  margin-top: 1rem;
+  justify-items: center; /* center cards in columns */
+}
+
+/* Subtle loading message (reuse global) */
+.category-page p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  padding: 2rem 0;
+}
