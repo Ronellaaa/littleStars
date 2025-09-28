@@ -1,3 +1,4 @@
+
 // src/components/NavBar.jsx
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
@@ -95,7 +96,7 @@ export default function NavBar() {
               <Link className="ls-item" role="menuitem" to="/speech">Speech Therapy Tool</Link>
               <Link className="ls-item" role="menuitem" to="/routine">Routine Builder</Link>
               <Link className="ls-item" role="menuitem" to="/games">Interactive Games</Link>
-              <Link className="ls-item" role="menuitem" to="/nursery">Virtual Nursery</Link>
+              <Link className="ls-item" role="menuitem" to="/virtualNursery">Virtual Nursery</Link>
             </div>
           </div>
         </nav>
@@ -135,5 +136,6 @@ export default function NavBar() {
         </div>
       </div>
     </header>
+
   );
 }

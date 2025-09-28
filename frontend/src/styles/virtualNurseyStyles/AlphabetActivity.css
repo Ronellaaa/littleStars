@@ -1,0 +1,311 @@
+/* Layout */
+.bp-wrap {
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+
+  
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../../assets/nbg6.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans",
+    sans-serif;
+}
+
+.bp-back {
+  position: absolute;
+  top:75px;
+  left: 2%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+ font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.bp-back:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.bp-back:active {
+  transform: scale(1.025);
+}
+
+
+.bp-header {
+  margin-bottom: 16px;
+  font-family: fredoka;
+  font-weight: 500;
+}
+.bp-meta {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.bp-progress {
+  height: 10px;
+  background: #e6eefb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px auto;
+  width: 280px;
+}
+.bp-progress-inner {
+  height: 100%;
+  background: #6aa6ff;
+  transition: width 0.35s ease;
+}
+
+/* Stage where balloons float */
+.bp-stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+  min-height: 270px;
+  margin-top: 8px;
+  padding-bottom: 16px;
+}
+
+/* Balloon button */
+.bp-balloon {
+  --size: 140px;
+  width: var(--size);
+  height: calc(var(--size) * 1.25);
+  border: none;
+  border-radius: 60% 60% 55% 55% / 65% 65% 45% 45%; /* balloon oval */
+  color: #042a2b;
+  font-weight: 800;
+  font-size: 56px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, opacity 0.2s ease;
+  animation: bp-bob 3.6s ease-in-out infinite;
+  outline-offset: 4px;
+}
+
+/* subtle shine */
+.bp-balloon::before {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 12%;
+  width: 18%;
+  height: 24%;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+/* knot */
+.bp-balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(15deg);
+  width: 14px;
+  height: 18px;
+  background: inherit; /* same as balloon color */
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+/* different colors for each balloon */
+.b1 {
+  background: #ff6b6b;
+}
+.b2 {
+  background: #ffd166;
+}
+.b3 {
+  background: #06d6a0;
+}
+
+/* letter in the middle */
+.bp-letter {
+  display: inline-block;
+  line-height: 1;
+  transform: translateY(6px);
+}
+
+/* float animation */
+@keyframes bp-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* pressed / hover */
+.bp-balloon:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+/* pop animation */
+.popped {
+  animation: none;
+  transform: scale(0.6);
+  opacity: 0;
+}
+
+/* feedback & cards */
+.bp-message {
+  font-size: 1.2rem;
+  min-height: 28px;
+  margin-top: 10px;
+}
+
+.bp-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 560px;
+  margin: 12px auto 0;
+}
+.bp-review {
+  margin-top: 8px;
+  font-size: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  justify-content: center;
+}
+
+.bp-actions {
+  margin-top: 16px;
+}
+.bp-primary,
+.bp-secondary {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.bp-primary {
+  background: #5fd17a;
+  color: #0b2714;
+}
+.bp-secondary {
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.bp-stars {
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+/* ===== BIG LETTER BOARD ===== */
+.bp-board {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 12px;
+}
+
+.bp-board-frame {
+  width: min(560px, 92vw);
+  background: #f7a15f; /* outer frame (warm sign color) */
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+/* little marquee dots */
+.bp-board-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(#ffd166 2px, transparent 3px) 10px 10px / 22px
+    22px repeat;
+  mask: linear-gradient(#000 0 0) padding-box,
+    linear-gradient(transparent, transparent); /* allow inner to cover */
+  -webkit-mask: linear-gradient(#000 0 0) padding-box,
+    linear-gradient(transparent, transparent);
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.bp-board-inner {
+  background: #6e3f2b; /* board background (brown) */
+  border-radius: 10px;
+  padding: 22px 16px;
+  margin: 6px;
+  box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.bp-board-letter {
+  font-size: clamp(56px, 8vw, 112px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* ===== CONFETTI ===== */
+.bp-confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 50;
+}
+
+.bp-confetti-piece {
+  position: absolute;
+  top: -8vh; /* start slightly above */
+  border-radius: 2px;
+  opacity: 0.95;
+  animation-name: bp-confetti-fall, bp-confetti-spin;
+  animation-timing-function: ease-out, linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes bp-confetti-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(110vh) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+@keyframes bp-confetti-spin {
+  0% {
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
