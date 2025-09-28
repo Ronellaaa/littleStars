@@ -11,7 +11,7 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/cards/${category}`);
+        const res = await fetch(`http://localhost:5050/api/cards/${category}`);
         const json = await res.json();
         if (json.success) {
           setCards(json.data);
@@ -25,16 +25,16 @@ const CategoryPage = () => {
     fetchCards();
   }, [category]);
 
-  if (loading) return <p>Loading cards...</p>;
+  if (loading) return <p className="speech-therapy-loading">Loading cards...</p>;
 
   return (
-    <div className="category-page">
-      <h1 className="category-title">
+    <div className="speech-therapy-category-page">
+      <h1 className="speech-therapy-category-title">
         {category.charAt(0).toUpperCase() + category.slice(1)} Cards
       </h1>
 
       {/* Grid of Speech Cards */}
-      <div className="grid">
+      <div className="speech-therapy-grid">
         {cards.map((card) => (
           <SpeechCard
             key={card._id}

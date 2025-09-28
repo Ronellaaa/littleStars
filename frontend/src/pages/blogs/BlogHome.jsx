@@ -57,7 +57,7 @@ export default function BlogHome() {
       try {
         setLoading(true);
         setErr("");
-        const res = await fetch("http://localhost:3000/api/blogs");
+        const res = await fetch("http://localhost:5050/api/blogs");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const payload = await res.json();
 

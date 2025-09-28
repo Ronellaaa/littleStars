@@ -10,7 +10,7 @@ export default function BlogsCard({ blog, onDelete }) {
 
   const cover = blog.coverImageUrl || blog.imageUrl || "";
   const imgSrc = cover
-    ? (cover.startsWith("http") ? cover : `http://localhost:3000${cover}`)
+    ? (cover.startsWith("http") ? cover : `http://localhost:5050${cover}`)
     : "";
 
   const handleDelete = async () => {

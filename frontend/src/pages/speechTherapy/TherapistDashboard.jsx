@@ -20,7 +20,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/cards/categories/list");
+        const res = await fetch("http://localhost:5050/api/cards/categories/list");
         const json = await res.json();
         if (json.success) setCategories(json.data);
       } catch (err) {
@@ -37,8 +37,8 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
         setLoading(true);
         const url =
           selectedCategory === "all"
-            ? "http://localhost:5000/api/cards"
-            : `http://localhost:5000/api/cards/${selectedCategory}`;
+            ? "http://localhost:5050/api/cards"
+            : `http://localhost:5050/api/cards/${selectedCategory}`;
 
         const res = await fetch(url);
         const json = await res.json();
@@ -73,7 +73,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:5000/api/upload", {
+      const res = await fetch("http://localhost:5050/api/upload", {
         method: "POST",
         body: formData,
       });
@@ -101,7 +101,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/cards", {
+      const res = await fetch("http://localhost:5050/api/cards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, category, image, audio: "N/A" }),
@@ -123,7 +123,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
   const handleEditCard = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/api/cards/${editingCard._id}`, {
+      const res = await fetch(`http://localhost:5050/api/cards/${editingCard._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newCard),
@@ -147,7 +147,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/cards/${id}`, { method: "DELETE" });
+      const res = await fetch(`http://localhost:5050/api/cards/${id}`, { method: "DELETE" });
       const json = await res.json();
       if (json.success) {
         alert("Card deleted!");
@@ -183,11 +183,11 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
   };
 
   return (
-    <div className="therapist-dashboard">
+    <div className="speech-therapy-therapist-dashboard">
       <h1>Therapist Dashboard</h1>
 
       {/* Category filter */}
-      <div className="filters">
+      <div className="speech-therapy-filters">
         <label>
           Category:
           <select
@@ -212,13 +212,13 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
         {loading ? (
           <p>Loading cards...</p>
         ) : cards.length > 0 ? (
-          <div className="grid">
+          <div className="speech-therapy-grid">
             {cards.map((card) => (
-              <div key={card._id} className="card-with-actions">
-             <div className="card-actions">
-              <div className="icon-btn edit-btn" onClick={() => openEditModal(card)}>✏️</div>
-              <div className="icon-btn delete-btn" onClick={() => handleDeleteCard(card._id)}>❌</div>
-            </div>
+              <div key={card._id} className="speech-therapy-card-with-actions">
+                <div className="speech-therapy-card-actions">
+                  <div className="speech-therapy-icon-btn speech-therapy-edit-btn" onClick={() => openEditModal(card)}>✏️</div>
+                  <div className="speech-therapy-icon-btn speech-therapy-delete-btn" onClick={() => handleDeleteCard(card._id)}>❌</div>
+                </div>
                 <SpeechCard
                   title={card.title}
                   imageUrl={card.image}
@@ -233,16 +233,16 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
       </div>
 
       {/* ➕ Floating Add Button */}
-      <button className="add-btn" onClick={openCreateModal}>
+      <button className="speech-therapy-add-btn" onClick={openCreateModal}>
         ➕
       </button>
 
       {/* Modal Overlay */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="speech-therapy-modal-overlay">
+          <div className="speech-therapy-modal-content">
             <h2>{isEdit ? "Edit Card" : "Create New Card"}</h2>
-            <form onSubmit={isEdit ? handleEditCard : handleCreateCard} className="modal-form">
+            <form onSubmit={isEdit ? handleEditCard : handleCreateCard} className="speech-therapy-modal-form">
               <label>
                 Title:
                 <input
@@ -278,17 +278,17 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
 
               {uploading && <p>Uploading image...</p>}
               {newCard.image && (
-                <div className="image-preview">
+                <div className="speech-therapy-image-preview">
                   <p>Preview:</p>
                   <img src={newCard.image} alt="preview" style={{ width: "120px", borderRadius: "8px" }} />
                 </div>
               )}
 
-              <div className="modal-actions">
-                <button type="submit" className="create-btn" disabled={uploading}>
+              <div className="speech-therapy-modal-actions">
+                <button type="submit" className="speech-therapy-create-btn" disabled={uploading}>
                   {isEdit ? "Update" : "Create"}
                 </button>
-                <button type="button" className="cancel-btn" onClick={closeModal}>
+                <button type="button" className="speech-therapy-cancel-btn" onClick={closeModal}>
                   Cancel
                 </button>
               </div>

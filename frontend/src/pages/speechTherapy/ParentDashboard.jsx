@@ -24,7 +24,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/cards/categories/list");
+        const res = await fetch("http://localhost:5050/api/cards/categories/list");
         const json = await res.json();
         if (json.success) setCategories(json.data);
       } catch (err) {
@@ -39,7 +39,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
     const fetchStats = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/attempts/stats/category?childId=${childId}&period=week`
+          `http://localhost:5050/api/speech/attempts/stats/category?childId=${childId}&period=week`
         );
         const json = await res.json();
         if (json.success) setStats(json.data);
@@ -81,7 +81,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
   const handleViewResults = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/attempts?childId=${childId}&category=${selectedCategory}&period=${selectedPeriod}`
+        `http://localhost:5050/api/speech/attempts?childId=${childId}&category=${selectedCategory}&period=${selectedPeriod}`
       );
       const json = await res.json();
       if (json.success) setAttempts(json.data);
@@ -95,7 +95,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attempt?");
     if (!confirmDelete) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/attempts/${id}`, {
+      const res = await fetch(`http://localhost:5050/api/speech/attempts/${id}`, {
         method: "DELETE",
       });
       const json = await res.json();

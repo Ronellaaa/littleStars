@@ -2,7 +2,7 @@ import {
   getVideos,
   addVideos,
   deleteVideos,
-} from "../controllers/NurseryController";
+} from "../controllers/NurseryController.js";
 import express from "express";
 
 const router = express.Router();

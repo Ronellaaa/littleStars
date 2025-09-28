@@ -93,7 +93,7 @@ export default function NavBar() {
             <div className="ls-menu" role="menu">
               {/* Link these to your real routes */}
               <Link className="ls-item" role="menuitem" to="/lesson">Emotion Simulator</Link>
-              <Link className="ls-item" role="menuitem" to="/speech">Speech Therapy Tool</Link>
+              <Link className="ls-item" role="menuitem" to="/speech-home">Speech Therapy Tool</Link>
               <Link className="ls-item" role="menuitem" to="/routine">Routine Builder</Link>
               <Link className="ls-item" role="menuitem" to="/games">Interactive Games</Link>
               <Link className="ls-item" role="menuitem" to="/virtualNursery">Virtual Nursery</Link>

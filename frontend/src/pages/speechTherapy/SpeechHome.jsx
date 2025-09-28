@@ -9,7 +9,7 @@ const SpeechHome = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/cards/categories/list");
+        const res = await fetch("http://localhost:5050/api/cards/categories/list");
         const json = await res.json();
         if (json.success) {
           setCategories(json.data);
@@ -26,7 +26,7 @@ const SpeechHome = () => {
   };
 
   const handleParentDashboardClick = () => {
-    navigate("/dashboard");
+    navigate("/parent-dashboard");
   };
 
   const handleTherapistDashboardClick = () => {

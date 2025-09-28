@@ -1,4 +1,3 @@
-
 // backend/index.js
 import dotenv from "dotenv";
 import express from "express";
@@ -6,12 +5,14 @@ import cors from "cors";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
-import { connectDB } from './config/db.js';
+// If you have a wrapper connectDB(), use it instead of mongoose.connect.
+// import { connectDB } from "./config/db.js";
 
 // —— Routers from EmotionSimulator branch ——
 import contentsRouter from "./routes/contents.js";
-import uploadRoutes from "./routes/upload.js";
-import attemptsRouter from "./routes/attempts1.js";
+import uploadLocalRouter from "./routes/upload1.js";       // local uploader
+import uploadRouter from "./routes/upload.js";              // cloud / unified uploader (if you keep it)
+import emotionAttemptsRouter from "./routes/attempts1.js";        // Emotion Simulator attempts (auth)
 import thresholdsRouter from "./routes/thresholds.js";
 import authRouter from "./routes/auth.js";
 import childSettingsRouter from "./routes/childSettings.js";
@@ -22,16 +23,20 @@ import scenariosRoutes from "./routes/scenarios.js";
 import BlogsRoutes from "./routes/BlogsRoute.js";
 import NurseryVideos from "./routes/NurseryRoute.js";
 
-//Routers from Speech Therapy tool 
-import attemptRoutes from "./routes/AttemptRoute.js";
-import cardRoutes from './routes/SpeechTherapyRoute.js';
+// —— Routers from Speech Therapy tool ——
+import speechAttemptsRouter  from "./routes/AttemptRoute.js";     // Speech Therapy attempts (your controller above)
+import cardRoutes from "./routes/SpeechTherapyRoute.js";
+
+
 
 
 dotenv.config();
 
 const app = express();
+const { MONGODB_URI, PORT: PORT_ENV } = process.env;
+const PORT = PORT_ENV ?? 5050;
 
-
+// CORS
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -39,15 +44,7 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 5000 ||3000;
-
-app.listen(PORT, () => {
-    connectDB();
-    console.log("Server is started at http://localhost:5000");
-});
-
-
-// Body parsing (Express has these built-in; no body-parser needed)
+// Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -55,43 +52,44 @@ app.use(express.urlencoded({ extended: true }));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Static: uploads (single source of truth)
+// Static
 const uploadsDir = path.resolve(process.cwd(), "uploads");
 app.use("/uploads", express.static(uploadsDir));
-
-// Static: models (for face-api or other models)
 app.use("/models", express.static(path.join(__dirname, "models")));
 
 // Health check
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
-// —— API routes ——
-// From EmotionSimulator
-app.use("/api/upload", uploadRouter);        
+// —— API routes (mount each ONCE) ————————————————
+// EmotionSimulator
 app.use("/api/contents", contentsRouter);
-app.use("/api/attempts", attemptsRouter);
+app.use("/api/emotion/attempts", emotionAttemptsRouter);      
 app.use("/api/thresholds", thresholdsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/child-settings", childSettingsRouter);
 app.use("/api/children", childrenRoutes);
 app.use("/api/scenarios", scenariosRoutes);
 
-// From test-branch1
+// Upload (choose ONE of these, comment out the other)
+// Local-only uploads:
+app.use("/api/upload/local", uploadLocalRouter);
+
+// test-branch1
 app.use("/api/blogs", BlogsRoutes);
 app.use("/api/videos", NurseryVideos);
 
-//From Speech Therapy Tool
-app.use("/api/cards", cardRoutes );
-app.use("/api/attempts", attemptRoutes);
-app.use("/api/upload", uploadRoutes);
+// Speech Therapy Tool
+app.use("/api/cards", cardRoutes);
+// Avoid path collision with emotion attempts: give speech its own prefix
+app.use("/api/speech/attempts", speechAttemptsRouter);
+// Cloud/unified uploads (if you implemented it):
+app.use("/api/upload", uploadRouter);        
 
 // 404 fallback
 app.use((req, res) => res.status(404).json({ message: "Not found" }));
 
-// DB + server
-const { MONGODB_URI } = process.env;
-const PORT = process.env.PORT ?? 3000;
-
+// —— DB + server start ————————————————————————
+// Use ONE connection method. Here we use mongoose.connect directly:
 try {
   await mongoose.connect(MONGODB_URI);
   console.log("✅ MongoDB connected");
@@ -103,3 +101,14 @@ try {
   process.exit(1);
 }
 
+/* If you prefer your own connectDB() wrapper, do this instead:
+
+try {
+  await connectDB();
+  app.listen(PORT, () => console.log(`✅ API listening on http://localhost:${PORT}`));
+} catch (err) {
+  console.error("❌ DB connect failed:", err?.message || err);
+  process.exit(1);
+}
+
+*/

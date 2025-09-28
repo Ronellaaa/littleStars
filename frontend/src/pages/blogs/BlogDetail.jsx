@@ -114,7 +114,7 @@ const deleteComment = async (commentId) => {
   const imgSrc = useMemo(() => {
     const cover = blog?.coverImageUrl || blog?.imageUrl || "";
     if (!cover) return "";
-    return cover.startsWith("http") ? cover : `http://localhost:3000${cover}`;
+    return cover.startsWith("http") ? cover : `http://localhost:5050${cover}`;
   }, [blog]);
 
   // tiny helpers to make the right-side blurb + 3 mini cards

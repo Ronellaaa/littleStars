@@ -17,16 +17,14 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
     if (a === b) return true;
     if (a.includes(b)) return true;
 
-    // Check character by character similarity
     let matches = 0;
     for (let i = 0; i < Math.min(a.length, b.length); i++) {
       if (a[i] === b[i]) matches++;
     }
     const similarity = matches / b.length;
-    return similarity >= 0.8; // good enough if 80% correct
+    return similarity >= 0.8;
   };
 
-  // 🎤 Check if voices are ready when card mounts
   useEffect(() => {
     const voice = getVoice();
     if (voice) setIsVoiceReady(true);
@@ -42,7 +40,6 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
     }
   }, []);
 
-  // Centralized speak function
   const speak = (text, onEnd) => {
     const voice = getVoice();
     if (!voice) return;
@@ -59,7 +56,6 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
     speechSynthesis.speak(utterance);
   };
 
-  // 🔊 Handle Listen button
   const handleSpeak = () => {
     if (!isVoiceReady) return;
 
@@ -74,12 +70,11 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
     }
 
     if (cardRef.current) {
-      cardRef.current.classList.add("speaking");
-      setTimeout(() => cardRef.current?.classList.remove("speaking"), 1000);
+      cardRef.current.classList.add("speech-therapy-speaking");
+      setTimeout(() => cardRef.current?.classList.remove("speech-therapy-speaking"), 1000);
     }
   };
 
-  // 🎤 Handle Mic button
   const handleMic = () => {
     if (!isVoiceReady) return;
 
@@ -101,7 +96,6 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
       setIsListening(true);
     }, 1500);
 
-    // ✅ async so we can use await inside
     recognition.onresult = async (event) => {
       const transcript = event.results[0][0].transcript.toLowerCase().trim();
       setRecognizedText(transcript);
@@ -110,7 +104,6 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
       let success = false;
       let message = "";
 
-      // ✅ Use forgiving matcher
       if (isCloseMatch(transcript, title)) {
         const encouragements = [
           "Great job!",
@@ -126,9 +119,9 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
         speak(message);
 
         if (cardRef.current) {
-          cardRef.current.classList.add("success-feedback");
+          cardRef.current.classList.add("speech-therapy-success-feedback");
           setTimeout(() => {
-            cardRef.current?.classList.remove("success-feedback");
+            cardRef.current?.classList.remove("speech-therapy-success-feedback");
           }, 800);
         }
       } else {
@@ -139,14 +132,13 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
         speak(message);
 
         if (cardRef.current) {
-          cardRef.current.classList.add("tryagain-feedback");
+          cardRef.current.classList.add("speech-therapy-tryagain-feedback");
           setTimeout(() => {
-            cardRef.current?.classList.remove("tryagain-feedback");
+            cardRef.current?.classList.remove("speech-therapy-tryagain-feedback");
           }, 800);
         }
       }
 
-      // 📡 Send attempt data to backend
       const attemptData = {
         childId,
         category,
@@ -159,7 +151,7 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
       };
 
       try {
-        const res = await fetch("http://localhost:5000/api/attempts", {
+        const res = await fetch("http://localhost:5050/api/speech/attempts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(attemptData),
@@ -181,19 +173,19 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
   };
 
   return (
-    <div className="scene">
-      <div className={`card-3d ${isListening ? "listening" : ""}`} ref={cardRef}>
-        <div className="card-face card-front">
-          <div className="card-content">
-            <h2 className="card-title">{title}</h2>
-            <div className="image-container">
-              <img src={imageUrl} alt={title} className="image" />
+    <div className="speech-therapy-scene">
+      <div className={`speech-therapy-card-3d ${isListening ? "speech-therapy-listening" : ""}`} ref={cardRef}>
+        <div className="speech-therapy-card-face speech-therapy-card-front">
+          <div className="speech-therapy-card-content">
+            <h2 className="speech-therapy-card-title">{title}</h2>
+            <div className="speech-therapy-image-container">
+              <img src={imageUrl} alt={title} className="speech-therapy-image" />
             </div>
 
-            <div className="controls">
+            <div className="speech-therapy-controls">
               <button
                 onClick={handleSpeak}
-                className="button speak-btn"
+                className="speech-therapy-button speech-therapy-speak-btn"
                 disabled={!isVoiceReady}
               >
                 🔊 {isVoiceReady ? "Listen" : "Loading..."}
@@ -201,21 +193,20 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
 
               <button
                 onClick={handleMic}
-                className="button mic-btn"
+                className="speech-therapy-button speech-therapy-mic-btn"
                 disabled={!isVoiceReady}
               >
                 🎤 {isListening ? "Listening..." : "Try Speaking"}
               </button>
             </div>
 
-            {/* ✅ Smooth expanding block for recognized text + feedback */}
             <div
-              className={`recognized-wrapper ${recognizedText ? "show" : ""}`}
+              className={`speech-therapy-recognized-wrapper ${recognizedText ? "speech-therapy-show" : ""}`}
             >
               {recognizedText && (
-                <div className="recognized-text">
+                <div className="speech-therapy-recognized-text">
                   You said: <strong>{recognizedText}</strong>
-                  <div className="feedback-text">{feedbackMsg}</div>
+                  <div className="speech-therapy-feedback-text">{feedbackMsg}</div>
                 </div>
               )}
             </div>
