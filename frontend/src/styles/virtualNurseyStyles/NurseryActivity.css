@@ -1,0 +1,248 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap");
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.28);
+  --glass-br: 18px;
+  --brand: #2a6af0;
+  --ink: #0e1630;
+}
+
+.nursery-activity-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-image: url("../../assets/nbg3.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Back button */
+.nursery-back-button {
+  position: absolute;
+  top:5%;
+  left: 5%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+ font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nursery-back-button:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nursery-back-button:active {
+  transform: scale(1.025);
+}
+
+/* Glass card */
+.activity-card {
+  width: min(980px, 92vw);
+  padding: 28px 28px 34px;
+  border-radius: var(--glass-br);
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  animation: floatSoft 7s ease-in-out infinite;
+}
+@keyframes floatSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.activity-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.activity-header h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 1rem + 2.2vw, 2.4rem);
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.activity-sub {
+  margin-top: 6px;
+  color: #caced4;
+  opacity: 0.8;
+  font-size: clamp(0.9rem, 0.7rem + 0.6vw, 1rem);
+}
+
+/* Tiles container */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 20px;
+}
+@media (max-width: 680px) {
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tile (button as Link) */
+.tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 26px 20px 24px;
+  min-height: 220px;
+  border-radius: 22px;
+  text-decoration: none;
+  overflow: hidden;
+  /* background image via CSS custom prop */
+  background-image: var(--tile-bg);
+  background-size: cover;
+  background-position: center;
+  isolation: isolate;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateZ(0); /* enable GPU for smoother anim */
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    background-position 0.25s ease;
+}
+
+/* soft gradient overlay for readability */
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.36) 35%,
+    rgba(255, 255, 255, 0.18) 100%
+  );
+  z-index: 0;
+}
+
+.tile-icon {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+  background: white;
+  border-radius: 50%;
+  padding: 10px 14px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  margin-bottom: 12px;
+}
+.tile-title {
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1rem + 0.9vw, 1.6rem);
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+.tile-desc {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  font-size: 0.98rem;
+  color: #040404;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Interactions */
+.tile:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.15);
+  background-position: center 46%;
+}
+.tile:active {
+  transform: translateY(-2px) scale(1.005);
+}
+.tile:focus-visible {
+  outline: 3px solid #8fb3ff;
+  outline-offset: 3px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+}
+
+/* Cute floating decor */
+.float-bubble {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.35;
+  z-index: 0;
+  background: radial-gradient(circle at 30% 30%, #fff 0 40%, #1e2932 100%);
+  animation: bob 12s ease-in-out infinite;
+}
+.b1 {
+  width: 140px;
+  height: 140px;
+  right: 8%;
+  top: 10%;
+  animation-delay: -2s;
+}
+.b2 {
+  width: 90px;
+  height: 90px;
+  left: 6%;
+  bottom: 12%;
+  animation-delay: -6s;
+}
+.b3 {
+  width: 120px;
+  height: 120px;
+  left: 22%;
+  top: 16%;
+  animation-delay: -9s;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Reduce motion for sensitive users */
+@media (prefers-reduced-motion: reduce) {
+  .activity-card,
+  .float-bubble {
+    animation: none;
+  }
+  .tile,
+  .nursery-back-button {
+    transition: none;
+  }
+}
+@media (min-width: 768px) {
+  .nursery-back-button {
+    font-size: 1.5rem;
+    padding: .75rem 2rem;
+  }
+}
