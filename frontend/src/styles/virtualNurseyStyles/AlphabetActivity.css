@@ -300,7 +300,7 @@
   text-align: center;
   padding: 24px;
   min-height: 100vh;
-  background: radial-gradient(circle at top, #2c6fff, #091a3a);
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00c9ff 100%);
   color: #000000;
   display: flex;
   flex-direction: column;
