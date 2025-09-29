@@ -71,7 +71,7 @@ async function saveAndGo(user) {
 
   // mentors don't need a child in localStorage
   localStorage.removeItem("currentChild");
-  return nav("/mentor/reports", { replace: true });
+  return nav("/mentor", { replace: true });
 }
 
 // make submit handlers await it

@@ -1,4 +1,4 @@
-.learning-path {
+.nurseryD-learning-path {
   position: relative;
   min-height: 100vh;
   height: auto;
@@ -10,7 +10,7 @@
   background-position: center top;
 }
 
-.path-svg {
+.nurseryD-path-svg {
   position: absolute;
   left: 0;
   top: 0;
@@ -19,7 +19,7 @@
   pointer-events: none; 
 }
 
-.lesson {
+.nurseryD-lesson {
   position: absolute;
   transform: translate(-50%, -20%);
   width: 200px;
@@ -33,14 +33,14 @@
   cursor: pointer;
   z-index: 2;
 }
-.lesson-img {
+.nurseryD-lesson-img {
   width: 180px;
   height: 180px;
   border-radius: 16px;
   object-fit: cover;
 }
 
-.duck {
+.nurseryD-duck {
   left: -7%;
 position: absolute;
   background-image: url(../../assets/monkey.png);
@@ -61,7 +61,7 @@ animation: bounce 1.4s infinite;
     animation-timing-function: ease-in; 
   }
 }
-.cart {
+.nurseryD-cart {
 top: 60%;
 left: 85%;
   width: 400px;
@@ -71,7 +71,7 @@ left: 85%;
 
 }
 
-.lesson-label {
+.nurseryD-lesson-label {
   position: absolute;
   bottom: 70px;
   left: 60px;
@@ -89,16 +89,16 @@ left: 85%;
 }
 
 @media (max-width: 420px) {
-  .lesson {
+  .nurseryD-lesson {
     width: 104px;
     height: 104px;
   }
-  .lesson-img {
+  .nurseryD-lesson-img {
     width: 80px;
     height: 80px;
   }
 }
-.bp-back {
+.nurseryD-bp-back {
   position: absolute;
   top: 2%;
   left: 2%;
@@ -128,11 +128,11 @@ left: 85%;
     z-index: 999;          
   pointer-events: auto;   
 }
-.bp-back:hover {
+.nurseryD-bp-back:hover {
   background-color: #ffc229;
   box-shadow: #ff6314 0 -6px 8px inset;
   transform: scale(1.125);
 }
-.bp-back:active {
+.nurseryD-bp-back:active {
   transform: scale(1.025);
 }

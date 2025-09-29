@@ -96,7 +96,7 @@ const deleteComment = async (commentId) => {
       try {
         setLoading(true);
         setErr("");
-        const res = await fetch(`http://localhost:3000/api/blogs/${id}`);
+        const res = await fetch(`http://localhost:5050/api/blogs/${id}`);
         if (!res.ok) throw new Error(`Error: ${res.status}`);
         const data = await res.json();
         if (alive) setBlog(data);

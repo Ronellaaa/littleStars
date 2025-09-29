@@ -85,10 +85,10 @@ export default function NurseyDashboard() {
 
   return (
     <>
-      <main className="learning-path">
-        <button className="bp-back" onClick={handleBack}type="button"> back</button>
+      <main className="nurseryD-learning-path">
+        <button className="nurseryD-bp-back" onClick={handleBack}type="button"> back</button>
         <svg
-          className="path-svg"
+          className="nurseryD-path-svg"
           viewBox={`0 0 100 ${svgHeightVh}`}
           preserveAspectRatio="none"
           style={{ height: `${svgHeightVh}vh` }}
@@ -113,8 +113,8 @@ export default function NurseyDashboard() {
           />
         </svg>
 
-        <div className="duck" />
-        <div className="cart">
+        <div className="nurseryD-duck" />
+        <div className="nurseryD-cart">
           <Lottie
             animationData={tigerLottie}
             loop
@@ -128,16 +128,16 @@ export default function NurseyDashboard() {
           <Link
             key={lesson.id}
             to={`/nursery/${lesson.id}/select`}
-            className="lesson-link"
+            className="nurseryD-lesson-link"
           >
             <button
               key={lesson.id}
-              className="lesson"
+              className="nurseryD-lesson"
               style={{ left: `${lesson.x}%`, top: `${lesson.y}vh` }}
               onClick={() => console.log("open lesson", lesson.id)}
             >
-              <img src={lesson.img} alt={lesson.title} className="lesson-img" />
-              <span className="lesson-label">{lesson.title}</span>
+              <img src={lesson.img} alt={lesson.title} className="nurseryD-lesson-img" />
+              <span className="nurseryD-lesson-label">{lesson.title}</span>
             </button>
           </Link>
         ))}

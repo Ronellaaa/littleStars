@@ -95,7 +95,9 @@ app.use("/api/upload/local", uploadLocalRouter);
 
 // test-branch1
 app.use("/api/blogs", BlogsRoutes);
-app.use("/api/videos", NurseryVideos);
+
+//app.use('/api/learn', NurseryVideos)
+app.use('/api/learn', NurseryVideos)
 
 // Speech Therapy Tool
 app.use("/api/cards", cardRoutes);

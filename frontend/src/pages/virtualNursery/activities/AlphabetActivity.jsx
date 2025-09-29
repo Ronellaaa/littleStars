@@ -214,6 +214,7 @@ export default function AlphabetActivity({
 
     return (
       <main className="nursery-review-screen">
+        <div className="nursery-container1">
         <h1 className="nursery-review-title">Balloon Pop – Alphabet</h1>
 
         <div className="nursery-review-stars">
@@ -245,6 +246,7 @@ export default function AlphabetActivity({
         <button className="nursery-review-play-btn" onClick={resetAll}>
           Play again
         </button>
+        </div>
       </main>
     );
   }
