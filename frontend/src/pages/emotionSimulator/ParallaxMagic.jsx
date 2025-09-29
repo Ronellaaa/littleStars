@@ -42,17 +42,14 @@ export default function ParallaxMagic() {
 
   const [mood, setMood] = useState("neutral");
 
-  // countdown tick
   useEffect(() => {
     if (eta == null) return;
     const id = setInterval(() => setEta((v) => (v <= 1 ? null : v - 1)), 1000);
     return () => clearInterval(id);
   }, [eta]);
 
-  // kill any pending nav on unmount
   useEffect(() => () => navTimerRef.current?.kill?.(), []);
 
-  // map moods -> background & sprite
   const bgForMood = {
     neutral: bgNeutral,
     happy: bgHappyImg,
@@ -72,7 +69,6 @@ export default function ParallaxMagic() {
     angry: "embers",
   };
 
-  // crossfade helper between two stacked bg layers
   const activeKey = useRef("a");
   const crossfadeSceneBg = (url) => {
     const from = activeKey.current === "a" ? bgARef.current : bgBRef.current;
@@ -83,7 +79,6 @@ export default function ParallaxMagic() {
     activeKey.current = activeKey.current === "a" ? "b" : "a";
   };
 
-  // init both bg layers with neutral
   useEffect(() => {
     gsap.set(bgARef.current, {
       backgroundImage: `url(${bgNeutral})`,
@@ -95,7 +90,6 @@ export default function ParallaxMagic() {
     });
   }, []);
 
-  // Idle “breathe” mode
   const [idle, setIdle] = useState(true);
   const idleTimer = useRef(null);
   const nudgeIdle = () => {
@@ -128,7 +122,6 @@ export default function ParallaxMagic() {
     if (idle && sceneRef.current) sceneRef.current.style.transform = "";
   }, [idle]);
 
-  // Wind streaks
   const streams = useMemo(() => {
     const M = 8;
     const rnd = (a, b) => Math.random() * (b - a) + a;
@@ -142,7 +135,6 @@ export default function ParallaxMagic() {
     }));
   }, []);
 
-  // Swirls
   const swirls = useMemo(() => {
     const M = 8;
     const rnd = (a, b) => Math.random() * (b - a) + a;
@@ -154,7 +146,6 @@ export default function ParallaxMagic() {
     }));
   }, []);
 
-  // Grass
   const blades = useMemo(() => {
     const B = 90;
     const rnd = (a, b) => Math.random() * (b - a) + a;
@@ -169,7 +160,6 @@ export default function ParallaxMagic() {
     }));
   }, []);
 
-  // Gentle gusts
   const [gust, setGust] = useState(0);
   useEffect(() => {
     const id = setInterval(() => {
@@ -181,7 +171,6 @@ export default function ParallaxMagic() {
     return () => clearInterval(id);
   }, []);
 
-  // Mood-driven particles
   useEffect(() => {
     const wrap = leavesRef.current;
     if (!wrap) return;
@@ -190,15 +179,14 @@ export default function ParallaxMagic() {
     const H = () => wrap.clientHeight;
     const R = (a, b) => a + Math.random() * (b - a);
 
-    // clear previous
     gsap.killTweensOf("*", { overwrite: true });
     wrap.innerHTML = "";
 
     const make = (cls) => {
       const holder = document.createElement("span");
-      holder.className = "leafWrap";
+      holder.className = "em-leaf-wrap";
       const inner = document.createElement("i");
-      inner.className = `particle ${cls}`;
+      inner.className = `em-particle ${cls}`;
       holder.appendChild(inner);
       wrap.appendChild(holder);
       return holder;
@@ -210,7 +198,7 @@ export default function ParallaxMagic() {
     if (kind === "rain") {
       const total = 100;
       for (let i = 0; i < total; i++) {
-        const n = make("drop");
+        const n = make("em-drop");
         nodes.push(n);
         gsap.set(n, { x: R(0, W()), y: R(-220, -40), rotationZ: R(-8, -3) });
         gsap.to(n, {
@@ -232,7 +220,7 @@ export default function ParallaxMagic() {
     } else if (kind === "embers") {
       const total = 40;
       for (let i = 0; i < total; i++) {
-        const n = make("ember");
+        const n = make("em-ember");
         nodes.push(n);
         const startX = R(0, W());
         const startY = R(H() * 0.6, H() - 10);
@@ -260,7 +248,7 @@ export default function ParallaxMagic() {
         });
       }
     } else {
-      const cls = kind === "petals" ? "petal" : "leaf";
+      const cls = kind === "petals" ? "em-petal" : "em-leaf";
       const total = 30;
       for (let i = 0; i < total; i++) {
         const n = make(cls);
@@ -306,9 +294,7 @@ export default function ParallaxMagic() {
     };
   }, [mood]);
 
-  // Hop + change BG + delayed navigate
   const hopToPuddle = (emotion) => {
-    // cancel any previous scheduled navigate
     navTimerRef.current?.kill?.();
     setEta(null);
 
@@ -321,7 +307,11 @@ export default function ParallaxMagic() {
     const deltaX =
       pRect.left + pRect.width / 2 - (gRect.left + gRect.width / 2);
 
-    gsap.fromTo(puddleEl, { scale: 1 }, { scale: 1.08, yoyo: true, repeat: 1, duration: 0.14, ease: "sine.inOut" });
+    gsap.fromTo(
+      puddleEl,
+      { scale: 1 },
+      { scale: 1.08, yoyo: true, repeat: 1, duration: 0.14, ease: "sine.inOut" }
+    );
 
     const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
     tl.to(girlEl, { x: `+=${deltaX}`, y: -90, duration: 0.55 })
@@ -331,7 +321,7 @@ export default function ParallaxMagic() {
         crossfadeSceneBg(bgForMood[emotion]);
       }, "-=0.2")
       .add(() => {
-        const delaySec = 3; // <<< wait so animations are noticed
+        const delaySec = 3;
         setEta(delaySec);
         navTimerRef.current = gsap.delayedCall(delaySec, () => {
           navigate(`/lesson/${emotion}`);
@@ -340,23 +330,26 @@ export default function ParallaxMagic() {
   };
 
   return (
-    <div className="mainb">
+    <div className="em-main">
       <div
-        className={`hero-wrap${idle ? " autopan" : ""}`}
+        className={`em-hero${idle ? " em-autopan" : ""}`}
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
       >
-        <div className="scene" ref={sceneRef} style={{ "--gust": `${gust}px` }}>
-          {/* SCENE BACKGROUND: two layers that crossfade */}
-          <div className="bg" ref={bgARef} />
-          <div className="bg" ref={bgBRef} />
+        <div
+          className="em-scene"
+          ref={sceneRef}
+          style={{ "--gust": `${gust}px` }}
+        >
+          <div className="em-bg" ref={bgARef} />
+          <div className="em-bg" ref={bgBRef} />
 
           {/* Wind streaks */}
-          <div className="wind">
+          <div className="em-wind">
             {streams.map((s, i) => (
               <span
                 key={i}
-                className="stream"
+                className="em-stream"
                 style={{
                   "--y": `${s.y}vh`,
                   "--len": `${s.len}vw`,
@@ -371,7 +364,7 @@ export default function ParallaxMagic() {
 
           {/* Swirls */}
           <svg
-            className="swirls"
+            className="em-swirls"
             viewBox="0 0 1200 700"
             preserveAspectRatio="none"
             aria-hidden="true"
@@ -379,7 +372,7 @@ export default function ParallaxMagic() {
             {swirls.map((s, i) => (
               <g
                 key={i}
-                className="swirl"
+                className="em-swirl"
                 style={{
                   "--y": `${s.y}vh`,
                   "--scale": s.scale,
@@ -389,7 +382,7 @@ export default function ParallaxMagic() {
               >
                 <path d="M -150 350 C  50 250, 150 450, 300 350 S 550 250, 700 350 S 900 450, 1050 350 S 1200 250, 1350 350" />
                 <path
-                  className="swirl-alt"
+                  className="em-swirl-alt"
                   d="M -150 360 C  20 310, 200 420, 340 360 S 600 300, 760 360 S 940 420, 1120 360"
                 />
               </g>
@@ -397,11 +390,11 @@ export default function ParallaxMagic() {
           </svg>
 
           {/* Grass */}
-          <div className="grass">
+          <div className="em-grass">
             {blades.map((b, i) => (
               <span
                 key={i}
-                className="blade"
+                className="em-blade"
                 style={{
                   "--x": b.x,
                   "--h": `${b.h}px`,
@@ -417,7 +410,7 @@ export default function ParallaxMagic() {
 
           {/* Particle layer */}
           <div
-            className="leaves"
+            className="em-leaves"
             ref={leavesRef}
             style={{ "--gustX": `${gust * 0.05}px` }}
           />
@@ -425,77 +418,86 @@ export default function ParallaxMagic() {
           {/* Girl */}
           <img
             ref={girlRef}
-            className="girl"
+            className="em-girl"
             src={spriteForMood[mood]}
             alt="girl"
             draggable="false"
           />
 
           {/* Puddles (buttons) */}
-          <div className="puddles">
+          <div className="em-puddles">
             <button
               type="button"
               ref={puddleRefs.happy}
-              className="puddle happy"
+              className="em-puddle em-happy"
               data-label="😊 Happy"
               onClick={() => hopToPuddle("happy")}
             />
             <button
               type="button"
               ref={puddleRefs.sad}
-              className="puddle sad"
+              className="em-puddle em-sad"
               data-label="🥲 Sad"
               onClick={() => hopToPuddle("sad")}
             />
             <button
               type="button"
               ref={puddleRefs.angry}
-              className="puddle angry"
+              className="em-puddle em-angry"
               data-label="😠 Angry"
               onClick={() => hopToPuddle("angry")}
             />
           </div>
 
           {/* Butterflies */}
-          <img src={b1} className="butterfly b1" alt="" />
-          <img src={b2} className="butterfly b2" alt="" />
-          <img src={b1} className="butterfly b3" alt="" />
+          <img src={b1} className="em-butterfly em-b10" alt="" />
+          <img src={b2} className="em-butterfly em-b20" alt="" />
+          <img src={b1} className="em-butterfly em-b30" alt="" />
         </div>
 
         {/* Road inside the scene */}
-        <img src={road} alt="" className="road road-inner" aria-hidden="true" />
+        <img
+          src={road}
+          alt=""
+          className="em-road em-road-inner"
+          aria-hidden="true"
+        />
       </div>
 
       {/* LEFT PANEL */}
-      <aside className="side left-panel">
-        <div className="left-card">
+      <aside className="em-side em-left-panel">
+        <div className="em-left-card">
           <h3>Emotion stimulator</h3>
           <p>
             The Emotion Stimulator helps children recognize emotions. Pick a
             puddle to jump and see how feelings change in the scene.
           </p>
-          <div className="emotion1">
-            <img src={emotion} className="emotion" />
+          <div className="em-emotion1">
+            <img src={emotion} className="em-emotion" />
           </div>
         </div>
-        <div className="gate">
-          <img src={bg} alt="" className="gate-bg" />
+        <div className="em-gate">
+          <img src={bg} alt="" className="em-gate-bg" />
         </div>
       </aside>
 
       {/* RIGHT HERO STACK + BUBBLE */}
-      <aside className="side right-stack">
-        <div className={`speech-cloud ${mood !== "neutral" ? "hide" : ""}`}>
+      <aside className="em-side em-right-stack">
+        <div
+          className={`em-speech-cloud ${mood !== "neutral" ? "em-hide" : ""}`}
+        >
           select emotion
         </div>
-        <div className="gate">
-          <img src={bg} alt="" className="gate-bg heroes-pack" />
+        <div className="em-gate">
+          <img src={bg} alt="" className="em-gate-bg em-heroes-pack" />
         </div>
       </aside>
 
       {/* Optional: tiny auto-nav toast */}
       {eta != null && (
-        <div className="autonav">Starting {mood} lesson in {eta}s…</div>
+        <div className="em-autonav">
+          Starting {mood} lesson in {eta}s…
+        </div>
       )}
     </div>
   );
