@@ -30,6 +30,9 @@ import { Activity } from "./models/Activity.js";
 import { defaultActivities } from "./data/defaultActivities.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
+//Games
+import gameRouter from "./routes/GameRoutes.js"; //import game routes
+
 dotenv.config();
 
 const app = express();
@@ -43,6 +46,9 @@ const allowList = new Set([
   "http://127.0.0.1:5173",
   "http://localhost:5174",
   "http://127.0.0.1:5174",
+  "http://localhost:3001",
+  "http://127.0.0.1:3001",
+
 ]);
 app.use(
   cors({
@@ -97,6 +103,9 @@ import activityRoutes from "./routes/activityRoutes.js";
 import routineRoutes from "./routes/routineRoutes.js";
 app.use("/api/activities", activityRoutes);
 app.use("/api/routines", routineRoutes);
+
+//Games
+app.use("/game", gameRouter); 
 
 // —— Error handlers (keep last) ——
 app.use(notFound);
