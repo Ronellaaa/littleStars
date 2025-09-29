@@ -700,33 +700,13 @@ export default function RoutineHome() {
                         <ul className="routine-timeline-list">
                           {steps.map((step, index) => (
                             <li key={step.id} className="routine-timeline-item">
-                              <div className="routine-step-order">
-                                <span>{index + 1}</span>
-                                <div className="routine-step-order-controls">
-                                  <button
-                                    type="button"
-                                    onClick={() => moveStep(step.id, -1)}
-                                    disabled={index === 0}
-                                    title="Move up"
-                                  >
-                                    Up
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => moveStep(step.id, 1)}
-                                    disabled={index === steps.length - 1}
-                                    title="Move down"
-                                  >
-                                    Down
-                                  </button>
-                                </div>
-                              </div>
-                              <div className="routine-step-details">
-                                <div className="routine-step-heading">
+                              <header className="routine-step-header">
+                                <div className="routine-step-meta">
+                                  <span className="routine-step-number">{index + 1}</span>
                                   <div className="routine-activity-icon routine-large">{step.activity?.icon || '?'}</div>
-                                  <div>
+                                  <div className="routine-step-copy">
                                     <p className="routine-activity-name">{step.activity?.name}</p>
-                                    <label>
+                                    <label className="routine-step-label">
                                       <span>Label for your child</span>
                                       <input
                                         type="text"
@@ -737,8 +717,39 @@ export default function RoutineHome() {
                                     </label>
                                   </div>
                                 </div>
-                                <div className="routine-step-inputs">
-                                  <label>
+                                <div className="routine-step-header-actions">
+                                  <div className="routine-step-order-controls">
+                                    <button
+                                      type="button"
+                                      className="routine-step-move"
+                                      onClick={() => moveStep(step.id, -1)}
+                                      disabled={index === 0}
+                                      aria-label="Move step up"
+                                    >
+                                      &uarr;
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="routine-step-move"
+                                      onClick={() => moveStep(step.id, 1)}
+                                      disabled={index === steps.length - 1}
+                                      aria-label="Move step down"
+                                    >
+                                      &darr;
+                                    </button>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    className="routine-remove-step"
+                                    onClick={() => removeStep(step.id)}
+                                  >
+                                    Remove step
+                                  </button>
+                                </div>
+                              </header>
+                              <div className="routine-step-body">
+                                <div className="routine-step-fields">
+                                  <label className="routine-step-field">
                                     <span>Start at</span>
                                     <input
                                       type="time"
@@ -746,7 +757,7 @@ export default function RoutineHome() {
                                       onChange={(event) => updateStep(step.id, { startTime: event.target.value })}
                                     />
                                   </label>
-                                  <label>
+                                  <label className="routine-step-field">
                                     <span>Duration (min)</span>
                                     <input
                                       type="number"
@@ -758,19 +769,10 @@ export default function RoutineHome() {
                                       }
                                     />
                                   </label>
-                                </div>
-                                <div className="routine-step-footer">
                                   <div className="routine-step-end">
                                     <span>Ends</span>
                                     <strong>{getEndTimeDisplay(step.startTime, step.durationMin)}</strong>
                                   </div>
-                                  <button
-                                    type="button"
-                                    className="routine-remove-step"
-                                    onClick={() => removeStep(step.id)}
-                                  >
-                                    Remove step
-                                  </button>
                                 </div>
                               </div>
                             </li>
