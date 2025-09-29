@@ -506,69 +506,69 @@ export default function RoutineHome() {
   const totalRoutines = existingRoutines.length;
 
   return (
-    <div className="dashboard-shell">
-      <nav className="top-nav">
-        <div className="brand">
-          <span className="brand-logo">LS</span>
-          <div className="brand-copy">
+    <div className="routine-dashboard-shell">
+      <nav className="routine-top-nav">
+        <div className="routine-brand">
+          <span className="routine-brand-logo">LS</span>
+          <div className="routine-brand-copy">
             <strong>Little Stars</strong>
             <span>Routine Studio</span>
           </div>
         </div>
-        <div className="nav-links">
+        <div className="routine-nav-links">
           <button type="button" onClick={() => scrollToSection(heroRef)}>Overview</button>
           <button type="button" onClick={() => scrollToSection(plannerRef)}>Planner</button>
           <button type="button" onClick={() => scrollToSection(historyRef)}>History</button>
           <button type="button" onClick={focusActivityLibrary}>Library</button>
         </div>
-        <div className="nav-user">
-          <div className="avatar">LS</div>
+        <div className="routine-nav-user">
+          <div className="routine-avatar">LS</div>
         </div>
       </nav>
 
-      <main className="dashboard-content">
-        <section ref={heroRef} className="hero-card">
+      <main className="routine-dashboard-content">
+        <section ref={heroRef} className="routine-hero-card">
           <div>
-            <p className="hero-kicker">Planner overview</p>
+            <p className="routine-hero-kicker">Planner overview</p>
             <h1>Create the perfect routine for your child</h1>
-            <p className="hero-sub">
+            <p className="routine-hero-sub">
               Drag from your activity library, personalise each step, and publish when everything feels right.
             </p>
           </div>
-          <div className="hero-stats">
-            <div className="stat-tile">
-              <span className="stat-label">Activities</span>
+          <div className="routine-hero-stats">
+            <div className="routine-stat-tile">
+              <span className="routine-stat-label">Activities</span>
               <strong>{totalActivities}</strong>
             </div>
-            <div className="stat-tile">
-              <span className="stat-label">Steps in progress</span>
+            <div className="routine-stat-tile">
+              <span className="routine-stat-label">Steps in progress</span>
               <strong>{plannedSteps}</strong>
             </div>
-            <div className="stat-tile">
-              <span className="stat-label">Saved routines</span>
+            <div className="routine-stat-tile">
+              <span className="routine-stat-label">Saved routines</span>
               <strong>{totalRoutines}</strong>
             </div>
           </div>
         </section>
 
-        <div className="layout-grid">
-          <div className="layout-main">
-            <section ref={plannerRef} className="card routine-builder-card">
-              <header className="card-header card-header--tight routine-builder-header">
+        <div className="routine-layout-grid">
+          <div className="routine-layout-main">
+            <section ref={plannerRef} className="routine-card routine-routine-builder-card">
+              <header className="routine-card-header routine-card-header--tight routine-routine-builder-header">
                 <div>
                   <h2>Routine planner</h2>
                   <p>Give your routine a name, choose the day, and line up every activity.</p>
                 </div>
-                <div className="planner-actions">
+                <div className="routine-planner-actions">
                   <button
                     type="button"
-                    className="ghost"
+                    className="routine-ghost"
                     onClick={resetRoutine}
                     disabled={saving}
                   >
                     {editingRoutineId ? 'Cancel edit' : 'Reset plan'}
                   </button>
-                  <button type="button" className="primary" onClick={handleSave} disabled={saving}>
+                  <button type="button" className="routine-primary" onClick={handleSave} disabled={saving}>
                     {saving
                       ? editingRoutineId
                         ? 'Updating...'
@@ -579,28 +579,28 @@ export default function RoutineHome() {
                   </button>
                 </div>
               </header>
-              <div className="card-body routine-builder-body">
-                <div className="builder-column form-column">
-                  <div className="column-heading">
+              <div className="routine-card-body routine-routine-builder-body">
+                <div className="routine-builder-column routine-form-column">
+                  <div className="routine-column-heading">
                     <h3>Routine details</h3>
                     <p>Share the plan with grown-ups before your child sees it.</p>
                   </div>
-                  <div className="builder-stats">
-                    <div className="builder-stat">
+                  <div className="routine-builder-stats">
+                    <div className="routine-builder-stat">
                       <strong>{steps.length}</strong>
                       <span>steps planned</span>
                     </div>
-                    <div className="builder-stat">
+                    <div className="routine-builder-stat">
                       <strong>{totalDuration}</strong>
                       <span>minutes total</span>
                     </div>
-                    <div className="builder-stat">
+                    <div className="routine-builder-stat">
                       <strong>{nextStartTime}</strong>
                       <span>next slot</span>
                     </div>
                   </div>
-                  <div className="form-grid">
-                    <label className="field">
+                  <div className="routine-form-grid">
+                    <label className="routine-field">
                       <span>Parent name</span>
                       <input
                         type="text"
@@ -611,9 +611,9 @@ export default function RoutineHome() {
                         }}
                         placeholder="e.g. Taylor"
                       />
-                      {formErrors.parentName && <small className="error-text">{formErrors.parentName}</small>}
+                      {formErrors.parentName && <small className="routine-error-text">{formErrors.parentName}</small>}
                     </label>
-                    <label className="field">
+                    <label className="routine-field">
                       <span>Routine name</span>
                       <input
                         type="text"
@@ -624,13 +624,13 @@ export default function RoutineHome() {
                         }}
                         placeholder="Rise and Shine"
                       />
-                      {formErrors.routineName && <small className="error-text">{formErrors.routineName}</small>}
+                      {formErrors.routineName && <small className="routine-error-text">{formErrors.routineName}</small>}
                     </label>
-                    <label className="field">
+                    <label className="routine-field">
                       <span>Scheduled for</span>
                       <input type="date" value={scheduledFor} onChange={(event) => setScheduledFor(event.target.value)} />
                     </label>
-                    <label className="field field--full">
+                    <label className="routine-field routine-field--full">
                       <span>Notes for grown-ups (optional)</span>
                       <textarea
                         rows={3}
@@ -641,36 +641,36 @@ export default function RoutineHome() {
                     </label>
                   </div>
                 </div>
-                <div className="builder-column timeline-column">
-                  <div className="column-heading">
+                <div className="routine-builder-column routine-timeline-column">
+                  <div className="routine-column-heading">
                     <h3>Routine timeline</h3>
                     <p>Rename steps, adjust times, and keep everything in order.</p>
                   </div>
-                  <div className="timeline-actions">
-                    <button type="button" className="secondary" onClick={focusActivityLibrary}>
+                  <div className="routine-timeline-actions">
+                    <button type="button" className="routine-secondary" onClick={focusActivityLibrary}>
                       Add from library
                     </button>
-                    <button type="button" className="ghost" onClick={focusActivityForm}>
+                    <button type="button" className="routine-ghost" onClick={focusActivityForm}>
                       Manage activities
                     </button>
                   </div>
-                  <div className="timeline-surface">
-                    {formErrors.steps && <p className="error-text">{formErrors.steps}</p>}
+                  <div className="routine-timeline-surface">
+                    {formErrors.steps && <p className="routine-error-text">{formErrors.steps}</p>}
                     {steps.length === 0 ? (
-                      <div className="timeline-empty">
+                      <div className="routine-timeline-empty">
                         <p>Choose activities from the library to start building your routine.</p>
-                        <button type="button" className="secondary" onClick={focusActivityLibrary}>
+                        <button type="button" className="routine-secondary" onClick={focusActivityLibrary}>
                           Open activity library
                         </button>
                       </div>
                     ) : (
-                      <div className="timeline-scroll">
-                        <ul className="timeline-list">
+                      <div className="routine-timeline-scroll">
+                        <ul className="routine-timeline-list">
                           {steps.map((step, index) => (
-                            <li key={step.id} className="timeline-item">
-                              <div className="step-order">
+                            <li key={step.id} className="routine-timeline-item">
+                              <div className="routine-step-order">
                                 <span>{index + 1}</span>
-                                <div className="step-order-controls">
+                                <div className="routine-step-order-controls">
                                   <button
                                     type="button"
                                     onClick={() => moveStep(step.id, -1)}
@@ -689,11 +689,11 @@ export default function RoutineHome() {
                                   </button>
                                 </div>
                               </div>
-                              <div className="step-details">
-                                <div className="step-heading">
-                                  <div className="activity-icon large">{step.activity?.icon || '?'}</div>
+                              <div className="routine-step-details">
+                                <div className="routine-step-heading">
+                                  <div className="routine-activity-icon routine-large">{step.activity?.icon || '?'}</div>
                                   <div>
-                                    <p className="activity-name">{step.activity?.name}</p>
+                                    <p className="routine-activity-name">{step.activity?.name}</p>
                                     <label>
                                       <span>Label for your child</span>
                                       <input
@@ -705,7 +705,7 @@ export default function RoutineHome() {
                                     </label>
                                   </div>
                                 </div>
-                                <div className="step-inputs">
+                                <div className="routine-step-inputs">
                                   <label>
                                     <span>Start at</span>
                                     <input
@@ -726,13 +726,13 @@ export default function RoutineHome() {
                                       }
                                     />
                                   </label>
-                                  <div className="step-end">
+                                  <div className="routine-step-end">
                                     <span>Ends</span>
                                     <strong>{getEndTimeDisplay(step.startTime, step.durationMin)}</strong>
                                   </div>
                                 </div>
                               </div>
-                              <button type="button" className="remove-step" onClick={() => removeStep(step.id)}>
+                              <button type="button" className="routine-remove-step" onClick={() => removeStep(step.id)}>
                                 Remove
                               </button>
                             </li>
@@ -745,54 +745,54 @@ export default function RoutineHome() {
               </div>
             </section>
 
-            {feedback && <div className={`toast ${feedbackType}`}>{feedback}</div>}
+            {feedback && <div className={`routine-toast ${feedbackType === 'success' ? 'routine-success' : 'routine-error'}`}>{feedback}</div>}
 
-            <section ref={historyRef} className="card history-card">
-              <header className="card-header card-header--tight">
+            <section ref={historyRef} className="routine-card routine-history-card">
+              <header className="routine-card-header routine-card-header--tight">
                 <div>
                   <h2>Recent routines</h2>
                   <p>Everything you have already planned.</p>
                 </div>
-                <div className="history-summary">
-                  <span className="stat-chip">{existingRoutines.length}</span>
-                  <span className="summary-label">saved</span>
+                <div className="routine-history-summary">
+                  <span className="routine-stat-chip">{existingRoutines.length}</span>
+                  <span className="routine-summary-label">saved</span>
                 </div>
               </header>
-              <div className="card-body history-body">
-                {routinesError && <p className="error-text">{routinesError}</p>}
+              <div className="routine-card-body routine-history-body">
+                {routinesError && <p className="routine-error-text">{routinesError}</p>}
                 {existingRoutines.length === 0 ? (
-                  <div className="empty-state">
+                  <div className="routine-empty-state">
                     <p>No routines yet. Create one to see it here.</p>
                   </div>
                 ) : (
-                  <ul className="history-grid">
+                  <ul className="routine-history-grid">
                     {existingRoutines.map((routine) => {
                       const isEditing = editingRoutineId === routine._id;
                       return (
                         <li
                           key={routine._id}
-                          className={`history-card-item${isEditing ? ' is-editing' : ''}`}
+                          className={`routine-history-card-item${isEditing ? ' routine-is-editing' : ''}`}
                         >
-                          <header className="history-card-header">
+                          <header className="routine-history-card-header">
                             <div>
                               <strong>{routine.name}</strong>
-                              <span className="history-date">
+                              <span className="routine-history-date">
                                 {new Date(routine.scheduledFor).toLocaleDateString()}
                               </span>
                             </div>
-                            <span className="history-count">{routine.steps?.length || 0} steps</span>
+                            <span className="routine-history-count">{routine.steps?.length || 0} steps</span>
                           </header>
-                          <div className="history-steps">
+                          <div className="routine-history-steps">
                             {routine.steps?.map((step) => (
-                              <span key={`${routine._id}-${step.order}`} className="tag-chip subtle">
+                              <span key={`${routine._id}-${step.order}`} className="routine-tag-chip routine-subtle">
                                 {step.label}
                               </span>
                             ))}
                           </div>
-                          <div className="history-actions">
+                          <div className="routine-history-actions">
                             <button
                               type="button"
-                              className="ghost"
+                              className="routine-ghost"
                               onClick={() => beginEditRoutine(routine)}
                               disabled={saving || routineDeletingId === routine._id}
                             >
@@ -800,7 +800,7 @@ export default function RoutineHome() {
                             </button>
                             <button
                               type="button"
-                              className="ghost danger"
+                              className="routine-ghost routine-danger"
                               onClick={() => handleDeleteRoutine(routine._id)}
                               disabled={routineDeletingId === routine._id}
                             >
@@ -816,32 +816,32 @@ export default function RoutineHome() {
             </section>
           </div>
 
-          <aside className="layout-side">
-            <section ref={activityManagerRef} className="card activity-card">
-              <header className="card-header card-header--tight">
+          <aside className="routine-layout-side">
+            <section ref={activityManagerRef} className="routine-card routine-activity-card">
+              <header className="routine-card-header routine-card-header--tight">
                 <div>
                   <h2>Activity manager</h2>
                   <p>Your personalised library of ready-to-use tasks.</p>
                 </div>
-                <div className="activity-card-actions">
+                <div className="routine-activity-card-actions">
                   <button
                     type="button"
-                    className={`outline${showActivityForm ? ' outline--active' : ''}`}
+                    className={`routine-outline${showActivityForm ? ' routine-outline--active' : ''}`}
                     onClick={() => setShowActivityForm((prev) => !prev)}
                   >
                     {showActivityForm ? 'Close form' : 'New activity'}
                   </button>
                 </div>
               </header>
-              <div className="card-body activity-body">
+              <div className="routine-card-body routine-activity-body">
                 {showActivityForm && (
-                  <div className="activity-form-panel">
-                    <div className="column-heading">
+                  <div className="routine-activity-form-panel">
+                    <div className="routine-column-heading">
                       <h3>Create activity</h3>
                       <p>Fill in the details to add it to your library.</p>
                     </div>
-                    <form className="stack" onSubmit={handleCreateActivity}>
-                      <label className="field">
+                    <form className="routine-stack" onSubmit={handleCreateActivity}>
+                      <label className="routine-field">
                         <span>Name</span>
                         <input
                           name="name"
@@ -851,11 +851,11 @@ export default function RoutineHome() {
                           placeholder="Brush teeth with blue toothbrush"
                         />
                         {activityFormErrors.name && (
-                          <small className="error-text">{activityFormErrors.name}</small>
+                          <small className="routine-error-text">{activityFormErrors.name}</small>
                         )}
                       </label>
-                      <div className="form-inline">
-                        <label className="field">
+                      <div className="routine-form-inline">
+                        <label className="routine-field">
                           <span>Icon</span>
                           <input
                             name="icon"
@@ -866,7 +866,7 @@ export default function RoutineHome() {
                             maxLength={4}
                           />
                         </label>
-                        <label className="field">
+                        <label className="routine-field">
                           <span>Default duration</span>
                           <input
                             name="defaultDurationMin"
@@ -877,13 +877,13 @@ export default function RoutineHome() {
                             onChange={handleActivityInputChange}
                           />
                           {activityFormErrors.defaultDurationMin && (
-                            <small className="error-text">
+                            <small className="routine-error-text">
                               {activityFormErrors.defaultDurationMin}
                             </small>
                           )}
                         </label>
                       </div>
-                      <label className="field">
+                      <label className="routine-field">
                         <span>Description</span>
                         <textarea
                           name="description"
@@ -893,7 +893,7 @@ export default function RoutineHome() {
                           placeholder="Add a friendly hint or reminder."
                         />
                       </label>
-                      <label className="field">
+                      <label className="routine-field">
                         <span>Tags (comma separated)</span>
                         <input
                           name="tags"
@@ -904,61 +904,61 @@ export default function RoutineHome() {
                         />
                       </label>
                       {activityFormErrors.general && (
-                        <small className="error-text">{activityFormErrors.general}</small>
+                        <small className="routine-error-text">{activityFormErrors.general}</small>
                       )}
-                      <div className="form-actions">
+                      <div className="routine-form-actions">
                         <button
                           type="button"
-                          className="secondary"
+                          className="routine-secondary"
                           onClick={resetActivityForm}
                           disabled={creatingActivity}
                         >
                           Clear
                         </button>
-                        <button type="submit" className="primary" disabled={creatingActivity}>
+                        <button type="submit" className="routine-primary" disabled={creatingActivity}>
                           {creatingActivity ? 'Adding...' : 'Save activity'}
                         </button>
                       </div>
                     </form>
                   </div>
                 )}
-                <div ref={libraryRef} className="activity-panel library-panel">
-                  <div className="column-heading">
+                <div ref={libraryRef} className="routine-activity-panel routine-library-panel">
+                  <div className="routine-column-heading">
                     <h3>Activity library</h3>
                     <p>Send ready-made steps straight into the routine.</p>
                   </div>
-                  <div className="activity-list">
-                    {activitiesLoading && <p className="info-text">Loading activities...</p>}
-                    {activitiesError && <p className="error-text">{activitiesError}</p>}
+                  <div className="routine-activity-list">
+                    {activitiesLoading && <p className="routine-info-text">Loading activities...</p>}
+                    {activitiesError && <p className="routine-error-text">{activitiesError}</p>}
                     {!activitiesLoading && activities.length === 0 && !activitiesError && (
-                      <p className="info-text">No activities yet. Use "New activity" above to add one.</p>
+                      <p className="routine-info-text">No activities yet. Use "New activity" above to add one.</p>
                     )}
                     {activities.map((activity) => (
-                      <article key={activity._id} className="activity-row">
-                        <div className="activity-row-icon">{activity.icon || '?'}</div>
-                        <div className="activity-row-copy">
+                      <article key={activity._id} className="routine-activity-row">
+                        <div className="routine-activity-row-icon">{activity.icon || '?'}</div>
+                        <div className="routine-activity-row-copy">
                           <strong>{activity.name}</strong>
                           <p>{activity.description}</p>
-                          <div className="activity-tags">
-                            <span className="tag-chip">{activity.defaultDurationMin || 5} min</span>
+                          <div className="routine-activity-tags">
+                            <span className="routine-tag-chip">{activity.defaultDurationMin || 5} min</span>
                             {(activity.tags || []).slice(0, 3).map((tag) => (
-                              <span key={tag} className="tag-chip subtle">
+                              <span key={tag} className="routine-tag-chip routine-subtle">
                                 {tag}
                               </span>
                             ))}
                           </div>
                         </div>
-                        <div className="activity-row-actions">
+                        <div className="routine-activity-row-actions">
                           <button
                             type="button"
-                            className="ghost"
+                            className="routine-ghost"
                             onClick={() => addActivityToRoutine(activity)}
                           >
                             Add
                           </button>
                           <button
                             type="button"
-                            className="ghost danger"
+                            className="routine-ghost routine-danger"
                             onClick={() => handleDeleteActivity(activity._id)}
                           >
                             Delete

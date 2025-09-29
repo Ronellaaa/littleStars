@@ -45,12 +45,23 @@ const { MONGODB_URI, PORT: PORT_ENV } = process.env;
 const PORT = PORT_ENV ?? 5050;
 
 // CORS
+const allowList = new Set([
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:5174",
+  "http://127.0.0.1:5174",
+]);
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin(origin, cb) {
+      if (!origin || allowList.has(origin)) return cb(null, true);
+      return cb(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: false,
   })
 );
+
 
 // Body parsing
 app.use(express.json());
