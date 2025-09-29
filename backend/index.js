@@ -1,3 +1,4 @@
+
 // backend/index.js
 import dotenv from "dotenv";
 import express from "express";
@@ -26,6 +27,13 @@ import NurseryVideos from "./routes/NurseryRoute.js";
 // —— Routers from Speech Therapy tool ——
 import speechAttemptsRouter  from "./routes/AttemptRoute.js";     // Speech Therapy attempts (your controller above)
 import cardRoutes from "./routes/SpeechTherapyRoute.js";
+
+// Routers from Routine Builder 
+import { Activity } from "./models/Activity.js";
+import { defaultActivities } from "./data/defaultActivities.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
+import activityRoutes from "./routes/activityRoutes.js";
+import routineRoutes from "./routes/routineRoutes.js";
 
 
 
@@ -85,14 +93,26 @@ app.use("/api/speech/attempts", speechAttemptsRouter);
 // Cloud/unified uploads (if you implemented it):
 app.use("/api/upload", uploadRouter);        
 
-// 404 fallback
-app.use((req, res) => res.status(404).json({ message: "Not found" }));
+// RoutineBuilder
+app.use("/api/activities", activityRoutes);
+app.use("/api/routines", routineRoutes);
+
+// Error handlers (from RoutineBuilder)
+app.use(notFound);
+app.use(errorHandler);
+
 
 // —— DB + server start ————————————————————————
 // Use ONE connection method. Here we use mongoose.connect directly:
 try {
   await mongoose.connect(MONGODB_URI);
   console.log("✅ MongoDB connected");
+  // Seed default activities if collection is empty
+    const count = await Activity.countDocuments();
+    if (count === 0) {
+      await Activity.insertMany(defaultActivities);
+      console.log(`🌱 Seeded ${defaultActivities.length} default activities.`);
+    }
   app.listen(PORT, () => {
     console.log(`✅ API listening on http://localhost:${PORT}`);
   });
@@ -112,3 +132,4 @@ try {
 }
 
 */
+

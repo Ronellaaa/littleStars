@@ -40,12 +40,21 @@ import NurseryActivity from "./pages/virtualNursery/NurseryActivity";
 import NurseryLearnActivity from "./pages/virtualNursery/LearnSwitch";
 import ActivitySwitch from "./pages/virtualNursery/ActivitySwitch";
 
+//RoutineBuilder
+import RoutineHome from "./pages/routineBuilder/RoutineHome";
+
 import Example from "./Example";
 
 // Simple stubs
-function Routine() { return <div style={{ padding: 20 }}>📅 Routine Builder (stub)</div>; }
-function Games()   { return <div style={{ padding: 20 }}>🎮 Interactive Games (stub)</div>; }
-function Profile() { return <div style={{ padding: 20 }}>👤 Profile (stub)</div>; }
+function Routine() {
+  return <div style={{ padding: 20 }}>📅 Routine Builder (stub)</div>;
+}
+function Games() {
+  return <div style={{ padding: 20 }}>🎮 Interactive Games (stub)</div>;
+}
+function Profile() {
+  return <div style={{ padding: 20 }}>👤 Profile (stub)</div>;
+}
 
 export default function App() {
   useEffect(() => {
@@ -102,11 +111,17 @@ export default function App() {
         <Route path="/virtualNursery" element={<VirtualNursery />} />
         <Route path="/nurseryDashboard" element={<NurseryDashboard />} />
         <Route path="/nursery/:category/select" element={<NurseryActivity />} />
-        <Route path="/nursery/:category/learn" element={<NurseryLearnActivity />} />
-        <Route path="/nursery/:category/activity-mode" element={<ActivitySwitch />} />
+        <Route
+          path="/nursery/:category/learn"
+          element={<NurseryLearnActivity />}
+        />
+        <Route
+          path="/nursery/:category/activity-mode"
+          element={<ActivitySwitch />}
+        />
 
-        {/* Other stubs */}
-        <Route path="/routine" element={<Routine />} />
+        {/* Routine Builder */}
+        <Route path="/routine" element={<RoutineHome />} />
         <Route path="/games" element={<Games />} />
 
         {/* Example */}
