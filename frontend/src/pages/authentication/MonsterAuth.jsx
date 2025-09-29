@@ -5,11 +5,11 @@ import { AuthAPI, ChildrenAPI } from "../../api/http";
 import "../../styles/authenticationStyles/monster-auth.css";
 
 export default function MonsterAuth() {
-  const [mode, setMode] = useState("login");           // "login" | "signup"
-  const [vibe, setVibe] = useState("ok");              // "ok" | "error"
+  const [mode, setMode] = useState("login");     // "login" | "signup"
+  const [vibe, setVibe] = useState("ok");        // "ok" | "error"
   const [loading, setLoading] = useState(false);
   const [showPw, setShowPw] = useState(false);
-  const [remember, setRemember] = useState(true);
+  const [remember] = useState(true);             // storage choice; toggle UI is commented out
 
   const [form, setForm] = useState({
     email: "",
@@ -25,20 +25,6 @@ export default function MonsterAuth() {
   // theme -> error = red, signup = green, otherwise yellow
   const theme =
     mode === "signup" ? "theme-green2" : vibe === "error" ? "theme-red2" : "theme-yellow2";
-
-  function onChange(e) {
-    const { name, value, type, checked } = e.target;
-    const val = type === "checkbox" ? checked : value;
-    setForm((s) => ({ ...s, [name]: val }));
-    // live-validate the single field being edited
-    setErrors((prev) => {
-      const next = { ...prev };
-      const { [name]: _, ...rest } = next;
-      const single = validateField(name, val, { ...form, [name]: val }, mode);
-      return { ...rest, ...(single ? { [name]: single } : {}) };
-    });
-    if (vibe === "error") setVibe("ok");
-  }
 
   function validateField(name, value, wholeForm, currentMode) {
     switch (name) {
@@ -67,24 +53,6 @@ export default function MonsterAuth() {
     }
   }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  // mentors don't need a child in localStorage
-  localStorage.removeItem("currentChild");
-  return nav("/mentor", { replace: true });
-}
-
-// make submit handlers await it
-async function submitLogin(e) {
-  e.preventDefault();
-  try {
-    const user = await AuthAPI.login({ email: form.email, password: form.password });
-    await saveAndGo(user);
-  } catch {
-    setVibe("error");
-=======
-=======
->>>>>>> Stashed changes
   function validateForm(currentMode, data) {
     const e = {};
     e.email = validateField("email", data.email, data, currentMode);
@@ -96,10 +64,20 @@ async function submitLogin(e) {
     // strip empty messages
     Object.keys(e).forEach((k) => !e[k] && delete e[k]);
     return e;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  }
+
+  function onChange(e) {
+    const { name, value, type, checked } = e.target;
+    const val = type === "checkbox" ? checked : value;
+    setForm((s) => ({ ...s, [name]: val }));
+    // live-validate just this field
+    setErrors((prev) => {
+      const next = { ...prev };
+      const { [name]: _ignored, ...rest } = next;
+      const single = validateField(name, val, { ...form, [name]: val }, mode);
+      return { ...rest, ...(single ? { [name]: single } : {}) };
+    });
+    if (vibe === "error") setVibe("ok");
   }
 
   async function saveAndGo(user) {
@@ -164,7 +142,7 @@ async function submitLogin(e) {
       });
       await saveAndGo(user);
     } catch {
-      // keep green, shake on validation/duplicate etc.
+      // keep green theme; shake on server-side validation/duplicate, etc.
       const card = document.querySelector(".card20");
       card?.classList.add("shake");
       setTimeout(() => card?.classList.remove("shake"), 400);
@@ -297,12 +275,6 @@ async function submitLogin(e) {
                 {errors.role && <div className="field-error">{errors.role}</div>}
               </>
             )}
-
-            {/* Remember me */}
-            {/* <label className="remember-row">
-              <input type="checkbox" name="remember" checked={remember} onChange={onChange} />
-              <span>Remember me</span>
-            </label> */}
 
             {vibe === "error" && mode === "login" && (
               <div className="error2">Oops! Email or password is incorrect.</div>
