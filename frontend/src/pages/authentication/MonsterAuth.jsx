@@ -68,6 +68,7 @@ export default function MonsterAuth() {
   }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // mentors don't need a child in localStorage
   localStorage.removeItem("currentChild");
   return nav("/mentor", { replace: true });
@@ -82,6 +83,8 @@ async function submitLogin(e) {
   } catch {
     setVibe("error");
 =======
+=======
+>>>>>>> Stashed changes
   function validateForm(currentMode, data) {
     const e = {};
     e.email = validateField("email", data.email, data, currentMode);
@@ -93,6 +96,9 @@ async function submitLogin(e) {
     // strip empty messages
     Object.keys(e).forEach((k) => !e[k] && delete e[k]);
     return e;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 
