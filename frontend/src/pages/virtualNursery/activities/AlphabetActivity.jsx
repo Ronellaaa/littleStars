@@ -45,7 +45,7 @@ function shuffle(arr) {
 export default function AlphabetActivity({
   order = "random",
   persistKey = "balloon_pop_progress_v1",
-   limit = 5,     
+  limit = 5,
 }) {
   const yayRef = useRef(null);
   const tryRef = useRef(null);
@@ -69,20 +69,19 @@ export default function AlphabetActivity({
   const alphabet = useMemo(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""), []);
 
   const pool = useMemo(() => {
-  const base = [...alphabet];
-  if (limit > 0 && limit < base.length) {
-    return order === "random"
-      ? shuffle(base).slice(0, limit)  // random 5
-      : base.slice(0, limit);          // A..E
-  }
-  return base;
-}, [alphabet, order, limit]);
+    const base = [...alphabet];
+    if (limit > 0 && limit < base.length) {
+      return order === "random"
+        ? shuffle(base).slice(0, limit) // random 5
+        : base.slice(0, limit); // A..E
+    }
+    return base;
+  }, [alphabet, order, limit]);
 
-const initialQueue = useMemo(
-  () => (order === "random" ? shuffle(pool) : [...pool]),
-  [pool, order]
-);
-
+  const initialQueue = useMemo(
+    () => (order === "random" ? shuffle(pool) : [...pool]),
+    [pool, order]
+  );
 
   const [queue, setQueue] = useState(initialQueue);
   const [index, setIndex] = useState(0);
@@ -134,14 +133,13 @@ const initialQueue = useMemo(
   // }, [target, alphabet]);
 
   useEffect(() => {
-  if (!target) return;
-  const distractors = shuffle(pool.filter((l) => l !== target)).slice(0, 2); // CHANGED: alphabet -> pool
-  setChoices(shuffle([target, ...distractors]));
-  setMessage("");
-  setPoppedIdx(-1);
-  setLockInput(false);
-}, [target, pool]); // CHANGED: deps include pool
-
+    if (!target) return;
+    const distractors = shuffle(pool.filter((l) => l !== target)).slice(0, 2); // CHANGED: alphabet -> pool
+    setChoices(shuffle([target, ...distractors]));
+    setMessage("");
+    setPoppedIdx(-1);
+    setLockInput(false);
+  }, [target, pool]); // CHANGED: deps include pool
 
   const handlePop = (letter, i) => {
     if (finished || lockInput) return;
@@ -188,19 +186,18 @@ const initialQueue = useMemo(
   // };
 
   const resetAll = () => {
-  const fresh = order === "random" ? shuffle(pool) : [...pool]; // CHANGED: uses pool
-  setQueue(fresh);
-  setIndex(0);
-  setScore(0);
-  setMistakes({});
-  setMessage("");
-  setFinished(false);
-  setPoppedIdx(-1);
-  setLockInput(false);
-  setConfettiOn(false);
-  localStorage.removeItem(persistKey);
-};
-
+    const fresh = order === "random" ? shuffle(pool) : [...pool]; // CHANGED: uses pool
+    setQueue(fresh);
+    setIndex(0);
+    setScore(0);
+    setMistakes({});
+    setMessage("");
+    setFinished(false);
+    setPoppedIdx(-1);
+    setLockInput(false);
+    setConfettiOn(false);
+    localStorage.removeItem(persistKey);
+  };
 
   const progress = Math.round((index / queue.length) * 100);
 
@@ -216,88 +213,96 @@ const initialQueue = useMemo(
         : "✨";
 
     return (
-      <main className="bp-wrap">
-        <button className="bp-back" onClick={() => window.history.back()}>
-          ← Back
-        </button>
-        <h1>Balloon Pop – Alphabet</h1>
-        <p>Great job! You finished all {total} letters.</p>
-        <div className="bp-stars">{stars}</div>
+      <main className="nursery-review-screen">
+        <h1 className="nursery-review-title">Balloon Pop – Alphabet</h1>
 
-        <div className="bp-card">
-          <strong>Review (mistakes):</strong>
-          <div className="bp-review">
-            {alphabet.map((l) => (
-              <span key={l}>
-                {l}:{mistakes[l] || 0}
-              </span>
-            ))}
+        <div className="nursery-review-stars">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <span key={i}>⭐</span>
+          ))}
+        </div>
+
+        <div className="nursery-review-card">
+          <div className="nursery-review-header">Review</div>
+          <div className="nursery-review-grid">
+            {queue.map((l) => {
+              const c = mistakes[l] || 0;
+              return (
+                <div
+                  key={l}
+                  className={`nursery-review-cell ${
+                    c === 0 ? "perfect" : c <= 2 ? "ok" : "bad"
+                  }`}
+                >
+                  <div className="nursery-letter">{l}</div>
+                  <div className="nursery-count">x{c}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <div className="bp-actions">
-          <button className="bp-primary" onClick={resetAll}>
-            Play again
-          </button>
-        </div>
+        <button className="nursery-review-play-btn" onClick={resetAll}>
+          Play again
+        </button>
       </main>
     );
   }
 
   return (
-    <main className="bp-wrap">
+    <main className="nursery-bp-wrap">
       <audio ref={yayRef} src={yaySfx} preload="auto" playsInline />
       <audio ref={tryRef} src={trySfx} preload="auto" playsInline />
 
       {/* NEW: confetti overlay */}
       {confettiOn && <ConfettiBurst onDone={() => setConfettiOn(false)} />}
 
-      <button className="bp-back" onClick={() => window.history.back()}>
+      <button className="nursery-bp-back" onClick={() => window.history.back()}>
         ← Back
       </button>
 
-      <header className="bp-header">
+      <header className="nursery-bp-header">
         <h2>Pop the balloon with letter “{target}”</h2>
-        <div className="bp-progress" aria-label="Progress">
+        <div className="nursery-bp-progress" aria-label="Progress">
           <div
-            className="bp-progress-inner"
+            className="nursery-bp-progress-inner"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="bp-meta">
+        <div className="nursery-bp-meta">
           {index}/{queue.length} • Score: {score}
         </div>
       </header>
 
       {/* NEW: BIG BOARD with quoted letter */}
-      <section className="bp-board" aria-hidden="true">
-        <div className="bp-board-frame">
-          <div className="bp-board-inner">
-            <div className="bp-board-letter">“{target}”</div>
+      <section className="nursery-bp-board" aria-hidden="true">
+        <div className="nursery-bp-board-frame">
+          <div className="nursery-bp-board-inner">
+            <div className="nursery-bp-board-letter">“{target}”</div>
           </div>
         </div>
       </section>
 
-      <section className="bp-stage" aria-live="polite">
+      <section className="nursery-bp-stage" aria-live="polite">
         {choices.map((c, i) => (
           <button
             key={c + i}
-            className={`bp-balloon b${i + 1} ${
+            className={`nursery-bp-balloon nursery-b${i + 1} ${
               poppedIdx === i ? "popped" : ""
             }`}
             onClick={() => handlePop(c, i)}
             aria-label={`Balloon ${i + 1}, letter ${c}`}
             disabled={lockInput}
           >
-            <span className="bp-letter">{c}</span>
+            <span className="nursery-bp-letter">{c}</span>
           </button>
         ))}
       </section>
 
-      <p className="bp-message">{message}</p>
+      <p className="nursery-bp-message">{message}</p>
 
-      <div className="bp-actions">
-        <button className="bp-secondary" onClick={resetAll}>
+      <div className="nursery-bp-actions">
+        <button className="nursery-bp-secondary" onClick={resetAll}>
           Reset
         </button>
       </div>
