@@ -56,4 +56,13 @@ router.put(
   upsertChildAccount
 );
 
+// Add POST route for creating child account (same as PUT for upsert)
+router.post(
+  "/:childId/account",
+  requireAuth,
+  requireRole("parent"),
+  validateObjectId("childId"),
+  upsertChildAccount
+);
+
 export default router;

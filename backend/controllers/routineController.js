@@ -242,6 +242,109 @@ export const listChildAssignedRoutines = async (req, res, next) => {
   }
 };
 
+// Assign routine to a child
+export const assignRoutineToChild = async (req, res, next) => {
+  try {
+    const routineId = ensureObjectId(req.params.routineId, "Invalid routine id");
+    const { childId } = req.body;
+    
+    if (!childId) {
+      const error = new Error("Child ID is required");
+      error.status = 400;
+      throw error;
+    }
+
+    const childObjectId = ensureObjectId(childId, "Invalid child id");
+
+    // Verify parent owns both routine and child
+    const parentId = ensureObjectId(req.user.sub, "Invalid parent id");
+    
+    console.log("Assignment Debug:");
+    console.log("- Current user:", req.user);
+    console.log("- Parent ID:", parentId.toString());
+    console.log("- Routine ID:", routineId.toString());
+    
+    // Check if routine exists first
+    const routineAny = await Routine.findById(routineId);
+    console.log("- Routine found:", routineAny ? {
+      id: routineAny._id.toString(),
+      parentUserId: routineAny.parentUserId?.toString(),
+      parentName: routineAny.parentName
+    } : "null");
+    
+    // Check if routine belongs to parent
+    let routine = await Routine.findOne({ 
+      _id: routineId, 
+      parentUserId: parentId 
+    });
+    
+    // Temporary fix: if routine doesn't have parentUserId, assign it to current parent
+    if (!routine && routineAny && !routineAny.parentUserId) {
+      console.log("- Fixing routine ownership: assigning to current parent");
+      routineAny.parentUserId = parentId;
+      await routineAny.save();
+      routine = routineAny;
+    }
+    
+    if (!routine) {
+      const error = new Error("Routine not found or not owned by parent");
+      error.status = 404;
+      throw error;
+    }
+
+    // Check if child belongs to parent
+    const Child = (await import("../models/Child.js")).default;
+    const child = await Child.findOne({ 
+      _id: childObjectId, 
+      parentId: parentId 
+    });
+    
+    if (!child) {
+      const error = new Error("Child not found or not owned by parent");
+      error.status = 404;
+      throw error;
+    }
+
+    // Assign routine to child
+    routine.child = childObjectId;
+    routine.childSnapshot = { name: child.name };
+    await routine.save();
+
+    const updated = await applyRoutinePopulate(routine);
+    res.json({ success: true, routine: updated });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Unassign routine from child
+export const unassignRoutineFromChild = async (req, res, next) => {
+  try {
+    const routineId = ensureObjectId(req.params.routineId, "Invalid routine id");
+    const parentId = ensureObjectId(req.user.sub, "Invalid parent id");
+    
+    const routine = await Routine.findOne({ 
+      _id: routineId, 
+      parentUserId: parentId 
+    });
+    
+    if (!routine) {
+      const error = new Error("Routine not found or not owned by parent");
+      error.status = 404;
+      throw error;
+    }
+
+    routine.child = null;
+    routine.childSnapshot = {};
+    await routine.save();
+
+    const updated = await applyRoutinePopulate(routine);
+    res.json({ success: true, routine: updated });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const listRoutinesForChild = async (req, res, next) => {
   try {
     const childId = ensureObjectId(req.params.childId, "Invalid child id");

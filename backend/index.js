@@ -19,6 +19,7 @@ import authRouter from "./routes/auth.js";
 import childAuthRouter from "./routes/childAuth.js";
 import childSettingsRouter from "./routes/childSettings.js";
 import childrenRoutes from "./routes/children.js";
+import childRoutinesRouter from "./routes/childRoutines.js";
 import scenariosRoutes from "./routes/scenarios.js";
 
 // —— Routers from test-branch1 ——
@@ -89,6 +90,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/child-auth", childAuthRouter);
 app.use("/api/child-settings", childSettingsRouter);
 app.use("/api/children", childrenRoutes);
+app.use("/api/child-routines", childRoutinesRouter);
 app.use("/api/scenarios", scenariosRoutes);
 
 // Upload (choose ONE of these, comment out the other)

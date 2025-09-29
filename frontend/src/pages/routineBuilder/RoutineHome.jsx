@@ -12,6 +12,8 @@ import {
   updateRoutine,
 } from '../../services/api';
 
+import { ChildrenAPI } from '../../api/http';
+
 import { detectOverlaps, hhmmToMinutes, minutesToHHmm, sortByStartTime } from '../../utils/time';
 
 const generateId = () =>
@@ -143,6 +145,12 @@ export default function RoutineHome() {
   const [editingRoutineId, setEditingRoutineId] = useState('');
   const [routineDeletingId, setRoutineDeletingId] = useState('');
 
+  // Child assignment
+  const [children, setChildren] = useState([]);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [assigningRoutineId, setAssigningRoutineId] = useState('');
+  const [selectedChildId, setSelectedChildId] = useState('');
+
   const libraryRef = useRef(null);
   const heroRef = useRef(null);
   const plannerRef = useRef(null);
@@ -206,6 +214,18 @@ export default function RoutineHome() {
       .catch((error) => {
         if (!isMounted) return;
         setRoutinesError(error.message || 'Unable to load routines');
+      });
+
+    // Load children for assignment
+    ChildrenAPI.mine()
+      .then((data) => {
+        if (!isMounted) return;
+        console.log('Loaded children for assignment:', data);
+        setChildren(data || []);
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        console.error('Failed to load children:', error);
       });
 
     return () => {
@@ -533,6 +553,93 @@ export default function RoutineHome() {
     }
   };
 
+  const handleAssignChild = (routineId) => {
+    setAssigningRoutineId(routineId);
+    setShowAssignModal(true);
+    setSelectedChildId('');
+  };
+
+  const handleAssignmentSubmit = async () => {
+    if (!assigningRoutineId || !selectedChildId) return;
+    
+    console.log('Assigning routine:', assigningRoutineId, 'to child:', selectedChildId);
+    console.log('Available children:', children);
+    
+    try {
+      const response = await fetch(`http://localhost:5050/api/routines/${assigningRoutineId}/assign`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token || ''}`
+        },
+        body: JSON.stringify({ childId: selectedChildId })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Assignment error response:', response.status, errorData);
+        let errorMessage = 'Failed to assign routine';
+        try {
+          const parsed = JSON.parse(errorData);
+          errorMessage = parsed.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorData || errorMessage;
+        }
+        throw new Error(`${response.status}: ${errorMessage}`);
+      }
+
+      const data = await response.json();
+      
+      // Update the routine in the list
+      setExistingRoutines((prev) =>
+        prev.map((routine) =>
+          routine._id === assigningRoutineId ? data.routine : routine
+        )
+      );
+
+      setFeedback('Routine assigned successfully!');
+      setFeedbackType('success');
+      setShowAssignModal(false);
+      setAssigningRoutineId('');
+      setSelectedChildId('');
+    } catch (error) {
+      setFeedback(error.message || 'Failed to assign routine');
+      setFeedbackType('error');
+    }
+  };
+
+  const handleUnassignChild = async (routineId) => {
+    if (!window.confirm('Remove child assignment from this routine?')) return;
+    
+    try {
+      const response = await fetch(`http://localhost:5050/api/routines/${routineId}/unassign`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token || ''}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to unassign routine');
+      }
+
+      const data = await response.json();
+      
+      // Update the routine in the list
+      setExistingRoutines((prev) =>
+        prev.map((routine) =>
+          routine._id === routineId ? data.routine : routine
+        )
+      );
+
+      setFeedback('Child assignment removed');
+      setFeedbackType('success');
+    } catch (error) {
+      setFeedback(error.message || 'Failed to unassign routine');
+      setFeedbackType('error');
+    }
+  };
+
   const totalActivities = activities.length;
   const plannedSteps = steps.length;
   const totalRoutines = existingRoutines.length;
@@ -552,6 +659,13 @@ export default function RoutineHome() {
           <button type="button" onClick={() => scrollToSection(plannerRef)}>Planner</button>
           <button type="button" onClick={() => scrollToSection(historyRef)}>History</button>
           <button type="button" onClick={focusActivityLibrary}>Library</button>
+          <button 
+            type="button" 
+            className="routine-manage-children-btn"
+            onClick={() => window.location.href = '/parent/children'}
+          >
+            👶 Manage Children
+          </button>
         </div>
         <div className="routine-nav-user">
           <div className="routine-avatar">LS</div>
@@ -829,6 +943,17 @@ export default function RoutineHome() {
                               </span>
                             ))}
                           </div>
+                          <div className="routine-assignment">
+                            {routine.childSnapshot?.name ? (
+                              <div className="routine-assigned-child">
+                                <span className="routine-child-indicator">👶 Assigned to: {routine.childSnapshot.name}</span>
+                              </div>
+                            ) : (
+                              <div className="routine-unassigned">
+                                <span className="routine-child-indicator">⚠️ Not assigned to any child</span>
+                              </div>
+                            )}
+                          </div>
                           <div className="routine-history-actions">
                             <button
                               type="button"
@@ -837,6 +962,14 @@ export default function RoutineHome() {
                               disabled={saving || routineDeletingId === routine._id}
                             >
                               {isEditing ? 'Editing...' : 'Edit'}
+                            </button>
+                            <button
+                              type="button"
+                              className="routine-ghost routine-primary"
+                              onClick={() => handleAssignChild(routine._id)}
+                              disabled={saving}
+                            >
+                              Assign Child
                             </button>
                             <button
                               type="button"
@@ -1036,6 +1169,95 @@ export default function RoutineHome() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Child Assignment Modal */}
+      {showAssignModal && (
+        <div 
+          className="routine-modal-backdrop"
+          onClick={() => setShowAssignModal(false)}
+        >
+          <div
+            className="routine-modal-dialog"
+            aria-modal="true"
+            aria-labelledby="routine-assign-child-heading"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="routine-modal-header">
+              <div>
+                <p className="routine-modal-kicker">Routine Assignment</p>
+                <h2 id="routine-assign-child-heading">Assign to Child</h2>
+                <p className="routine-modal-sub">
+                  Choose which child should see this routine.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="routine-modal-close"
+                onClick={() => setShowAssignModal(false)}
+                aria-label="Close assignment modal"
+              >
+                X
+              </button>
+            </header>
+            <div className="routine-modal-body routine-stack">
+              {children.length === 0 ? (
+                <div className="routine-empty-state">
+                  <p>No children registered yet.</p>
+                  <p>
+                    <a href="/parent/children" className="routine-link">
+                      Register a child first
+                    </a>
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="routine-field">
+                    <span>Select Child:</span>
+                    <div className="routine-child-options">
+                      {children.map((child) => (
+                        <label key={child._id} className="routine-child-option">
+                          <input
+                            type="radio"
+                            name="selectedChild"
+                            value={child._id}
+                            checked={selectedChildId === child._id}
+                            onChange={(e) => setSelectedChildId(e.target.value)}
+                          />
+                          <div className="routine-child-info">
+                            <strong>{child.name}</strong>
+                            {child.account ? (
+                              <span className="routine-child-status routine-success">✓ Has login account</span>
+                            ) : (
+                              <span className="routine-child-status routine-warning">⚠ No login account</span>
+                            )}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="routine-modal-actions">
+                    <button
+                      type="button"
+                      className="routine-ghost"
+                      onClick={() => setShowAssignModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="routine-primary"
+                      onClick={handleAssignmentSubmit}
+                      disabled={!selectedChildId}
+                    >
+                      Assign Routine
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}

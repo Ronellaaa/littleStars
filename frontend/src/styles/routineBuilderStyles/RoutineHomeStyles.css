@@ -254,3 +254,118 @@ button:disabled { cursor: not-allowed; opacity: 0.65; }
   .routine-history-grid { grid-template-columns: 1fr; }
   .routine-activity-panel { padding: clamp(14px, 6vw, 20px); }
 }
+
+/* Child Assignment Styles */
+.routine-assignment {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f8f9fa;
+}
+
+.routine-assigned-child .routine-child-indicator {
+  color: #28a745;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.routine-unassigned .routine-child-indicator {
+  color: #ffc107;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.routine-child-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.routine-child-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.routine-child-option:hover {
+  border-color: #667eea;
+  background: #f7fafc;
+}
+
+.routine-child-option input[type="radio"]:checked + .routine-child-info {
+  color: #667eea;
+}
+
+.routine-child-option input[type="radio"] {
+  margin: 0;
+}
+
+.routine-child-info {
+  flex: 1;
+}
+
+.routine-child-info strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.routine-child-status {
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.routine-child-status.routine-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.routine-child-status.routine-warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.routine-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.routine-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.routine-link:hover {
+  text-decoration: underline;
+}
+
+/* Manage Children Button */
+.routine-manage-children-btn {
+  background: linear-gradient(45deg, #48bb78, #38a169) !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.routine-manage-children-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3) !important;
+}
