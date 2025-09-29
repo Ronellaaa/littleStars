@@ -51,9 +51,17 @@ export default function RoutineTimer() {
       }
       
       // Set timer for current step
-      if (routineData.steps[progress?.currentStep || 0]) {
-        const stepDuration = routineData.steps[progress?.currentStep || 0].durationMin * 60;
+      const currentStepIndex = progress?.currentStep || 0;
+      if (routineData.steps[currentStepIndex]) {
+        const stepDuration = routineData.steps[currentStepIndex].durationMin * 60;
         setTimeRemaining(stepDuration);
+        console.log("Set timer for step", currentStepIndex, "duration:", stepDuration, "seconds");
+        
+        // Auto-start the routine if it's not completed
+        if (progress?.status !== "completed" && progress?.status !== "paused") {
+          console.log("Auto-starting routine");
+          startRoutine();
+        }
       }
     } catch (err) {
       setError(err.message || "Failed to load routine");
@@ -64,9 +72,12 @@ export default function RoutineTimer() {
 
   const startRoutine = async () => {
     try {
+      console.log("Starting routine:", routineId);
       await ChildRoutinesAPI.start(routineId);
       setIsRunning(true);
+      console.log("Routine started successfully");
     } catch (err) {
+      console.error("Failed to start routine:", err);
       setError(err.message || "Failed to start routine");
     }
   };
@@ -94,14 +105,22 @@ export default function RoutineTimer() {
   };
 
   const pauseTimer = () => {
+    console.log("Pause button clicked");
     setIsRunning(false);
   };
 
   const resumeTimer = () => {
+    console.log("Resume/Start button clicked");
     setIsRunning(true);
   };
 
   const skipStep = () => {
+    console.log("Skip button clicked");
+    completeStep();
+  };
+
+  const handleCompleteStep = () => {
+    console.log("Complete button clicked");
     completeStep();
   };
 
@@ -219,20 +238,48 @@ export default function RoutineTimer() {
 
           <div className="timer-controls">
             {!isRunning && timeRemaining > 0 ? (
-              <button className="control-btn start" onClick={resumeTimer}>
+              <button 
+                className="control-btn start" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  resumeTimer();
+                }}
+              >
                 ▶️ Start
               </button>
             ) : (
-              <button className="control-btn pause" onClick={pauseTimer}>
+              <button 
+                className="control-btn pause" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  pauseTimer();
+                }}
+              >
                 ⏸️ Pause
               </button>
             )}
             
-            <button className="control-btn complete" onClick={completeStep}>
+            <button 
+              className="control-btn complete" 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleCompleteStep();
+              }}
+            >
               ✅ Done
             </button>
             
-            <button className="control-btn skip" onClick={skipStep}>
+            <button 
+              className="control-btn skip" 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                skipStep();
+              }}
+            >
               ⏭️ Skip
             </button>
           </div>

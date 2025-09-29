@@ -60,17 +60,13 @@ const validateStepPayload = (step, index) => {
 };
 
 const buildRoutineData = async (body, context = {}) => {
-  const parentName = body?.parentName?.trim();
   const routineName = body?.name?.trim();
   const description = body?.description?.trim() || "";
   const scheduledFor = parseScheduledFor(body?.scheduledFor);
   const stepsPayload = Array.isArray(body?.steps) ? body.steps : [];
 
-  if (!parentName) {
-    const error = new Error("parentName is required");
-    error.status = 400;
-    throw error;
-  }
+  // Get parent name from context (authenticated user)
+  const parentName = context?.parentName || "Parent";
   if (!routineName) {
     const error = new Error("Routine name is required");
     error.status = 400;
@@ -178,10 +174,15 @@ export const listRoutines = async (_req, res, next) => {
 export const createRoutine = async (req, res, next) => {
   try {
     let parentUserId;
+    let parentName = "Parent";
+    
     if (req.user?.role === "parent") {
       parentUserId = ensureObjectId(req.user.sub, "Invalid parent id");
+      // Use email as parent name, or just the part before @
+      parentName = req.user.email ? req.user.email.split('@')[0] : "Parent";
     }
-    const routineData = await buildRoutineData(req.body, { parentUserId });
+    
+    const routineData = await buildRoutineData(req.body, { parentUserId, parentName });
     const routine = await Routine.create(routineData);
     const created = await applyRoutinePopulate(routine);
     res.status(201).json({ success: true, routine: created });
@@ -201,11 +202,15 @@ export const updateRoutine = async (req, res, next) => {
     }
 
     let parentUserId;
+    let parentName = "Parent";
+    
     if (req.user?.role === "parent") {
       parentUserId = ensureObjectId(req.user.sub, "Invalid parent id");
+      // Use email as parent name, or just the part before @
+      parentName = req.user.email ? req.user.email.split('@')[0] : "Parent";
     }
 
-    const routineData = await buildRoutineData(req.body, { parentUserId });
+    const routineData = await buildRoutineData(req.body, { parentUserId, parentName });
     routine.set(routineData);
     await routine.save();
     const updated = await applyRoutinePopulate(routine);

@@ -123,7 +123,6 @@ export default function RoutineHome() {
   const [activitiesLoading, setActivitiesLoading] = useState(true);
   const [activitiesError, setActivitiesError] = useState('');
 
-  const [parentName, setParentName] = useState('');
   const [routineName, setRoutineName] = useState('');
   const [description, setDescription] = useState('');
   const [scheduledFor, setScheduledFor] = useState(todayDateInput());
@@ -311,7 +310,6 @@ export default function RoutineHome() {
 
   const validateRoutine = () => {
     const errors = {};
-    if (!parentName.trim()) errors.parentName = 'Tell us who is building this routine.';
     if (!routineName.trim()) errors.routineName = 'Give your routine a name.';
     if (steps.length === 0) errors.steps = 'Add at least one step to your routine.';
 
@@ -336,8 +334,7 @@ export default function RoutineHome() {
     return Object.keys(errors).length === 0;
   };
 
-  const clearRoutineState = ({ preserveParentName = true } = {}) => {
-    if (!preserveParentName) setParentName('');
+  const clearRoutineState = () => {
     setRoutineName('');
     setDescription('');
     setScheduledFor(todayDateInput());
@@ -355,7 +352,6 @@ export default function RoutineHome() {
     setSaving(true);
     try {
       const payload = {
-        parentName: parentName.trim(),
         name: routineName.trim(),
         description: description.trim(),
         scheduledFor,
@@ -377,12 +373,12 @@ export default function RoutineHome() {
           );
           setRoutinesError('');
         }
-        clearRoutineState({ preserveParentName: true });
+        clearRoutineState();
       } else {
         const response = await createRoutine(payload);
         setFeedback('Routine saved! Your child will see it today.');
         setFeedbackType('success');
-        clearRoutineState({ preserveParentName: true });
+        clearRoutineState();
         if (response?.routine) {
           setExistingRoutines((prev) => [response.routine, ...prev]);
           setRoutinesError('');
@@ -517,7 +513,6 @@ export default function RoutineHome() {
       setFeedback('Some steps reference missing activities. Re-add them from the library before saving.');
     }
 
-    setParentName(routine.parentName || '');
     setRoutineName(routine.name || '');
     setDescription(routine.description || '');
     setScheduledFor(toDateInputValue(routine.scheduledFor));
@@ -543,7 +538,7 @@ export default function RoutineHome() {
       setFeedback('Routine deleted.');
       setRoutinesError('');
       if (editingRoutineId === routineId) {
-        clearRoutineState({ preserveParentName: true });
+        clearRoutineState();
       }
     } catch (error) {
       setFeedbackType('error');
@@ -746,19 +741,6 @@ export default function RoutineHome() {
                     </div>
                   </div>
                   <div className="routine-form-grid">
-                    <label className="routine-field">
-                      <span>Parent name</span>
-                      <input
-                        type="text"
-                        value={parentName}
-                        onChange={(event) => {
-                          setParentName(event.target.value);
-                          setFormErrors((prev) => ({ ...prev, parentName: undefined }));
-                        }}
-                        placeholder="e.g. Taylor"
-                      />
-                      {formErrors.parentName && <small className="routine-error-text">{formErrors.parentName}</small>}
-                    </label>
                     <label className="routine-field">
                       <span>Routine name</span>
                       <input

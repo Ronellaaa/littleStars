@@ -53,22 +53,7 @@ async function saveAndGo(user) {
   localStorage.setItem("user", JSON.stringify(user));
 
   if (user.role === "parent") {
-    try {
-      // 1) check if parent already has a child
-      const kids = await ChildrenAPI.mine();
-      let child = kids[0];
-      if (!child) {
-        child = await ChildrenAPI.create({
-          name: `${(user.email || "Child").split("@")[0]}'s child`,
-        });
-      }
-
-      // 2) store current child for practice/report pages
-      localStorage.setItem("currentChild", JSON.stringify({ _id: child._id, name: child.name }));
-    } catch (e) {
-      // optional: show a toast
-      console.error("Could not ensure child profile", e);
-    }
+    // No automatic child creation - parents will manually add children
     return nav("/routines", { replace: true });
   }
 
