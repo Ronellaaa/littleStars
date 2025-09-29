@@ -1,3 +1,4 @@
+
 // src/App.jsx
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -43,6 +44,9 @@ import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
 
 //RoutineBuilder
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
+  
+//Interactive Games
+import AdminGames from './pages/games/AdminGames.jsx';
 
 import Example from "./Example";
 
@@ -55,6 +59,7 @@ function Games() {
 }
 function Profile() {
   return <div style={{ padding: 20 }}>👤 Profile (stub)</div>;
+
 }
 
 export default function App() {
@@ -124,7 +129,7 @@ export default function App() {
 
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />
-        <Route path="/games" element={<Games />} />
+        <Route path="/games" element={<AdminGames />} />
 
         {/* Example */}
         <Route path="/example" element={<Example />} />
@@ -135,4 +140,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-//

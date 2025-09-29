@@ -4,7 +4,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
+pnpem-debug.log*
 lerna-debug.log*
 
 # Node modules (frontend & backend)
@@ -32,3 +32,4 @@ Thumbs.db
 
 # Optional: test coverage
 coverage/
+node_modules
