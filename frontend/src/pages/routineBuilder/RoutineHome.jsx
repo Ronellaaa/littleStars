@@ -148,6 +148,7 @@ export default function RoutineHome() {
   const plannerRef = useRef(null);
   const historyRef = useRef(null);
   const activityManagerRef = useRef(null);
+  const activityNameInputRef = useRef(null);
 
   const scrollToSection = (ref) => {
     if (ref?.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -160,12 +161,15 @@ export default function RoutineHome() {
   const totalDuration = steps.reduce((total, step) => total + Number(step.durationMin || 0), 0);
   const nextStartTime = computeNextStart(steps);
 
+  const closeActivityForm = () => {
+    setShowActivityForm(false);
+    setActivityFormErrors({});
+  };
   const focusActivityForm = () => {
     setShowActivityForm(true);
-    setTimeout(() => scrollToSection(activityManagerRef), 60);
   };
   const focusActivityLibrary = () => {
-    setShowActivityForm(false);
+    closeActivityForm();
     scrollToLibrary();
   };
   const resetRoutine = () => {
@@ -214,6 +218,34 @@ export default function RoutineHome() {
     const timer = setTimeout(() => setFeedback(''), 3500);
     return () => clearTimeout(timer);
   }, [feedback]);
+
+  useEffect(() => {
+    if (!showActivityForm) return undefined;
+    if (typeof window === 'undefined' || typeof document === 'undefined') return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const timer = window.setTimeout(() => {
+      activityNameInputRef.current?.focus();
+    }, 80);
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setActivityFormErrors({});
+        setShowActivityForm(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.clearTimeout(timer);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showActivityForm]);
 
   const addActivityToRoutine = (activity) => {
     if (!activity) return;
@@ -726,15 +758,21 @@ export default function RoutineHome() {
                                       }
                                     />
                                   </label>
+                                </div>
+                                <div className="routine-step-footer">
                                   <div className="routine-step-end">
                                     <span>Ends</span>
                                     <strong>{getEndTimeDisplay(step.startTime, step.durationMin)}</strong>
                                   </div>
+                                  <button
+                                    type="button"
+                                    className="routine-remove-step"
+                                    onClick={() => removeStep(step.id)}
+                                  >
+                                    Remove step
+                                  </button>
                                 </div>
                               </div>
-                              <button type="button" className="routine-remove-step" onClick={() => removeStep(step.id)}>
-                                Remove
-                              </button>
                             </li>
                           ))}
                         </ul>
@@ -827,101 +865,13 @@ export default function RoutineHome() {
                   <button
                     type="button"
                     className={`routine-outline${showActivityForm ? ' routine-outline--active' : ''}`}
-                    onClick={() => setShowActivityForm((prev) => !prev)}
+                    onClick={() => (showActivityForm ? closeActivityForm() : setShowActivityForm(true))}
                   >
                     {showActivityForm ? 'Close form' : 'New activity'}
                   </button>
                 </div>
               </header>
               <div className="routine-card-body routine-activity-body">
-                {showActivityForm && (
-                  <div className="routine-activity-form-panel">
-                    <div className="routine-column-heading">
-                      <h3>Create activity</h3>
-                      <p>Fill in the details to add it to your library.</p>
-                    </div>
-                    <form className="routine-stack" onSubmit={handleCreateActivity}>
-                      <label className="routine-field">
-                        <span>Name</span>
-                        <input
-                          name="name"
-                          type="text"
-                          value={activityForm.name}
-                          onChange={handleActivityInputChange}
-                          placeholder="Brush teeth with blue toothbrush"
-                        />
-                        {activityFormErrors.name && (
-                          <small className="routine-error-text">{activityFormErrors.name}</small>
-                        )}
-                      </label>
-                      <div className="routine-form-inline">
-                        <label className="routine-field">
-                          <span>Icon</span>
-                          <input
-                            name="icon"
-                            type="text"
-                            value={activityForm.icon}
-                            onChange={handleActivityInputChange}
-                            placeholder="e.g. star"
-                            maxLength={4}
-                          />
-                        </label>
-                        <label className="routine-field">
-                          <span>Default duration</span>
-                          <input
-                            name="defaultDurationMin"
-                            type="number"
-                            min={1}
-                            max={480}
-                            value={activityForm.defaultDurationMin}
-                            onChange={handleActivityInputChange}
-                          />
-                          {activityFormErrors.defaultDurationMin && (
-                            <small className="routine-error-text">
-                              {activityFormErrors.defaultDurationMin}
-                            </small>
-                          )}
-                        </label>
-                      </div>
-                      <label className="routine-field">
-                        <span>Description</span>
-                        <textarea
-                          name="description"
-                          rows={2}
-                          value={activityForm.description}
-                          onChange={handleActivityInputChange}
-                          placeholder="Add a friendly hint or reminder."
-                        />
-                      </label>
-                      <label className="routine-field">
-                        <span>Tags (comma separated)</span>
-                        <input
-                          name="tags"
-                          type="text"
-                          value={activityForm.tags}
-                          onChange={handleActivityInputChange}
-                          placeholder="morning, hygiene"
-                        />
-                      </label>
-                      {activityFormErrors.general && (
-                        <small className="routine-error-text">{activityFormErrors.general}</small>
-                      )}
-                      <div className="routine-form-actions">
-                        <button
-                          type="button"
-                          className="routine-secondary"
-                          onClick={resetActivityForm}
-                          disabled={creatingActivity}
-                        >
-                          Clear
-                        </button>
-                        <button type="submit" className="routine-primary" disabled={creatingActivity}>
-                          {creatingActivity ? 'Adding...' : 'Save activity'}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                )}
                 <div ref={libraryRef} className="routine-activity-panel routine-library-panel">
                   <div className="routine-column-heading">
                     <h3>Activity library</h3>
@@ -973,6 +923,122 @@ export default function RoutineHome() {
           </aside>
         </div>
       </main>
+      {showActivityForm && (
+        <div
+          className="routine-modal-backdrop"
+          role="presentation"
+          onClick={closeActivityForm}
+        >
+          <div
+            className="routine-modal routine-activity-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="routine-create-activity-heading"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="routine-modal-header">
+              <div>
+                <p className="routine-modal-kicker">Activity manager</p>
+                <h2 id="routine-create-activity-heading">Create activity</h2>
+                <p className="routine-modal-sub">
+                  Fill in the details to add it to your library.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="routine-modal-close"
+                onClick={closeActivityForm}
+                aria-label="Close activity form"
+              >
+                X
+              </button>
+            </header>
+            <form className="routine-modal-body routine-stack" onSubmit={handleCreateActivity}>
+              <label className="routine-field">
+                <span>Name</span>
+                <input
+                  ref={activityNameInputRef}
+                  name="name"
+                  type="text"
+                  value={activityForm.name}
+                  onChange={handleActivityInputChange}
+                  placeholder="Brush teeth with blue toothbrush"
+                />
+                {activityFormErrors.name && (
+                  <small className="routine-error-text">{activityFormErrors.name}</small>
+                )}
+              </label>
+              <div className="routine-form-inline">
+                <label className="routine-field">
+                  <span>Icon</span>
+                  <input
+                    name="icon"
+                    type="text"
+                    value={activityForm.icon}
+                    onChange={handleActivityInputChange}
+                    placeholder="e.g. star"
+                    maxLength={4}
+                  />
+                </label>
+                <label className="routine-field">
+                  <span>Default duration</span>
+                  <input
+                    name="defaultDurationMin"
+                    type="number"
+                    min={1}
+                    max={480}
+                    value={activityForm.defaultDurationMin}
+                    onChange={handleActivityInputChange}
+                  />
+                  {activityFormErrors.defaultDurationMin && (
+                    <small className="routine-error-text">
+                      {activityFormErrors.defaultDurationMin}
+                    </small>
+                  )}
+                </label>
+              </div>
+              <label className="routine-field">
+                <span>Description</span>
+                <textarea
+                  name="description"
+                  rows={2}
+                  value={activityForm.description}
+                  onChange={handleActivityInputChange}
+                  placeholder="Add a friendly hint or reminder."
+                />
+              </label>
+              <label className="routine-field">
+                <span>Tags (comma separated)</span>
+                <input
+                  name="tags"
+                  type="text"
+                  value={activityForm.tags}
+                  onChange={handleActivityInputChange}
+                  placeholder="morning, hygiene"
+                />
+              </label>
+              {activityFormErrors.general && (
+                <small className="routine-error-text">{activityFormErrors.general}</small>
+              )}
+              <div className="routine-modal-actions">
+                <button
+                  type="button"
+                  className="routine-secondary"
+                  onClick={resetActivityForm}
+                  disabled={creatingActivity}
+                >
+                  Clear
+                </button>
+                <button type="submit" className="routine-primary" disabled={creatingActivity}>
+                  {creatingActivity ? 'Adding...' : 'Save activity'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+

@@ -100,24 +100,30 @@ button:disabled { cursor: not-allowed; opacity: 0.65; }
 .routine-ghost.routine-danger { background: rgba(220,53,75,0.14); color: #c92f4d; }
 
 .routine-timeline-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
-.routine-timeline-item { display: grid; grid-template-columns: auto 1fr auto; gap: clamp(16px, 3vw, 20px); align-items: start; padding: clamp(16px, 3vw, 20px); border-radius: 20px; background: #f6f8ff; }
-.routine-step-order { width: 68px; display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 700; color: #1f55ff; }
+.routine-timeline-item { display: grid; grid-template-columns: minmax(64px, 82px) 1fr; gap: clamp(16px, 3vw, 24px); align-items: stretch; padding: clamp(18px, 3.5vw, 24px); border-radius: 22px; background: #f6f8ff; border: 1px solid rgba(48,107,255,0.12); box-shadow: 0 18px 40px rgba(22,48,121,0.12); }
+.routine-step-order { width: 76px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 14px; font-weight: 700; color: #1f55ff; padding: 12px 10px; border-radius: 18px; background: rgba(48,107,255,0.08); }
 .routine-step-order span { font-size: 1.4rem; }
-.routine-step-order-controls { display: flex; flex-direction: column; gap: 8px; }
-.routine-step-order-controls button { border: 1px solid rgba(48,107,255,0.24); background: #ffffff; color: #1f55ff; border-radius: 12px; padding: 6px 14px; font-weight: 600; box-shadow: none; }
+.routine-step-order-controls { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.routine-step-order-controls button { border: 1px solid rgba(48,107,255,0.24); background: #ffffff; color: #1f55ff; border-radius: 999px; padding: 6px 0; font-weight: 600; box-shadow: none; transition: background 0.2s ease, color 0.2s ease; width: 100%; }
 .routine-step-order-controls button:disabled { opacity: 0.5; }
+.routine-step-order-controls button:hover:not(:disabled) { background: rgba(48,107,255,0.12); }
 
-.routine-step-details { display: flex; flex-direction: column; gap: 14px; }
-.routine-step-heading { display: flex; gap: 16px; align-items: center; }
+.routine-step-details { display: flex; flex-direction: column; gap: 18px; }
+.routine-step-heading { display: flex; gap: 18px; align-items: flex-start; justify-content: space-between; }
+.routine-step-heading > div:nth-child(2) { flex: 1; min-width: 0; }
 .routine-activity-name { margin: 0 0 6px; font-weight: 700; color: #0f1f46; }
 .routine-step-heading input { border-radius: 14px; border: 1px solid rgba(116,130,170,0.18); padding: 10px 14px; font: inherit; }
 
-.routine-step-inputs { display: flex; flex-wrap: wrap; gap: 18px; }
+.routine-step-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; align-items: end; }
 .routine-step-inputs label { display: flex; flex-direction: column; gap: 8px; font-weight: 600; }
-.routine-step-inputs input { border-radius: 14px; border: 1px solid rgba(116,130,170,0.18); padding: 10px 14px; font: inherit; width: 130px; }
+.routine-step-inputs input { border-radius: 14px; border: 1px solid rgba(116,130,170,0.18); padding: 10px 14px; font: inherit; width: 100%; }
 
-.routine-step-end { display: flex; flex-direction: column; gap: 8px; font-weight: 600; color: #1a264a; }
-.routine-remove-step { align-self: center; border-radius: 14px; padding: 10px 16px; background: rgba(220,53,75,0.12); color: #c92f4d; font-weight: 600; }
+.routine-step-end { display: flex; flex-direction: column; gap: 4px; font-weight: 600; color: #1a264a; }
+.routine-step-end span { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; color: #627198; }
+.routine-step-end strong { font-size: 1.2rem; }
+.routine-step-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid rgba(48,107,255,0.12); }
+.routine-remove-step { border-radius: 999px; padding: 10px 20px; background: #ffffff; color: #c92f4d; font-weight: 600; border: 1px solid rgba(220,53,75,0.22); box-shadow: 0 10px 22px rgba(220,53,75,0.14); transition: background 0.2s ease, transform 0.2s ease; }
+.routine-remove-step:hover { background: rgba(220,53,75,0.08); transform: translateY(-1px); }
 
 .routine-activity-card .routine-card-body { display: flex; flex-direction: column; gap: 24px; flex: 1; min-height: 0; }
 .routine-activity-body .routine-stack { display: flex; flex-direction: column; gap: 16px; }
@@ -125,6 +131,16 @@ button:disabled { cursor: not-allowed; opacity: 0.65; }
 .routine-activity-form-panel { border: 1px solid rgba(48,107,255,0.14); border-radius: 20px; background: #f8faff; padding: clamp(18px, 3vw, 24px); display: grid; gap: 18px; }
 .routine-form-inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
 .routine-form-actions { display: flex; justify-content: flex-end; gap: 12px; }
+
+.routine-modal-backdrop { position: fixed; inset: 0; background: rgba(12,24,64,0.45); backdrop-filter: blur(12px); display: grid; place-items: center; padding: clamp(20px, 4vw, 48px); z-index: 60; }
+.routine-modal { width: min(560px, 96vw); background: #ffffff; border-radius: 28px; box-shadow: 0 36px 96px rgba(12,24,64,0.28); display: flex; flex-direction: column; max-height: 90vh; }
+.routine-modal-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: clamp(20px, 4vw, 28px); border-bottom: 1px solid rgba(48,107,255,0.12); }
+.routine-modal-header h2 { margin: 6px 0 0; }
+.routine-modal-kicker { margin: 0; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; color: #627198; font-weight: 600; }
+.routine-modal-sub { margin: 8px 0 0; color: #5c6a93; font-size: 0.92rem; max-width: 360px; }
+.routine-modal-close { border: 1px solid rgba(48,107,255,0.35); background: rgba(48,107,255,0.12); color: #1f55ff; border-radius: 999px; width: 40px; height: 40px; font-weight: 700; display: grid; place-items: center; }
+.routine-modal-body { padding: clamp(20px, 4vw, 28px); display: flex; flex-direction: column; gap: 18px; overflow-y: auto; max-height: calc(90vh - 132px); }
+.routine-modal-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 6px; }
 
 .routine-activity-list { display: flex; flex-direction: column; gap: 14px; max-height: 420px; overflow-y: auto; padding-right: 4px; }
 .routine-activity-row { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 14px; border-radius: 16px; background: #fbfcff; border: 1px solid rgba(90,110,160,0.08); }
@@ -178,8 +194,9 @@ button:disabled { cursor: not-allowed; opacity: 0.65; }
 
 @media (max-width: 560px) {
   .routine-timeline-item { grid-template-columns: 1fr; }
-  .routine-step-order { flex-direction: row; justify-content: space-between; width: 100%; }
+  .routine-step-order { flex-direction: row; justify-content: space-between; width: 100%; padding: 12px 18px; }
   .routine-step-order-controls { flex-direction: row; }
+  .routine-step-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
 /* Routine planner refinements */
@@ -187,7 +204,7 @@ button:disabled { cursor: not-allowed; opacity: 0.65; }
 .routine-planner-actions { display: flex; align-items: center; gap: 12px; }
 .routine-planner-actions .routine-ghost { background: rgba(48,107,255,0.08); box-shadow: none; }
 
-.routine-routine-builder-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 36px); }
+.routine-routine-builder-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(20px, 4vw, 36px); }
 .routine-builder-column { display: flex; flex-direction: column; gap: 18px; }
 .routine-column-heading h3 { margin: 0; font-size: 1.1rem; color: #0b1b3f; }
 .routine-column-heading p { margin: 6px 0 0; color: #6b78a7; font-size: 0.9rem; }
@@ -225,7 +242,7 @@ button:disabled { cursor: not-allowed; opacity: 0.65; }
 .routine-history-card-item .routine-history-steps { display: flex; flex-wrap: wrap; gap: 8px; }
 
 @media (min-width: 1120px) {
-  .routine-routine-builder-body { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
+  .routine-routine-builder-body { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); }
   .routine-activity-manager-grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
 }
 
