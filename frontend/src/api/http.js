@@ -151,6 +151,8 @@ export const ChildrenAPI = {
     http(`/api/children/${childId}/assign`, { method: "PUT", body: { mentorId } }),
   createAccount: (childId, data) =>
     http(`/api/children/${childId}/account`, { method: "POST", body: data }),
+  delete: (childId) =>
+    http(`/api/children/${childId}`, { method: "DELETE" }),
 };
 
 export const ChildAuthAPI = {

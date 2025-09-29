@@ -7,6 +7,7 @@ import {
   assignMentor,
   getOrCreateDefaultChild,
   upsertChildAccount,
+  deleteChild,
 } from "../controllers/childrenController.js";
 import { validateObjectId } from "../middleware/validateObjectId.js";
 
@@ -63,6 +64,15 @@ router.post(
   requireRole("parent"),
   validateObjectId("childId"),
   upsertChildAccount
+);
+
+// Delete child
+router.delete(
+  "/:childId",
+  requireAuth,
+  requireRole("parent"),
+  validateObjectId("childId"),
+  deleteChild
 );
 
 export default router;

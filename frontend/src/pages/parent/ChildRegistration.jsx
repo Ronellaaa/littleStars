@@ -162,6 +162,39 @@ export default function ChildRegistration() {
     }
   };
 
+  const deleteChild = async (childId, childName) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${childName}?\n\nThis action cannot be undone and will also delete their login account if it exists.`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      console.log("Deleting child:", childId);
+      await ChildrenAPI.delete(childId);
+      setSuccessMessage(`${childName} has been deleted successfully.`);
+      setTimeout(() => setSuccessMessage(""), 5000);
+      await loadChildren(); // Refresh the list
+    } catch (err) {
+      console.error("Delete child error:", err);
+      let errorMessage = "Failed to delete child";
+      
+      if (err.message.includes("404")) {
+        errorMessage = "Child not found or you don't have permission to delete this child.";
+      } else if (err.message.includes("403")) {
+        errorMessage = "Access denied. Please make sure you're logged in as a parent.";
+      }
+      
+      setError(errorMessage);
+      setTimeout(() => setError(""), 5000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const themes = [
     { value: "sunrise", label: "🌅 Sunrise", color: "#ff9a9e" },
     { value: "ocean", label: "🌊 Ocean", color: "#a8edea" },
@@ -321,6 +354,13 @@ export default function ChildRegistration() {
                     onClick={() => navigate(`/parent/child/${child._id}/routines`)}
                   >
                     View Routines
+                  </button>
+                  <button 
+                    className="delete-child-btn"
+                    onClick={() => deleteChild(child._id, child.name)}
+                    disabled={loading}
+                  >
+                    🗑️ Delete
                   </button>
                 </div>
               </div>

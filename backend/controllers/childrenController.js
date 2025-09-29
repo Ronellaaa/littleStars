@@ -195,3 +195,33 @@ export const upsertChildAccount = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteChild = async (req, res, next) => {
+  try {
+    const parentId = toObjectId(req.user.sub);
+    const childId = toObjectId(req.params.childId);
+
+    // Verify parent owns the child
+    const child = await Child.findOne({ _id: childId, parentId });
+    if (!child) {
+      const err = new Error("Child not found or not owned by parent");
+      err.status = 404;
+      throw err;
+    }
+
+    // Delete associated child account if exists
+    if (child.account) {
+      await ChildAccount.findByIdAndDelete(child.account);
+    }
+
+    // Delete the child
+    await Child.findByIdAndDelete(childId);
+
+    res.json({ 
+      message: "Child deleted successfully",
+      childId: childId.toString()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
