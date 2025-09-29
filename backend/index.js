@@ -16,6 +16,7 @@ import uploadRouter from "./routes/upload.js";              // cloud / unified u
 import emotionAttemptsRouter from "./routes/attempts1.js";        // Emotion Simulator attempts (auth)
 import thresholdsRouter from "./routes/thresholds.js";
 import authRouter from "./routes/auth.js";
+import childAuthRouter from "./routes/childAuth.js";
 import childSettingsRouter from "./routes/childSettings.js";
 import childrenRoutes from "./routes/children.js";
 import scenariosRoutes from "./routes/scenarios.js";
@@ -85,6 +86,7 @@ app.use("/api/contents", contentsRouter);
 app.use("/api/emotion/attempts", emotionAttemptsRouter);      
 app.use("/api/thresholds", thresholdsRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/child-auth", childAuthRouter);
 app.use("/api/child-settings", childSettingsRouter);
 app.use("/api/children", childrenRoutes);
 app.use("/api/scenarios", scenariosRoutes);
@@ -143,4 +145,6 @@ try {
 }
 
 */
+
+
 

@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
 import { Activity } from "../models/Activity.js";
 import { Routine } from "../models/Routine.js";
+import Child from "../models/Child.js";
 import { detectOverlaps, hhmmToMinutes, minutesToHHmm } from "../utils/time.js";
 
-const ensureObjectId = (value, message) => {
+const ensureObjectId = (value, message = "Invalid identifier") => {
+  if (value === null || value === undefined) {
+    const error = new Error(message);
+    error.status = 400;
+    throw error;
+  }
   if (!mongoose.Types.ObjectId.isValid(value)) {
-    const error = new Error(message || "Invalid identifier");
+    const error = new Error(message);
     error.status = 400;
     throw error;
   }
@@ -53,7 +59,7 @@ const validateStepPayload = (step, index) => {
   }
 };
 
-const buildRoutineData = async (body) => {
+const buildRoutineData = async (body, context = {}) => {
   const parentName = body?.parentName?.trim();
   const routineName = body?.name?.trim();
   const description = body?.description?.trim() || "";
@@ -112,21 +118,57 @@ const buildRoutineData = async (body) => {
     throw error;
   }
 
-  return {
+  const data = {
     parentName,
     name: routineName,
     description,
     scheduledFor,
     steps,
   };
+
+  if (context.parentUserId) {
+    data.parentUserId = context.parentUserId;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(body || {}, "childId")) {
+    if (body.childId) {
+      const childId = ensureObjectId(body.childId, "Invalid child id");
+      const childDoc = await Child.findById(childId).select("name parentId").lean();
+      if (!childDoc) {
+        const error = new Error("Child not found");
+        error.status = 404;
+        throw error;
+      }
+
+      if (context.parentUserId && childDoc.parentId && String(childDoc.parentId) !== String(context.parentUserId)) {
+        const error = new Error("You do not have permission to assign this child");
+        error.status = 403;
+        throw error;
+      }
+
+      data.child = childId;
+      data.childSnapshot = { name: childDoc.name };
+      if (!data.parentUserId && childDoc.parentId) {
+        data.parentUserId = childDoc.parentId;
+      }
+    } else {
+      data.child = null;
+      data.childSnapshot = undefined;
+    }
+  }
+
+  return data;
 };
+
+const applyRoutinePopulate = (target) =>
+  target.populate([
+    { path: "steps.activity", select: "name icon defaultDurationMin" },
+    { path: "child", select: "name" },
+  ]);
 
 export const listRoutines = async (_req, res, next) => {
   try {
-    const routines = await Routine.find()
-      .sort({ createdAt: -1 })
-      .populate({ path: "steps.activity", select: "name icon defaultDurationMin" })
-      .lean();
+    const routines = await applyRoutinePopulate(Routine.find().sort({ createdAt: -1 })).lean();
     res.json({ success: true, routines });
   } catch (error) {
     next(error);
@@ -135,9 +177,13 @@ export const listRoutines = async (_req, res, next) => {
 
 export const createRoutine = async (req, res, next) => {
   try {
-    const routineData = await buildRoutineData(req.body);
+    let parentUserId;
+    if (req.user?.role === "parent") {
+      parentUserId = ensureObjectId(req.user.sub, "Invalid parent id");
+    }
+    const routineData = await buildRoutineData(req.body, { parentUserId });
     const routine = await Routine.create(routineData);
-    const created = await routine.populate({ path: "steps.activity", select: "name icon defaultDurationMin" });
+    const created = await applyRoutinePopulate(routine);
     res.status(201).json({ success: true, routine: created });
   } catch (error) {
     next(error);
@@ -154,10 +200,15 @@ export const updateRoutine = async (req, res, next) => {
       throw error;
     }
 
-    const routineData = await buildRoutineData(req.body);
+    let parentUserId;
+    if (req.user?.role === "parent") {
+      parentUserId = ensureObjectId(req.user.sub, "Invalid parent id");
+    }
+
+    const routineData = await buildRoutineData(req.body, { parentUserId });
     routine.set(routineData);
     await routine.save();
-    const updated = await routine.populate({ path: "steps.activity", select: "name icon defaultDurationMin" });
+    const updated = await applyRoutinePopulate(routine);
     res.json({ success: true, routine: updated });
   } catch (error) {
     next(error);
@@ -178,3 +229,30 @@ export const deleteRoutine = async (req, res, next) => {
     next(error);
   }
 };
+
+export const listChildAssignedRoutines = async (req, res, next) => {
+  try {
+    const childId = ensureObjectId(req.user.childId || req.user.sub, "Invalid child id");
+    const routines = await applyRoutinePopulate(
+      Routine.find({ child: childId }).sort({ scheduledFor: 1, createdAt: -1 })
+    ).lean();
+    res.json({ success: true, routines });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const listRoutinesForChild = async (req, res, next) => {
+  try {
+    const childId = ensureObjectId(req.params.childId, "Invalid child id");
+    const routines = await applyRoutinePopulate(
+      Routine.find({ child: childId }).sort({ scheduledFor: 1, createdAt: -1 })
+    ).lean();
+    res.json({ success: true, routines });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
