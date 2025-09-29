@@ -1,10 +1,10 @@
+import './index.css';
+import AdminGames from './pages/games/AdminGames.jsx';
 
 function App() {
-  
-
   return (
     <>
-   <h1>Welcome to My App</h1>
+      <AdminGames />
     </>
   )
 }
