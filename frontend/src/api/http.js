@@ -25,7 +25,7 @@ async function http(path, { method = "GET", body, headers } = {}) {
 export async function uploadFile(file) {
   const fd = new FormData();
   fd.append("file", file);
-  const res = await fetch(`${API}/api/upload/single`, {
+  const res = await fetch(`${API}/api/upload/local/single`, {
     method: "POST",
     headers: { ...authHeader() },
     body: fd,
@@ -66,10 +66,10 @@ export const ScenariosAPI = {
 // }
 
 export const AttemptsAPI = {
-  log: (data) => http("/api/attempts", { method: "POST", body: data }),
-  list: (params = {}) => http(`/api/attempts?${new URLSearchParams(params)}`),
+  log: (data) => http("api/emotion/attempts", { method: "POST", body: data }),
+  list: (params = {}) => http(`api/emotion/attempts?${new URLSearchParams(params)}`),
   stats: (params = {}) =>
-    http(`/api/attempts/stats?${new URLSearchParams(params)}`),
+    http(`api/emotion/attempts/stats?${new URLSearchParams(params)}`),
 };
 
 export const ThresholdsAPI = {
