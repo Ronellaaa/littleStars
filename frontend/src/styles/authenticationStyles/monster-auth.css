@@ -1,0 +1,265 @@
+/* src/pages/auth/monster-auth.css */
+
+:root {
+  --sky: #7ed3f7;
+  --yellow: #f7a01d;
+  --yellow-dark: #e07d00;
+  --red: #e8362d;
+  --red-dark: #b3201a;
+  --green: #35c79d;
+  --green-dark: #1e9f7f;
+  --ink: #194468;
+  --card1: #ffffff5f;
+  --shadow: rgba(0, 0, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.auth-wrap2 {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+
+
+  padding: 24px;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  color: var(--ink);
+}
+
+/* theme colors swap the monster currentColor */
+.theme-yellow2 .monster1 {
+  color: var(--yellow);
+}
+.theme-yellow2 .monster1 .device {
+  fill: var(--yellow-dark);
+}
+.theme-red2 .monster1 {
+  color: var(--red);
+}
+.theme-red2 .monster1 .device {
+  fill: var(--red-dark);
+}
+.theme-green2 .monster1 {
+  color: var(--green);
+}
+.theme-green2 .monster1 .device {
+  fill: var(--green-dark);
+}
+
+.sky9 {
+  width: min(980px, 100%);
+}
+
+.panel2 {
+  position: relative;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  background-image: url(../../assets/bg1.png);
+  border-radius: 28px;
+  padding: 24px 24px 40px;
+  box-shadow: 0 20px 60px var(--shadow);
+  overflow: hidden;
+}
+
+.heading2 {
+  text-align: left;
+  margin: 0 8px 6px;
+}
+.heading2 h1 {
+  margin: 0;
+  font-size: clamp(40px, 8vw, 96px);
+  line-height: 1;
+  letter-spacing: 0.5px;
+  color: #fff;
+  opacity: 0.95;
+    background: linear-gradient(90deg, #ff6a00, #ee0979, #00c6ff); /* pick your colors */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.heading2 p {
+  margin: 6px 0 0;
+  color: #fff;
+  opacity: 0.9;
+  font-size: clamp(14px, 1.8vw, 22px);
+    background: linear-gradient(90deg, #ff6a00, #ee0979, #00c6ff); /* pick your colors */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* MONSTER */
+.monster1 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -10px;
+}
+.monster1 svg {
+  width: min(760px, 100%);
+  height: 100%;
+}
+.monster1 .body1,
+.monster1 .head1,
+.monster1 .horn1,
+.monster1 .hand1 {
+  fill: currentColor;
+}
+.monster1 .fringe1 {
+  fill: none;
+  stroke: #00000022;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+.monster1 .pupil1 {
+  fill: #273140;
+}
+.monster1 .lid1 {
+  fill: none;
+  stroke: #273140;
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0; /* hidden unless angry */
+  transform-origin: center;
+}
+.monster1.angry1 .lid1 {
+  opacity: 1;
+}
+
+
+.monster1 .device-text {
+  fill: #fff;
+  font: 700 22px/1 ui-sans-serif, system-ui;
+}
+
+/* CARD */
+.card20 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 28px;
+  width: min(520px, 86%);
+  background: var(--card1);
+  border-radius: 18px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 12px 30px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card20.shake {
+  animation: shake 0.4s linear;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  25% {
+    transform: translateX(calc(-50% - 10px));
+  }
+  50% {
+    transform: translateX(calc(-50% + 8px));
+  }
+  75% {
+    transform: translateX(calc(-50% - 6px));
+  }
+}
+
+.tabs20 {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.tabs20 button {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid #d7e5ef;
+  background: #f6fbff;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.tabs20 button.active {
+  background: #fff;
+  border-color: #b6d6ea;
+  box-shadow: inset 0 0 0 2px #e2f1fb;
+}
+
+.input2 input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #cfe2ee;
+  padding: 12px 14px;
+  font-size: 16px;
+  outline: none;
+  background: #fff;
+}
+.input2 input:focus {
+  border-color: #86c6ed;
+  box-shadow: 0 0 0 3px #d9f1ff;
+}
+
+.go20 {
+  align-self: flex-end;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 0;
+  color: #fff;
+  background: #0f7cc7;
+  font-weight: 700;
+  cursor: pointer;
+}
+.go2:hover {
+  filter: brightness(1.05);
+}
+.go2:active {
+  transform: translateY(1px);
+}
+
+.error2 {
+  color: #b3201a;
+  background: #fde6e6;
+  border: 1px solid #f7b0b0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+
+
+
+/* Inline field errors */
+.field-error {
+  color: #b3201a;
+  font-size: 13px;
+  margin: 2px 2px 8px;
+}
+
+/* Remember row + role row */
+
+
+/* Password toggle button inside input */
+.input2-password { position: relative; }
+.pw-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: none;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+/* Disabled submit */
+.go20[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

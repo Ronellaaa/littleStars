@@ -1,0 +1,241 @@
+/* -------- GLOBAL -------- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f8fafa;
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+}
+
+/* -------- DASHBOARD CONTAINER -------- */
+.speech-therapy-therapist-dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.speech-therapy-therapist-dashboard h1 {
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #8e44ad, #6e8efb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2.5rem;
+}
+
+/* -------- CATEGORY FILTER -------- */
+.speech-therapy-filters {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.speech-therapy-filters select {
+  font-size: 1rem;
+  padding: 10px 18px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  transition: 0.25s;
+  background: #fff;
+}
+
+.speech-therapy-filters select:focus {
+  border-color: #8e44ad;
+  box-shadow: 0 4px 10px rgba(142, 68, 173, 0.1);
+}
+
+/* -------- GRID FOR CARDS -------- */
+.speech-therapy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* ✅ wider min per card */
+  gap: 2.5rem; /* ✅ increased space between cards */
+  margin-top: 1.5rem;
+  padding-bottom: 4rem; /* space at bottom for fab */
+}
+
+/* -------- CARD WRAPPER -------- */
+.speech-therapy-card-with-actions {
+  position: relative;
+  border-radius: 12px;
+}
+
+/* -------- CARD ACTION BUTTONS -------- */
+.speech-therapy-card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 20; /* stays above SpeechCard */
+}
+
+.speech-therapy-icon-btn {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  border: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.speech-therapy-icon-btn:hover { transform: scale(1.15); }
+
+.speech-therapy-edit-btn {
+  color: #27ae60;
+}
+.speech-therapy-edit-btn:hover { background: #eafbea; }
+
+.speech-therapy-delete-btn {
+  color: #e74c3c;
+}
+.speech-therapy-delete-btn:hover { background: #fdeaea; }
+
+/* -------- FAB BUTTON (Add Card) -------- */
+.speech-therapy-add-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: linear-gradient(135deg, #8e44ad, #6e8efb);
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  width: 68px;
+  height: 68px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transition: transform 0.18s ease-in-out, box-shadow 0.2s;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.speech-therapy-add-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.3);
+}
+
+/* -------- MODAL OVERLAY -------- */
+.speech-therapy-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* -------- MODAL CONTENT -------- */
+.speech-therapy-modal-content {
+  background: #fff;
+  width: 500px; /* ✅ wider so inputs don’t spill */
+  max-width: 95%;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  animation: slideUp 0.3s ease forwards;
+  max-height: 90vh;     /* ✅ responsive for tall screens */
+  overflow-y: auto;     /* ✅ scroll inside if form is long */
+}
+
+.speech-therapy-modal-content h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* -------- MODAL FORM -------- */
+.speech-therapy-modal-form label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.speech-therapy-modal-form input,
+.speech-therapy-modal-form select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #f9f9f9;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-sizing: border-box; /* ✅ ensures input never overflows modal */
+}
+
+.speech-therapy-modal-form input:focus,
+.speech-therapy-modal-form select:focus {
+  outline: none;
+  border-color: #8e44ad;
+  box-shadow: 0 4px 10px rgba(142,68,173,0.15);
+  background: #fff;
+}
+
+/* IMAGE PREVIEW */
+.speech-therapy-image-preview img {
+  margin-top: 12px;
+  border-radius: 10px;
+  max-width: 100%;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* -------- MODAL BUTTONS -------- */
+.speech-therapy-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.speech-therapy-create-btn,
+.speech-therapy-cancel-btn {
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.speech-therapy-create-btn {
+  background: #27ae60;
+  color: white;
+}
+.speech-therapy-create-btn:hover {
+  background: #219150;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.speech-therapy-cancel-btn {
+  background: #e74c3c;
+  color: white;
+}
+.speech-therapy-cancel-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* -------- ANIMATIONS -------- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { 
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

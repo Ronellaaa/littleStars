@@ -1,0 +1,499 @@
+:root {
+  --sky1: #aee6ff; /* lighter & kid-friendly */
+  --sky2: #7ed0ff;
+  --ink: #0e2a3b;
+  --muted: #5a7a8b;
+  --rope: #caa36c;
+  --cta: #0f7cc7;
+  --card: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.14);
+  --brand-a: #42c99e;
+  --brand-b: #2da9b9;
+  --brand-c: #2276b6;
+  --brand-d: #5b1ba5;
+  --brand-e: #7b1f8d;
+}
+
+/* Helpers */
+.sr-only {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.ls-hero {
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: "Baloo 2", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Arial;
+  background-size: 300px;
+    background-color: #e0fded;
+}
+
+/* SKY */
+.ls-sky {
+  position: relative;
+  min-height: 86vh;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px 120px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(
+    180deg,
+    var(--sky1),
+    var(--sky2)
+  ); /* fallback if image fails */
+}
+.ls-sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      120% 70% at 50% 0%,
+      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0) 55%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 65%,
+      rgba(255, 255, 255, 0.28) 100%
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* keep content above overlay */
+.ls-signRig,
+.ls-cta {
+  position: relative;
+  z-index: 2;
+}
+
+/* SVG Decor */
+.ls-decor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.ls-hill.back {
+  fill: #c7e7a9;
+  opacity: 0.9;
+}
+.ls-hill.front {
+  fill: #bcf967;
+}
+
+/* parallax cloud feel */
+.layer {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.layer.slow {
+  animation: drift 56s infinite;
+}
+.layer.med {
+  animation: drift 36s infinite reverse;
+}
+.layer.fast {
+  animation: drift 24s infinite;
+}
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-6%);
+  }
+}
+
+/* Sparkles */
+.ls-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ls-stars span {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.75;
+  animation: twinkle 3.2s ease-in-out infinite;
+  transform: translate(0, 0) scale(1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+.ls-stars span {
+  top: calc(10% + var(--i) * 5%);
+  left: calc(5% + (var(--i) * 7%));
+}
+.ls-stars span:nth-child(odd) {
+  top: calc(6% + var(--i) * 4.5%);
+}
+
+/* Swinging sign rig */
+.ls-signRig {
+  position: relative;
+  margin-top: 36px;
+  transform-origin: 50% -40px;
+  animation: swing 5.2s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes swing {
+  0% {
+    transform: rotate(-4deg);
+  }
+  100% {
+    transform: rotate(4deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ls-signRig {
+    animation: none;
+  }
+  .layer,
+  .ls-stars span {
+    animation: none;
+  }
+}
+
+/* Hooks */
+.ls-hooks {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  width: 220px;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+}
+.ls-hooks span {
+  width: 12px;
+  height: 12px;
+  background: #d9edf9;
+  border: 2px solid #8fb9d7;
+  border-radius: 50%;
+  box-shadow: 0 2px 0 #7aa6c6 inset;
+}
+
+/* Ropes */
+.ls-ropes {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 240px;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+}
+.ls-ropes span {
+  width: 2px;
+  height: 84px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--rope),
+    var(--rope) 6px,
+    #b89053 6px,
+    #b89053 12px
+  );
+  box-shadow: 0 0 0 1px #b8945a;
+}
+
+/* SIGN board */
+.ls-sign {
+  position: relative;
+  width: min(560px, 98vw);
+  border-radius: 18px;
+  padding: 20px 34px 32px;
+  background: linear-gradient(
+    180deg,
+    var(--brand-a) 0%,
+    var(--brand-b) 12%,
+    var(--brand-c) 48%,
+    var(--brand-d) 80%,
+    var(--brand-e) 100%
+  );
+  box-shadow: 0 20px 34px var(--shadow), inset 0 2px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.12);
+  border: 2px solid #6a3a11;
+}
+.ls-engrave {
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.16);
+}
+.ls-title {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  font-size: clamp(38px, 8.4vw, 68px);
+  line-height: 1.02;
+}
+.ls-title span {
+  color: #ffe58a;
+}
+.ls-sub {
+  margin: 0.25rem 0 0;
+  font-weight: 800;
+  color: #ffe5b8;
+  opacity: 0.98;
+  letter-spacing: 0.25px;
+  font-size: clamp(12px, 2.2vw, 16px);
+}
+.ls-bolts {
+  position: absolute;
+  inset: 10px 12px auto;
+  display: flex;
+  justify-content: space-between;
+}
+.ls-bolts span {
+  width: 10px;
+  height: 10px;
+  background: #693812;
+  border-radius: 50%;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 2px 0 rgba(0, 0, 0, 0.25);
+}
+.ls-bolts span:nth-child(3),
+.ls-bolts span:nth-child(4) {
+  position: absolute;
+  bottom: 10px;
+}
+.ls-bolts span:nth-child(3) {
+  left: 12px;
+}
+.ls-bolts span:nth-child(4) {
+  right: 12px;
+}
+
+/* CTA */
+.ls-cta {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border-radius: 16px;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(180deg, #1b8be0, #0f7cc7);
+  font-weight: 900;
+  letter-spacing: 0.25px;
+  box-shadow: 0 10px 22px var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.ls-cta:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.ls-cta:active {
+  transform: translateY(0);
+}
+.ls-cta:focus-visible {
+  outline: 3px solid #ffde7a;
+  outline-offset: 3px;
+}
+.ls-cta-ic {
+  display: block;
+}
+
+/* FEATURES */
+.ls-features {
+  background-color: #e0fded;
+  padding: 56px 16px 82px;
+  text-align: center;
+}
+.ls-features-hd {
+  max-width: 900px;
+  margin: 0 auto 18px;
+
+}
+.ls-features h2 {
+  margin: 0;
+  font-size: clamp(24px, 3.8vw, 32px);
+  font-weight: 800;
+   font-family: "Poppins";
+}
+.ls-subtext {
+  color: var(--muted);
+  margin: 6px 0 0;
+   font-family: "Poppins";
+}
+
+/* Optional: cards inside FeatureSelect can inherit these utility styles if you use .ls-card */
+.ls-grid {
+  max-width: 1100px;
+  margin: 16px auto 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 1000px) {
+  .ls-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .ls-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ls-card {
+  text-decoration: none;
+  text-align: left;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #e6eff7;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 8px 18px var(--shadow);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 8px;
+  min-height: 140px;
+}
+.ls-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  transition: transform 0.18s ease;
+}
+.ls-ic {
+  font-size: 28px;
+}
+.ls-tt {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+.ls-ds {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.ls-hero-main {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  padding: 0 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ls-hero-content {
+  text-align: center;
+  max-width: 900px;
+  z-index: 2;
+   font-family: "Poppins";
+}
+
+.ls-hero-title {
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+   font-family: "Poppins";
+}
+
+.ls-hero-title span {
+  color: #ffde7a;
+}
+
+.ls-hero-sub {
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: #fff;
+  margin: 16px 0 32px;
+}
+
+.ls-cta {
+  padding: 16px 32px;
+  border-radius: 24px;
+  background: linear-gradient(90deg, #42c99e, #2da9b9);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.ls-cta:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+
+/* Floating icons */
+.ls-floating-icons {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+.floating-icon {
+  width: 80px;
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+.floating-delay {
+  animation-delay: 1.2s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(10deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(-5deg);
+  }
+}
+
+.adventure-header-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.adventure-animation {
+  width: 400px; /* adjust size of animation */
+}
+
+/* .star-slider-title {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  color: var(--ink);
+
+} */
+.adventure-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

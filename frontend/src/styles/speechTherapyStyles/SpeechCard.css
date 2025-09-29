@@ -1,0 +1,216 @@
+:root {
+  --primary: black;
+  --secondary: #6e8efb;
+  --accent: #61dafb;
+  --background: #f0f8ff;
+  --text: #2c3e50;
+  --success: #4CAF50;
+  --warning: #FFA500;
+}
+
+.speech-therapy-scene {
+  width: 300px;
+  height: 500px;
+  perspective: 1200px;
+  margin: 20px;
+}
+
+.speech-therapy-card-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  cursor: default;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.speech-therapy-card-3d:hover {
+  transform: scale(1.03) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
+}
+
+.speech-therapy-card-3d:has(.speech-therapy-button:hover) {
+  transform: none;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.speech-therapy-card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #b3ffcc;
+  color: var(--text);
+  padding: 20px;
+}
+
+.speech-therapy-card-title {
+  font-size: 28px;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+  color: var(--primary);
+}
+
+.speech-therapy-image-container {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+.speech-therapy-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.speech-therapy-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.speech-therapy-button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.speech-therapy-button:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.speech-therapy-speak-btn {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.speech-therapy-mic-btn {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.speech-therapy-button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.speech-therapy-listening .speech-therapy-mic-btn {
+  animation: speech-therapy-gentle-pulse 2s infinite;
+}
+
+@keyframes speech-therapy-gentle-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(107,142,251,0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(107,142,251,0); }
+  100% { box-shadow: 0 0 0 0 rgba(107,142,251,0); }
+}
+
+.speech-therapy-image.speech-therapy-speaking-feedback {
+  animation: speech-therapy-image-talk 0.6s ease;
+}
+
+@keyframes speech-therapy-image-talk {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.speech-therapy-recognized-wrapper {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+  padding-top: 0;
+}
+
+.speech-therapy-recognized-wrapper.speech-therapy-show {
+  max-height: 120px;
+  opacity: 1;
+  padding-top: 10px;
+}
+
+.speech-therapy-recognized-text {
+  padding: 12px;
+  background: var(--background);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px dashed var(--primary);
+}
+
+.speech-therapy-recognized-text strong {
+  color: var(--success);
+}
+
+.speech-therapy-feedback-text {
+  margin-top: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  animation: speech-therapy-fadeIn 0.6s ease;
+}
+
+.speech-therapy-success-feedback {
+  animation: speech-therapy-success-pop 0.6s ease;
+}
+
+@keyframes speech-therapy-success-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.speech-therapy-tryagain-feedback {
+  animation: speech-therapy-tryagain-shake 0.6s ease;
+}
+
+@keyframes speech-therapy-tryagain-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes speech-therapy-fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.speech-therapy-hint {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .speech-therapy-scene { width: 280px; height: 420px; }
+  .speech-therapy-card-title { font-size: 24px; }
+  .speech-therapy-image-container { height: 160px; }
+}
+
+@media (max-width: 480px) {
+  .speech-therapy-scene { width: 260px; height: 380px; }
+  .speech-therapy-card-face { padding: 15px; }
+}

@@ -1,0 +1,415 @@
+/* Layout */
+.nursery-bp-wrap {
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+
+  
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../../assets/nbg6.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans",
+    sans-serif;
+}
+
+.nursery-bp-back {
+  position: absolute;
+  top:75px;
+  left: 2%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+ font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nursery-bp-back:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nursery-bp-back:active {
+  transform: scale(1.025);
+}
+
+
+.nursery-bp-header {
+  margin-bottom: 16px;
+  font-family: fredoka;
+  font-weight: 500;
+}
+.nursery-bp-meta {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.nursery-bp-progress {
+  height: 10px;
+  background: #e6eefb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px auto;
+  width: 280px;
+}
+.nursery-bp-progress-inner {
+  height: 100%;
+  background: #6aa6ff;
+  transition: width 0.35s ease;
+}
+
+/* Stage where balloons float */
+.nursery-bp-stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+  min-height: 270px;
+  margin-top: 8px;
+  padding-bottom: 16px;
+}
+
+/* Balloon button */
+.nursery-bp-balloon {
+  --size: 140px;
+  width: var(--size);
+  height: calc(var(--size) * 1.25);
+  border: none;
+  border-radius: 60% 60% 55% 55% / 65% 65% 45% 45%; /* balloon oval */
+  color: #042a2b;
+  font-weight: 800;
+  font-size: 56px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, opacity 0.2s ease;
+  animation: bp-bob 3.6s ease-in-out infinite;
+  outline-offset: 4px;
+}
+
+/* subtle shine */
+.nursery-bp-balloon::before {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 12%;
+  width: 18%;
+  height: 24%;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+/* knot */
+.nursery-bp-balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(15deg);
+  width: 14px;
+  height: 18px;
+  background: inherit; /* same as balloon color */
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+/* different colors for each balloon */
+.nursery-b1 {
+  background: #ff6b6b;
+}
+.nursery-b2 {
+  background: #ffd166;
+}
+.nursery-b3 {
+  background: #06d6a0;
+}
+
+/* letter in the middle */
+.nursery-bp-letter {
+  display: inline-block;
+  line-height: 1;
+  transform: translateY(6px);
+}
+
+/* float animation */
+@keyframes nursery-bp-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* pressed / hover */
+.nursery-bp-balloon:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+/* pop animation */
+.nursery-popped {
+  animation: none;
+  transform: scale(0.6);
+  opacity: 0;
+}
+
+/* feedback & cards */
+.nursery-bp-message {
+  font-size: 1.2rem;
+  min-height: 28px;
+  margin-top: 10px;
+}
+
+
+.nursery-bp-actions {
+  margin-top: 16px;
+}
+.nursery-bp-primary,
+.nursery-bp-secondary {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nursery-bp-primary {
+  background: #5fd17a;
+  color: #0b2714;
+}
+.nursery-bp-secondary {
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.nursery-bp-stars {
+  font-size: 32px;
+  margin: 10px 0;
+}
+
+/* ===== BIG LETTER BOARD ===== */
+.nursery-bp-board {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 12px;
+}
+
+.nursery-bp-board-frame {
+  width: min(560px, 92vw);
+  background: #f7a15f; /* outer frame (warm sign color) */
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+/* little marquee dots */
+.nursery-bp-board-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(#ffd166 2px, transparent 3px) 10px 10px / 22px
+    22px repeat;
+  mask: linear-gradient(#000 0 0) padding-box,
+    linear-gradient(transparent, transparent); /* allow inner to cover */
+  -webkit-mask: linear-gradient(#000 0 0) padding-box,
+    linear-gradient(transparent, transparent);
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.nursery-bp-board-inner {
+  background: #6e3f2b; /* board background (brown) */
+  border-radius: 10px;
+  padding: 22px 16px;
+  margin: 6px;
+  box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.nursery-bp-board-letter {
+  font-size: clamp(56px, 8vw, 112px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* ===== CONFETTI ===== */
+.nursery-bp-confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 50;
+}
+
+.nursery-bp-confetti-piece {
+  position: absolute;
+  top: -8vh; /* start slightly above */
+  border-radius: 2px;
+  opacity: 0.95;
+  animation-name: bp-confetti-fall, bp-confetti-spin;
+  animation-timing-function: ease-out, linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes nursery-bp-confetti-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(110vh) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+@keyframes nursery-bp-confetti-spin {
+  0% {
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ===== Review Screen ===== */
+.nursery-review-screen {
+  text-align: center;
+  padding: 24px;
+  min-height: 100vh;
+  background-image: url(../../assets/nbg7.png);
+  background-size: cover;
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Fredoka";
+  font-weight: 400;
+}
+
+.nursery-review-title {
+  font-size: 3rem;
+  margin: 12px 0 4px;
+  font-weight: 800;
+  color: white;
+}
+
+.nursery-review-stars {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+/* ===== Review Card ===== */
+.nursery-review-card {
+  background: #fff9ec;
+  border: 3px dashed #ffc861;
+  border-radius: 18px;
+  padding: 14px 20px;
+  max-width: 640px;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.nursery-review-header {
+  font-weight: 700;
+  background: #ffd166;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.nursery-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 30px;
+  justify-items: center;
+  
+}
+
+/* ===== Review Cells ===== */
+.nursery-review-cell {
+  background: #fff;
+  border-radius: 12px;
+  width: 70px;
+  height: 90px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: transform .2s ease;
+}
+
+.nursery-review-cell .nursery-letter {
+  font-size: 1.4rem;
+}
+
+.nursery-review-cell .nursery-count {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Color states */
+.nursery-review-cell.perfect { background: #d6ffd6; border: 2px solid #5bc45b; }
+.nursery-review-cell.ok { background: #fff7d6; border: 2px solid #ffc861; }
+.nursery-review-cell.bad { background: #ffd6d6; border: 2px solid #ff5b5b; }
+
+/* Hover bounce */
+.nursery-review-cell:hover { transform: translateY(-4px) scale(1.05); }
+
+/* ===== Play Again Button ===== */
+.nursery-review-play-btn {
+  background: linear-gradient(#ffa733, #ff7b00);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 32px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.nursery-review-play-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+}
+.nursery-container1{
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+padding: 50px;
+width:50%
+}

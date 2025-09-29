@@ -1,0 +1,168 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Margarine&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.star-slider-wrap {
+  padding: 60px 0;
+  background: linear-gradient(180deg, #dafafc, #defbb3, #aee1f3);
+background-image: url(../assets/f1.jpg);
+background-size: cover;
+  text-align: center;
+   margin:0px  0 0px 150px; 
+}
+
+.star-slider-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  margin-left: 650px;
+  color: #09090a;
+  margin-top: 10;
+
+}
+
+.star-slider-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* Swiper */
+.star-swiper {
+  width: 130%;
+  height: 560px;
+}
+.star-swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.9;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+.star-swiper-slide.swiper-slide-active {
+  opacity: 1;
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+/* Cards */
+.star-card {
+  width: 320px;
+  height: 460px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f9d6f2, #d6e4ff, #ffeecf);
+  background-size: 300% 300%;
+  animation: starShimmer 8s infinite;
+  box-shadow: 0 12px 22px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+}
+
+@keyframes starShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.star-card-img {
+  flex: 1;
+  width: 100%;
+  background-size: contain;
+ height: 150px;
+  border-radius: 14px;
+}
+
+.star-card-title {
+  font-size: 1.2rem;
+  margin: 12px 0 4px;
+  color: #342f64;
+}
+
+.star-card-meta {
+  font-size: 1rem;
+  color: #5a5a5a;
+  margin-bottom: 12px;
+}
+
+.star-card-btn {
+  padding: 14px 0;
+  border-radius: 30px;
+  background: linear-gradient(120deg, #ff9800, #d6249f, #753a88);
+  background-size: 200% 100%;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-position 0.4s ease;
+}
+.star-card-btn:hover {
+  background-position: 0 0;
+}
+
+
+.star-slider-frame {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.monster-peek {
+  position: absolute;
+  bottom: 310px;  /* same height alignment */
+  width: 180px;
+  z-index: 5;
+  pointer-events: none;
+  animation: monsterWiggle 4s ease-in-out infinite;
+}
+/* 
+@keyframes monsterWiggle {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-12deg) translateY(-10px); }
+} */
+.monster-right {
+  right: 1px;
+  transform: scaleX(-1); 
+}
+
+.monster-left {
+  left: -10px;
+  
+}
+
+.star-slider-wrap {
+  position: relative; /* make sure overlay positions correctly */
+  padding: 60px 0;
+  background-image: url(../assets/f1.jpg);
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 50px;
+}
+
+.star-slider-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* covers full section */
+  background: rgba(0, 0, 0, 0.5); /* adjust darkness here */
+  z-index: 1;
+}
+
+/* ensure all content stays above overlay */
+.star-slider-frame,
+.star-slider-title {
+  position: relative;
+  z-index: 2;
+ font-weight: 900;
+
+}
+.star-slider-title {
+ left: -140px;
+ margin-top: 20px;
+ font-family: "Poppins";
+}

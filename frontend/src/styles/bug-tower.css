@@ -1,0 +1,366 @@
+:root {
+  --ink: #15354a;
+  --stone: #f7c88c;
+  --roof: #d46a3a;
+  --shadow: rgba(0, 0, 0, 0.12);
+}
+
+/* scene */
+.ft-wrap {
+  position: relative;
+  padding: 28px 16px 56px;
+  background-image: url("../assets/f4.jpg");
+  background-size: cover;
+  overflow: hidden;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Arial;
+    border-radius: 60px;
+    
+}
+
+
+
+
+.fs2-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); 
+  z-index: 1;
+}
+
+.ft-scene .ft-cloud {
+  position: absolute;
+  top: 37px;
+  width: 160px;
+  z-index: 4;
+  height: 60px;
+  background: #fff;
+  border-radius: 40px;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.06));
+}
+.ft-scene .ft-cloud::before,
+.ft-scene .ft-cloud::after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50px;
+}
+.ft-scene .ft-cloud::before {
+  width: 90px;
+  height: 60px;
+  left: 20px;
+  top: -24px;
+}
+.ft-scene .ft-cloud::after {
+  width: 70px;
+  height: 50px;
+  right: 10px;
+  top: -18px;
+}
+.ft-scene .c1 {
+  left: 6%;
+}
+.ft-scene .c2 {
+  right: 8%;
+  top: 56px;
+}
+.ft-grass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80px;
+  background: radial-gradient(
+    80% 80% at 50% -10%,
+    #d9f6c9 0%,
+    #9fd88d 70%,
+    #99f08e 100%
+  );
+}
+
+/* tower */
+.ft-tower {
+  position: relative;
+  z-index: 1;
+  width: min(890px, 56%);
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 22px 22px 26px;
+  background: var(--stone);
+  border: 2px solid #c78346;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px var(--shadow), inset 0 3px 0 rgba(255, 255, 255, 0.5);
+}
+.ft-roof {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -26px;
+  width: 101%;
+  height: 58px;
+  background: var(--roof);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 8px 0 #b24f24 inset;
+}
+.ft-balcony {
+  position: absolute;
+  top: 90px;
+  width: 110px;
+  height: 26px;
+  background: #ffb764;
+  border: 2px solid #c78346;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+.ft-balcony.left {
+  left: -46px;
+}
+.ft-balcony.right {
+  right: -46px;
+}
+.ft-bricks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(#e6a964 2px, transparent 2px),
+    radial-gradient(#e6a964 2px, transparent 2px);
+  background-position: 20px 24px, 80px 64px;
+  background-size: 80px 80px;
+  opacity: 0.55;
+}
+
+/* grid: 2 cols; last item spans both */
+.ft-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* window card */
+.ft-window {
+  position: relative;
+  padding: 12px 12px 14px;
+  border-radius: 12px;
+  background: #fff3;
+  border: 2px solid #dba86c;
+  box-shadow: 0 10px 24px var(--shadow);
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ft-window.big {
+  grid-column: span 2;
+}
+.ft-arch {
+  display: block;
+  height: 140px;
+  border-radius: 14px 14px 10px 10px / 30px 30px 10px 10px;
+  background: var(--win, #eaf4ff);
+  box-shadow: inset 0 6px 18px rgba(255, 255, 255, 0.6);
+}
+
+/* icon badge */
+.ft-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+.ft-badge span {
+  font-size: 28px;
+}
+
+/* tiny ant for charm */
+/* .ft-ant {
+  position: absolute;
+  left: 80%;
+  top: 180px;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 100px;
+  filter: drop-shadow(0 4px 6px rgba(247, 153, 153, 0.723));
+  transition: transform 0.15s ease;
+} */
+.ft-window:hover .ft-ant {
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* labels & bubbles */
+.ft-tag {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #d7e0ea;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.ft-bubble {
+  position: absolute;
+  left: 50%;
+  top: -16px;
+  transform: translate(-50%, -6px) scale(0.92);
+  background: #fff;
+  color: #2a3a46;
+  font-weight: 700;
+  border: 2px solid #cfe0ef;
+  border-radius: 12px;
+  padding: 8px 10px;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.ft-bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-left: 2px solid #cfe0ef;
+  border-bottom: 2px solid #cfe0ef;
+}
+.ft-window:hover .ft-bubble,
+.ft-window:focus-visible .ft-bubble,
+.ft-window.active .ft-bubble {
+  opacity: 1;
+  transform: translate(-50%, -10px) scale(1);
+}
+
+@media (max-width: 640px) {
+  .ft-arch {
+    height: 120px;
+  }
+  .ft-ant {
+    top: 48px;
+    width: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ft-arch {
+    height: 120px;
+  }
+}
+
+.ft-arch {
+  position: relative;
+  height: 250px; /* a bit taller for characters */
+  border-radius: 14px 14px 10px 10px / 30px 30px 10px 10px;
+  overflow: hidden;
+  background: #e9f3ff; /* fallback if no bg */
+}
+
+/* Background image layer */
+.ft-bg {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: saturate(1.05) contrast(1.02);
+}
+.ft-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.35) 100%,
+    rgba(0, 0, 0, 0.35)
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ft-char {
+  width: 100%;
+  height: 95%;
+  object-fit: contain;
+  display: block;
+  filter: saturate(1.05) contrast(1.02);
+  position: absolute;
+  left: 50%;
+  bottom: 25px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+  z-index: 3; /* <— important */
+  /* transition: transform 0.15s ease; */
+}
+
+.ft-window:hover .ft-char {
+  transform: translateX(-55%) translateY(-5%) scale(1.04);
+}
+
+
+.ft-bricks {
+  background-image: linear-gradient(#e6a964 1px, transparent 1px),
+    linear-gradient(90deg, #e6a964 1px, transparent 1px);
+  background-size: 40px 20px;
+  opacity: 0.3;
+}
+
+
+.ft-entrance {
+  width: 80px;
+  height: 100px;
+  margin: 12px auto 0;
+  background: #5a3b24;
+  border-radius: 4px;
+  border: 3px solid #3a2415;
+}
+
+
+/* .ft-balcony {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 8px;
+  background: #b76e37;
+  border-radius: 4px;
+} */
+.ft-window {
+  position: relative;
+  padding-bottom: 20px; /* make room for balcony */
+}
+.ft-window::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  bottom: 2px;
+  width: 80%;
+  height: 6px;
+  background: #ffb764;
+  border: 2px solid #c78346;
+  border-radius: 4px;
+}
+
+
+.ft-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 windows per row */
+  gap: 18px;
+  padding: 16px;
+}
+.ft-window {
+  border-radius: 8px;
+  background: #fff7;
+  border: 2px solid #c78346;
+}
