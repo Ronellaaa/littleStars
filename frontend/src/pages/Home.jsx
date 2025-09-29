@@ -52,9 +52,17 @@ export default function HomeHero() {
           <p className="ls-hero-sub">
             Discover a magical world of learning and play!
           </p>
-          <button className="ls-cta" onClick={goFeatures}>
-            Explore Worlds
-          </button>
+          <div className="ls-hero-actions">
+            <button className="ls-cta" onClick={goFeatures}>
+              Explore Worlds
+            </button>
+            <button 
+              className="ls-child-login-btn"
+              onClick={() => window.location.href = '/child/login'}
+            >
+              👶 Kids Login
+            </button>
+          </div>
           {/* Optional: cute floating elements like planets or icons */}
           <div className="ls-floating-icons">
             <img src={bgEmotion} alt="Planet" className="floating-icon" />
