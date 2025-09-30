@@ -51,6 +51,9 @@ function decodeJwt(token) {
 // make it async
 async function saveAndGo(user) {
   localStorage.setItem("user", JSON.stringify(user));
+  
+  // Dispatch custom event to notify components about auth change
+  window.dispatchEvent(new CustomEvent('authChange', { detail: user }));
 
   if (user.role === "parent") {
     // No automatic child creation - parents will manually add children

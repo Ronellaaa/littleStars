@@ -662,9 +662,6 @@ export default function RoutineHome() {
             👶 Manage Children
           </button>
         </div>
-        <div className="routine-nav-user">
-          <div className="routine-avatar">LS</div>
-        </div>
       </nav>
 
       <main className="routine-dashboard-content">

@@ -370,7 +370,7 @@ export default function ChildRegistration() {
       </div>
 
       <div className="navigation">
-        <button onClick={() => navigate("/parent/dashboard")}>
+        <button onClick={() => navigate("/routines")}>
           ← Back to Dashboard
         </button>
       </div>
