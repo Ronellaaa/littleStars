@@ -571,7 +571,7 @@ body {
 
 
 .em-gate{
-  margin-top: -75px;
+  margin-top: -5px;
 }
 .em-gate-bg {
   width: 400px;
@@ -593,8 +593,8 @@ body {
 .em-road-inner {
   left: 50%;
   bottom: -200px;
-  transform: translateX(-50%) scale(0.85);
-  width: 630px;
+  transform: translateX(-50%) scale(0.95);
+  width: 650px;
   z-index: 1;
   opacity: 0.98;
   -webkit-mask-image: linear-gradient(

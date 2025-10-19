@@ -29,8 +29,8 @@ export default function ParallaxMagic() {
   const bgARef = useRef(null);
   const bgBRef = useRef(null);
   const navigate = useNavigate();
-
-  // NEW: nav timer + optional UI countdown
+  
+//timer for auto-navigation
   const navTimerRef = useRef(null);
   const [eta, setEta] = useState(null);
 

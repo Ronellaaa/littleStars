@@ -1,4 +1,4 @@
-// controllers/children.controller.js
+
 import mongoose from "mongoose";
 import Child from "../models/Child.js";
 

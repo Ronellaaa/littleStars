@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState,useEffect } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { PACKS } from "../emotionSimulator/data/packs";
 import "../../styles/emotionSimulatorStyles/lesson-split.css";
@@ -23,13 +23,12 @@ export default function EmotionActivity() {
   const [hasCelebrated, setHasCelebrated] = useState(false);
 
   useEffect(() => {
-  if (done && !hasCelebrated) {
-    setHasCelebrated(true);        // remember we celebrated
-    fireSideCannons(3000);         // 🎉 left + right cannons for 3s
-  }
- }, [done, hasCelebrated]);
+    if (done && !hasCelebrated) {
+      setHasCelebrated(true);
+      fireSideCannons(3000); // 🎉 left + right cannons for 3s
+    }
+  }, [done, hasCelebrated]);
 
-  // feelings selection (optional)
   const [feeling, setFeeling] = useState(null);
 
   // modal + confetti
@@ -47,7 +46,7 @@ export default function EmotionActivity() {
     const id = e.dataTransfer.getData("text/plain");
     const card = pack.items.find((x) => x.id === id);
     if (!card) return;
-    // only accept correct ones
+
     if (card.correct && !dropped.includes(id)) {
       setDropped([...dropped, id]);
       setMonsterMode("yay");
@@ -55,7 +54,7 @@ export default function EmotionActivity() {
     }
   };
 
-  const  fireSideCannons = (durationMs = 3000) => {
+  const fireSideCannons = (durationMs = 3000) => {
     const end = Date.now() + durationMs;
     const colors = ["#4000f2ff", "#f6006aff", "#f34602ff", "#faa006ff"];
 
@@ -118,8 +117,8 @@ export default function EmotionActivity() {
 
   const openSurprise = () => {
     setShowSurprise(true); // open the video modal now
-    stars(8000); 
-     fireSideCannons(3000);
+    stars(8000);
+    fireSideCannons(3000);
     // confetti runs for ~3s
   };
 
@@ -131,10 +130,15 @@ export default function EmotionActivity() {
   return (
     <div className="split-wrap" style={{ "--theme": pack.theme }}>
       {/* LEFT */}
-      <section className="split left card  side-bg"   style={ pack.bgLeft ? { '--side-url': `url(${pack.bgLeft})` } : undefined }>
-      
+      <section
+        className="split left card  side-bg"
+        style={
+          pack.bgLeft ? { "--side-url": `url(${pack.bgLeft})` } : undefined
+        }
+      >
         <h2 className="eyebrow">EMOTION SIMULATOR</h2>
-        <h1 className="title">{pack.title}</h1>
+        
+        <h1 className="title" style={{ "--theme": pack.theme}} >{pack.title}</h1>
 
         <div className="videoCard">
           <div className="videoThumb">
@@ -163,14 +167,21 @@ export default function EmotionActivity() {
           >
             ← Intro
           </button>
-          <button className="btn" onClick={() => navigate(-1)}>
+          <button
+            className="btn"
+            onClick={() => navigate(`/lesson/${emotion}/content`)}
+          >
             Done
           </button>
         </div>
       </section>
-      
-    
-      <section className="split right card game  side-bg"   style={ pack.bgRight ? { '--side-url': `url(${pack.bgRight})` } : undefined }>
+
+      <section
+        className="split right card game  side-bg"
+        style={
+          pack.bgRight ? { "--side-url": `url(${pack.bgRight})` } : undefined
+        }
+      >
         <MonsterBuddy mode={monsterMode} />
         <h3 className="question">Drag good choices into the basket</h3>
 
@@ -227,16 +238,18 @@ export default function EmotionActivity() {
 
         {done && <p className="trophy">{pack.trophyText} </p>}
         {done && (
-  <div className="row" style={{ justifyContent: "center", marginTop: 10 }}>
-    <button
-      className="btn"
-      onClick={() => navigate(`/lesson/${emotion}/content`)}
-    >
-      Next: See {emotion} content →
-    </button>
-  </div>
-)}
-
+          <div
+            className="row"
+            style={{ justifyContent: "center", marginTop: 10 }}
+          >
+            <button
+              className="btn"
+              onClick={() => navigate(`/lesson/${emotion}/content`)}
+            >
+              Next: See {emotion} content →
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Surprise button */}
