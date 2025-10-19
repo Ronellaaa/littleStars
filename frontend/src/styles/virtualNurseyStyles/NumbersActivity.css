@@ -1,0 +1,346 @@
+/* Wrapper */
+.nm-wrap {
+  padding: 1.2rem 1rem 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #fbc2eb, #fda085);
+  background-size: 400% 400%;
+  animation: nmGrad 16s ease infinite;
+}
+@keyframes nmGrad {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.nm-wrap.review {
+  justify-content: center;
+}
+
+/* Header */
+.nm-header {
+  width: min(900px, 95%);
+  text-align: center;
+}
+
+.nm-instruction {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0.25rem 0 0.75rem;
+}
+.nm-progress {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.nm-progress-inner {
+  height: 100%;
+  width: 0;
+  background: #ffb74d;
+}
+
+/* Meta */
+.nm-meta {
+  margin-top: 0.35rem;
+  color: #1b2838;
+  font-weight: 600;
+}
+
+/* Target board */
+.nm-target-board {
+  width: min(900px, 95%);
+  display: flex;
+  justify-content: center;
+}
+.nm-target-frame {
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px dashed #fff;
+  border-radius: 18px;
+  padding: 10px;
+}
+.nm-target-inner {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+}
+.nm-target-number {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ff7043;
+}
+
+/* Stage with jars */
+.nm-stage {
+  width: min(900px, 95%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-top: 0.5rem;
+}
+
+/* Jar card */
+.nm-jar {
+  background: #ffffffba;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.nm-jar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Jar glass look (already in your file) – keep it */
+.nm-jar-glass {
+  position: relative;
+  height: 120px;
+  border-radius: 14px 14px 10px 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.88),
+    rgba(255, 255, 255, 0.65)
+  );
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* Candies packed at bottom */
+.nm-candies {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 8px;
+  padding: 0 10px;
+}
+.nm-stars span {
+  font-size: 50px;
+  margin: 0 2px;
+}
+
+/* Realistic candy image */
+.nm-candy-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Optional subtle highlight/reflection on jar */
+.nm-jar-glass::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  right: 50%;
+  height: 20%;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+}
+
+/* Correct/Wrong states (keep what you had) */
+.nm-jar.right {
+  border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.25);
+}
+.nm-jar.wrong {
+  border-color: #e53935;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
+}
+
+.nm-candy {
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* Label */
+.nm-jar-label {
+  margin-top: 8px;
+  font-weight: 700;
+  color: #37474f;
+}
+
+/* Message + actions */
+.nm-message {
+  margin-top: 0.25rem;
+  font-weight: 700;
+  color: #1b2838;
+}
+.nm-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.nm-btn {
+  background: #ff7043;
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.5rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nm-btn.ghost {
+  background: #fff;
+  color: #ff7043;
+  border: 2px solid #ff7043;
+}
+.nm-btn.primary {
+   appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nm-btn.primary:hover{
+   background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nm-btn.primary:active{
+   transform: scale(1.025);
+}
+
+/* Review */
+.nm-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.nm-stars {
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+.nm-review-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  width: min(900px, 95%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.nm-review-header {
+  font-weight: 800;
+  color: #455a64;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.nm-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(66px, 1fr));
+  gap: 8px;
+}
+.nm-review-cell {
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+}
+.nm-review-cell.perfect {
+  background: #e8f5e9;
+}
+.nm-review-cell.ok {
+  background: #fff3e0;
+}
+.nm-review-cell.bad {
+  background: #ffebee;
+}
+.nm-review-num {
+  font-weight: 900;
+  color: #263238;
+}
+.nm-review-count {
+  opacity: 0.7;
+}
+
+.nursery-bp-back {
+  position: absolute;
+  top: 75px;
+  left: 2%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nursery-bp-back:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nursery-bp-back:active {
+  transform: scale(1.025);
+}
+.nm-wrap.review{
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+
+  
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../../assets/nbg7.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans",
+    sans-serif;
+}

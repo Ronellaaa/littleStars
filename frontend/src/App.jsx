@@ -35,6 +35,7 @@ import AddBlogs from "./pages/blogs/AddBlogs";
 import BlogsHome from "./pages/blogs/BlogHome";
 import BlogList from "./pages/blogs/BlogsCard";
 import BlogDetail from "./pages/blogs/BlogDetail";
+import EditBlogs from "./pages/blogs/EditBlogs.jsx"
 import VirtualNursery from "./pages/virtualNursery/NurseryHome";
 import NurseryDashboard from "./pages/virtualNursery/NurseryDashboard";
 import NurseryActivity from "./pages/virtualNursery/NurseryActivity";
@@ -112,6 +113,7 @@ export default function App() {
         <Route path="/blogs/list" element={<BlogList />} />
         <Route path="/blogs/new" element={<AddBlogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
+         <Route path="/blogs/edit/:id" element={<EditBlogs />} />
 
         {/* Virtual Nursery */}
         <Route path="/virtualNursery" element={<VirtualNursery />} />

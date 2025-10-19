@@ -1,0 +1,293 @@
+/* Layout & bg */
+.asp-wrap {
+  min-height: 100vh;
+  padding: 100px 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+ background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../../assets/nbg2.png);
+ background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+ 
+}
+
+
+/* Header */
+.asp-header {
+  width: min(980px, 95%);
+  text-align: center;
+}
+.asp-back {
+  background: transparent;
+  border: 0;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.asp-instruction {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+  margin: 0.25rem 0 0.5rem;
+}
+.asp-controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.asp-progress {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+.asp-progress-inner {
+  height: 100%;
+  background: #ffb74d;
+  width: 0;
+}
+.asp-meta {
+  margin-top: 0.35rem;
+  color: #ffffff;
+   font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+  font-weight: 700;
+}
+
+/* Target card */
+.asp-target {
+  width: min(980px, 95%);
+}
+.asp-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px dashed #fff;
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.asp-card-title {
+  font-weight: 700;
+  color: #37474f;
+   font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+}
+.asp-card-target {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #ff7043;
+   font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+}
+
+/* Stage – bubble buttons */
+.asp-stage {
+  width: min(980px, 95%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 0.7rem;
+}
+.asp-bubble {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.75)
+  );
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 18px 10px 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+   font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+  position: relative;
+}
+.asp-bubble::after {
+  /* bubble highlight */
+  content: "";
+  
+  position: absolute;
+  top: 10px;
+  left: 22px;
+  width: 32px;
+  height: 12px;
+  border-radius: 999px;
+  
+ 
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0)
+  );
+}
+.asp-bubble:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.asp-bubble.right {
+  border-color: #43a047;
+  box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.25);
+}
+.asp-bubble.wrong {
+  border-color: #e53935;
+  animation: shakeX 0.35s ease;
+}
+@keyframes shakeX {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+/* Bubble content */
+.asp-bubble-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.asp-animal-img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+.asp-animal-emoji {
+  font-size: 64px;
+  line-height: 1;
+}
+.asp-label {
+  margin-top: 6px;
+  font-weight: 800;
+  color: #263238;
+}
+
+/* Message + actions */
+.asp-message {
+  margin-top: 0.25rem;
+  font-weight: 800;
+  color: #1b2838;
+  text-align: center;
+}
+.asp-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  justify-content: center;
+}
+.asp-btn {
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+ font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.asp-btn.ghost {
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+ font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.asp-btn:hover{
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.asp-btn:active {
+  transform: scale(1.025);
+}
+
+.nursery-bp-back {
+  position: absolute;
+  top:75px;
+  left: 2%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+ font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nursery-bp-back:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nursery-bp-back:active {
+  transform: scale(1.025);
+}
+

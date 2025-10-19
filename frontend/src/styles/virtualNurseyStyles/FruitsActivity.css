@@ -1,0 +1,194 @@
+.fruit-wrap {
+  min-height: 100vh;
+  text-align: center;
+  background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
+  background-size: 300% 300%;
+  animation: fruitGrad 12s ease infinite;
+  padding: 1.5rem;
+}
+
+@keyframes fruitGrad {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.fruit-header h2 {
+  color: #2c3e50;
+  font-size: 1.6rem;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.fruit-target p {
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.fruit-display {
+  font-size: 7rem;
+  margin-bottom: 1rem;
+}
+
+.fruit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.fruit-card {
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  cursor: grab;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.fruit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.fruit-emoji {
+  font-size: 3rem;
+  display: block;
+}
+
+.fruit-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+   font-weight: 500;
+}
+
+.fruit-card.used {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.fruit-card.disabled {
+  animation: none;
+  cursor: not-allowed;
+}
+
+/* Drop basket */
+.fruit-basket {
+  margin: 2rem auto;
+  width: 80%;
+  max-width: 400px;
+  background: rgba(255,255,255,0.7);
+  border: 2px dashed #ffa726;
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+.fruit-basket-inner {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 2rem;
+}
+
+/* Shake animation for wrong fruit */
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+.shake { animation: shakeX 0.3s ease; }
+
+.fruit-message {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #37474f;
+  margin-top: 0.5rem;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-weight: 500;
+}
+
+.fruit-btn {
+ appearance: none;
+  background-color: #ff6314;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #ffc229 0 -6px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.fruit-btn:hover {
+ background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.fruit-btn:active {
+  transform: scale(1.025);
+}
+
+
+.nursery-bp-back {
+  position: absolute;
+  top: 75px;
+  left: 2%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nursery-bp-back:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nursery-bp-back:active {
+  transform: scale(1.025);
+}

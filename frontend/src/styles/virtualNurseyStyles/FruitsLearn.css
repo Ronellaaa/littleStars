@@ -1,6 +1,6 @@
 .al-page {
   min-height: 100vh;
-background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(250, 112, 227) 15.9%, rgb(252, 211, 253) 15.9%, rgb(223, 156, 231) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
+  background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(250, 112, 227) 15.9%, rgb(252, 211, 253) 15.9%, rgb(223, 156, 231) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
   display: grid;
   grid-template-columns: 320px 1fr; /* chart sidebar + main */
   gap: 20px;
@@ -289,57 +289,81 @@ background: radial-gradient(circle at -8.9% 51.2%, rgb(248, 149, 221) 0%, rgb(25
   border: 1px solid #e8d7c2;
 }
 
-
-/* ==== Section Container ==== */
+/* ========== Grid Layout ========== */
 .al-chart {
   margin: 3.5rem auto;
-  max-width: 800px;
-  text-align: center;
+  max-width: 900px;
 }
 
 .al-chart-title {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #333;
-  margin-bottom: 1rem;
-  text-transform: capitalize;
+  margin-bottom: 0.75rem;
+  text-align: center;
 }
 
-/* ==== Image Wrapper ==== */
-.al-image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* grid container */
+.al-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr,1fr));
+  gap: 10px;
+  justify-items: center;
+}
+
+/* ========== Card ========== */
+.al-card {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 14px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 10px 6px;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
-/* ==== Image Styling ==== */
-.al-image {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  border-radius: 12px;
+.al-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== Image & Emoji ========== */
+.al-img {
+  width: 60px;
+  height: 60px;
   object-fit: contain;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 4px auto 6px;
+  display: block;
 }
 
-/* Hover animation */
-.al-image:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.al-emoji {
+  font-size: 45px;
+  line-height: 1;
+  margin: 6px 0;
 }
 
-/* ==== Responsive ==== */
-@media (max-width: 600px) {
-  .al-image {
-    max-width: 90%;
+/* ========== Caption ========== */
+.al-cap {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 480px) {
+  .al-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 8px;
   }
-  .al-chart-title {
-    font-size: 1.3rem;
+  .al-img {
+    width: 50px;
+    height: 50px;
+  }
+  .al-emoji {
+    font-size: 35px;
   }
 }
 

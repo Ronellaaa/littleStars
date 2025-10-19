@@ -81,7 +81,7 @@ export default function BlogHome() {
   }, [blogs, activeCat]);
 
   const isEmpty = !loading && !err && filtered.length === 0;
-
+ 
   return (
     <>
       <div className="hero-blog-section">
@@ -176,7 +176,7 @@ export default function BlogHome() {
 
         <div className="blogs-toolbar">
           <h2 className="blogs-heading">Latest Posts</h2>
-          <Link to="/add-blog" className="add-blog-button">
+          <Link to="/blogs/new" className="add-blog-button">
             + Add New Blog
           </Link>
         </div>

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../../auth/AuthContext";
-import "../../../styles/virtualNurseyStyles/AlphabetLearn.css";
+import "../../../styles/virtualNurseyStyles/FruitsLearn.css";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
-import alphabet from "../../../assets/alphabet1.png"
-
+import fruits from "../../../assets/fruits1.png"
 
 const MAX_VIDEOS = 5;
 
@@ -18,6 +17,7 @@ function isYouTubeOrVimeo(url = "") {
 function normalizeYouTubePoster(poster) {
   return poster || undefined;
 }
+
 
 // Normalize YouTube links so ReactPlayer always understands
 function normalizeYouTubeUrl(url) {
@@ -36,12 +36,12 @@ function normalizeYouTubeUrl(url) {
   return url;
 }
 
-export default function AlphabetLearn({ topic: topicProp }) {
+export default function FruitsLearn({ topic: topicProp }) {
   const { user } = useAuth();
   const isMentor = user?.role?.toLowerCase() === "mentor";
 
   const { topic: topicURL } = useParams();
-  const topic = (topicProp || topicURL || "alphabets").toLowerCase();
+  const topic = (topicProp || topicURL || "Fruits").toLowerCase();
 
   const [videos, setVideos] = useState([]);
   const [currentId, setCurrentId] = useState("");
@@ -140,7 +140,7 @@ export default function AlphabetLearn({ topic: topicProp }) {
         `http://localhost:5050/api/learn/${topic}/videos`,
         {
           title: form.title,
-          url:normalizedUrl, 
+          url: normalizedUrl,
           thumbnail: form.thumbnail || undefined,
           uploadedBy: user?._id || undefined,
         }
@@ -164,13 +164,10 @@ export default function AlphabetLearn({ topic: topicProp }) {
       closeAdd();
     }
   }
- const current =
-  videos.find((v) => getId(v) === currentId) || videos[0] || null;
+  const current =
+    videos.find((v) => getId(v) === currentId) || videos[0] || null;
 
-console.log("ReactPlayer URL:", current?.url);
-
-
-
+  console.log("ReactPlayer URL:", current?.url);
 
   async function onDelete(id) {
     if (!isMentor || !id) return;
@@ -191,19 +188,18 @@ console.log("ReactPlayer URL:", current?.url);
     }
   }
 
-
-
   return (
     <div className="al-page">
-         <button className="nurseryD-learn-bp-back" onClick={handleBack}type="button"> back</button>
-     
-      {/* Alphabet chart (static) */}
-       <aside className="al-chart">
-              <div className="al-chart-title">Alphabet</div>
-              <div className="al-image-container">
-                <img src={alphabet} alt="Alphabet Chart" className="al-image" />
-              </div>
-            </aside>
+
+       <button className="nurseryD-learn-bp-back" onClick={handleBack}type="button"> back</button>
+      {/* Fruits Grid */}
+      <aside className="al-chart">
+            <div className="al-chart-title">Fruits</div>
+            <div className="al-image-container">
+              <img src={fruits} alt="Fruits Chart" className="al-image" />
+            </div>
+          </aside>
+    
 
       <main className="al-main">
         {toast && (

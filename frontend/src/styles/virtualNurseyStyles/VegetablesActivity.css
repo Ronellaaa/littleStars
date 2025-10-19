@@ -1,0 +1,112 @@
+.veg-wrap {
+  min-height: 100vh;
+  text-align: center;
+  background: linear-gradient(120deg, #c8e6c9, #b3e5fc);
+  background-size: 300% 300%;
+  animation: vegGrad 12s ease infinite;
+  padding: 1.5rem;
+}
+@keyframes vegGrad {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.veg-header h2 {
+  color: #2c3e50;
+  font-size: 1.6rem;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.veg-target p {
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.veg-display {
+  font-size: 7rem;
+  margin-bottom: 1rem;
+}
+
+/* Grid */
+.veg-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.veg-card {
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  cursor: grab;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.veg-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+
+.veg-emoji { font-size: 3rem; display: block; }
+.veg-name {
+  font-weight: 600; font-size: 0.9rem; color: #555;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 500;
+}
+
+.veg-card.used { opacity: 0.4; cursor: default; }
+.veg-card.disabled { animation: none; cursor: not-allowed; }
+
+/* Basket */
+.veg-basket {
+  margin: 2rem auto; width: 80%; max-width: 400px;
+  background: rgba(255,255,255,0.7); border: 2px dashed #66bb6a;
+  border-radius: 20px; padding: 1rem;
+}
+.veg-basket-inner {
+  min-height: 100px; display: flex; justify-content: center; align-items: center;
+  gap: 12px; flex-wrap: wrap; font-size: 2rem;
+}
+
+/* Shake (wrong) */
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+.shake { animation: shakeX 0.3s ease; }
+
+.veg-message {
+  font-size: 1.1rem; font-weight: 700; color: #37474f; margin-top: 0.5rem;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 500;
+}
+
+/* Buttons */
+.veg-actions { display: flex; gap: .5rem; justify-content: center; margin-top: .5rem; }
+.veg-btn {
+  appearance: none; background-color: #4caf50; color: #000;
+  border-radius: 40em; border: 0; box-shadow: #a5d6a7 0 -6px 6px inset;
+  padding: 1rem 1.3rem; font-size: 1.1rem; font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  cursor: pointer; transition: all .15s;
+}
+.veg-btn:hover { background-color: #a5d6a7; box-shadow: #4caf50 0 -6px 8px inset; transform: scale(1.08); }
+.veg-btn:active { transform: scale(1.02); }
+.veg-btn.primary { background-color: #66bb6a; }
+
+.nursery-bp-back {
+  position: absolute; top: 75px; left: 2%;
+  appearance: none; background-color: #ffffff; border-radius: 40em; border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset; color: #000; cursor: pointer;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem; font-weight: 500; padding: 1rem 1.3rem; transition: all .15s;
+}
+.nursery-bp-back:hover { background-color: #ffc229; box-shadow: #ff6314 0 -6px 8px inset; transform: scale(1.125); }
+.nursery-bp-back:active { transform: scale(1.025); }

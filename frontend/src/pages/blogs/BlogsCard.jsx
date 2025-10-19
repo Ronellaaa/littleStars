@@ -1,27 +1,33 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../../styles/blogsStyles/BlogsCard.css";
-import blogImg from "../../assets/blog6.png"
+import blogImg from "../../assets/blog6.png";
 
 export default function BlogsCard({ blog, onDelete }) {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
   const cover = blog.coverImageUrl || blog.imageUrl || "";
   const imgSrc = cover
-    ? (cover.startsWith("http") ? cover : `http://localhost:5050${cover}`)
+    ? cover.startsWith("http")
+      ? cover
+      : `http://localhost:5050${cover}`
     : "";
-
+  // Delete Blogs
   const handleDelete = async () => {
-    if (!window.confirm(`Delete “${blog.title}”?`)) return;
+    if (!window.confirm(`Delete “${blog?.title}”? This can’t be undone.`))
+      return;
     try {
-      setBusy(true); setErr("");
-      const res = await fetch(`/api/blogs/${blog._id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      onDelete?.(blog._id);
+      setBusy(true);
+      const res = await fetch(`http://localhost:5050/api/blogs/${blog._id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      navigate("/blogs");
     } catch (e) {
-      setErr("Couldn’t delete this post.");
+      setErr("Could not delete blog.");
     } finally {
       setBusy(false);
     }
@@ -34,7 +40,7 @@ export default function BlogsCard({ blog, onDelete }) {
           <img src={imgSrc} alt="" loading="lazy" />
         ) : (
           // <div className="tile-fallback" aria-hidden="true">
-             <img src={blogImg} alt="" loading="lazy" />
+          <img src={blogImg} alt="" loading="lazy" />
           // </div>
         )}
         {blog.category && <span className="tile-badge">{blog.category}</span>}
@@ -62,17 +68,21 @@ export default function BlogsCard({ blog, onDelete }) {
       <div className="tile-body">
         <p className="tile-meta">
           <span className="meta-kind">Insight</span>
-          <span className="dot" aria-hidden="true">•</span>
+          <span className="dot" aria-hidden="true">
+            •
+          </span>
           <time dateTime={blog.date}>
-            {new Date(blog.date).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}
+            {new Date(blog.date).toLocaleDateString(undefined, {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
           </time>
         </p>
 
         <h2 className="tile-title">{blog.title}</h2>
 
-        <p className="tile-snippet">
-          {(blog.content || "").trim()}
-        </p>
+        <p className="tile-snippet">{(blog.content || "").trim()}</p>
 
         {err && <div className="tile-error">{err}</div>}
 
