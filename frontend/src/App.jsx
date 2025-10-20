@@ -15,6 +15,7 @@ import CategoryPage from "./pages/speechTherapy/CategoryPage";
 import SpeechHome from "./pages/speechTherapy/SpeechHome";
 import ParentDashboard from "./pages/speechTherapy/ParentDashboard";
 import TherapistDashboard from "./pages/speechTherapy/TherapistDashboard";
+import TherapistDashboardSpeechStats from "./pages/speechTherapy/TherapistDashboardSpeechStats";
 
 // Emotion Simulator
 import ParallaxMagic from "./pages/emotionSimulator/ParallaxMagic";
@@ -84,6 +85,7 @@ export default function App() {
         <Route path="/cards/:category" element={<CategoryPage />} />
         <Route path="/parent-dashboard" element={<ParentDashboard />} />
         <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
+        <Route path="/TherapistDashboardSpeechStats" element={<TherapistDashboardSpeechStats />} />
 
         {/* Emotion Simulator */}
         <Route path="/lesson" element={<ParallaxMagic />} />

@@ -1,0 +1,104 @@
+/* -------- GLOBAL -------- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f8fafc;           /* same faint blue-grey background as parent */
+  color: #2c3e50;
+  margin: 0;
+  padding: 0;
+}
+
+/* -------- CONTAINER -------- */
+.therapist-stats-dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* -------- HEADER -------- */
+.therapist-stats-dashboard h1 {
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4c6ef5, #6e8efb); /* match ParentDashboard gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2.5rem;
+}
+
+/* -------- FILTERS -------- */
+.filters-area {
+  margin-top: 1rem;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.filters-area label {
+  font-weight: 600;
+  color: #444;
+}
+
+.filters-area select {
+  margin-left: 0.5rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.filters-area select:focus {
+  border-color: #4c6ef5;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76,110,245,0.3);
+}
+
+/* -------- VIEW BUTTON -------- */
+.view-btn {
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #4c6ef5, #6e8efb);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(76,110,245,0.3);
+}
+
+/* -------- CHART CONTAINER -------- */
+.chart-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.chart-container h2 {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* -------- RESPONSIVE BEHAVIOR -------- */
+@media (max-width: 768px) {
+  .filters-area {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .chart-container {
+    width: 95%;
+    padding: 1rem;
+  }
+}

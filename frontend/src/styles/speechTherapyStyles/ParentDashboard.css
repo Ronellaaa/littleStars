@@ -160,7 +160,7 @@ body {
   background: #dc3545;
   color: #fff !important;
 }
-.delete-btn:hover { background: #b52a38; color: #e32424 !important; }
+.delete-btn:hover { background: #fbf7f7; color: #dc3545 !important; }
 
 .save-btn {
   background: #20c997;
