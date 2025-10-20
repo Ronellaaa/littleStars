@@ -1,0 +1,314 @@
+/* Layout & background */
+.ss-wrap {
+  min-height: 100vh;
+  padding: 1.2rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../../assets/nbg9.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  
+}
+
+
+/* Header */
+.ss-header {
+  width: min(980px, 95%);
+  text-align: center;
+ 
+}
+
+.ss-instruction {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f6f6f6;
+  margin: 0.25rem 0 0.75rem;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+   font-weight: 500;
+}
+.ss-progress {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.ss-progress-inner {
+  height: 100%;
+  width: 0;
+  background: #ffb74d;
+}
+.ss-meta {
+  margin-top: 0.35rem;
+  color: #f5f5f5;
+  font-weight: 700;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+   font-weight: 500;
+}
+
+/* Target card */
+.ss-target-board {
+  width: min(980px, 95%);
+}
+.ss-target-card {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 14px;
+  border: 2px dashed #fff;
+}
+.ss-target-title {
+  font-weight: 500;
+  color: #37474f;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+.ss-target-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ss-target-name {
+  text-align: right;
+  font-weight: 800;
+  color: #ff7043;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+   font-weight: 500;
+}
+
+/* Palette (tokens to drag) */
+.ss-palette {
+  width: min(980px, 95%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 12px;
+  margin-top: 0.6rem;
+}
+.ss-token {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 10px;
+  cursor: grab;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.ss-token:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+.ss-token.used {
+  opacity: 0.45;
+  cursor: default;
+}
+.ss-token.disabled {
+  animation: none;
+  cursor: not-allowed;
+}
+
+/* Shake for wrong attempts */
+@keyframes shakeX {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+.shake {
+  animation: shakeX 0.35s ease;
+}
+
+/* Drop zone */
+.ss-dropzone {
+  width: min(980px, 95%);
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px dashed #90caf9;
+  border-radius: 16px;
+  padding: 12px;
+  margin-top: 0.4rem;
+}
+.ss-basket {
+  min-height: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.ss-basket-item {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.ss-drop-hint {
+  text-align: center;
+  margin-top: 0.35rem;
+  font-weight: 500;
+  color: #455a64;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Message + actions */
+.ss-message {
+  margin-top: 0.25rem;
+  font-weight: 500;
+  color: #1b2838;
+  text-align: center;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+.ss-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.ss-btn {
+  background: #ff7043;
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.5rem 0.9rem;
+ 
+  cursor: pointer;
+   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+   font-weight: 500;
+}
+.ss-btn.ghost {
+  background: #fff;
+  color: #ff7043;
+  border: 2px solid #ff7043;
+}
+
+/* ===== Shapes (CSS only) ===== */
+.ss-shape {
+  margin: 0 auto;
+  position: relative;
+}
+
+/* pleasant default size */
+.ss-shape {
+  width: 56px;
+  background-color: #ce93d8;
+  height: 56px;
+}
+
+/* palette of soft vibrant fills */
+:root {
+  --c1: #DC143C; 
+  --c2: #41A67E; 
+  --c3: #E8988A;
+  --c4: #FF0066; 
+  --c5: #8C00FF;
+  --c6: #05339C;
+  --c7: #FFF58A; 
+}
+
+/* randomly assign via nth-child for variety */
+.ss-token:nth-child(7n + 1) .ss-shape {
+  background: var(--c1);
+}
+.ss-token:nth-child(7n + 2) .ss-shape {
+  background: var(--c2);
+}
+.ss-token:nth-child(7n + 3) .ss-shape {
+  background: var(--c3);
+}
+.ss-token:nth-child(7n + 4) .ss-shape {
+  background: var(--c4);
+}
+.ss-token:nth-child(7n + 5) .ss-shape {
+  background: var(--c5);
+}
+.ss-token:nth-child(7n + 6) .ss-shape {
+  background: var(--c6);
+}
+.ss-token:nth-child(7n) .ss-shape {
+  background: var(--c7);
+}
+
+/* Circle / Square / Rectangle / Triangle / Star / Oval / Diamond */
+.ss-circle {
+  border-radius: 999px;
+}
+.ss-square {
+  border-radius: 12px;
+}
+.ss-rectangle {
+  border-radius: 12px;
+}
+.ss-triangle {
+  width: 0;
+  height: 0;
+  background: transparent !important;
+  border-left: 28px solid transparent;
+  border-right: 28px solid transparent;
+  border-bottom: 56px solid var(--c4);
+}
+
+.ss-oval {
+  border-radius: 999px;
+}
+.ss-diamond {
+  transform: rotate(45deg);
+  border-radius: 10px;
+}
+
+/* small soft shadow for tokens */
+.ss-shape {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.nursery-bp-back {
+  position: absolute;
+  top: 75px;
+  left: 2%;
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #adcfff 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.24px;
+  margin: 0;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.nursery-bp-back:hover {
+  background-color: #ffc229;
+  box-shadow: #ff6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+.nursery-bp-back:active {
+  transform: scale(1.025);
+}

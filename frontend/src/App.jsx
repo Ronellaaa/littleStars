@@ -1,3 +1,4 @@
+
 // src/App.jsx
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -14,6 +15,7 @@ import CategoryPage from "./pages/speechTherapy/CategoryPage";
 import SpeechHome from "./pages/speechTherapy/SpeechHome";
 import ParentDashboard from "./pages/speechTherapy/ParentDashboard";
 import TherapistDashboard from "./pages/speechTherapy/TherapistDashboard";
+import TherapistDashboardSpeechStats from "./pages/speechTherapy/TherapistDashboardSpeechStats";
 
 // Emotion Simulator
 import ParallaxMagic from "./pages/emotionSimulator/ParallaxMagic";
@@ -34,14 +36,19 @@ import AddBlogs from "./pages/blogs/AddBlogs";
 import BlogsHome from "./pages/blogs/BlogHome";
 import BlogList from "./pages/blogs/BlogsCard";
 import BlogDetail from "./pages/blogs/BlogDetail";
+import EditBlogs from "./pages/blogs/EditBlogs.jsx"
 import VirtualNursery from "./pages/virtualNursery/NurseryHome";
 import NurseryDashboard from "./pages/virtualNursery/NurseryDashboard";
 import NurseryActivity from "./pages/virtualNursery/NurseryActivity";
 import NurseryLearnActivity from "./pages/virtualNursery/LearnSwitch";
 import ActivitySwitch from "./pages/virtualNursery/ActivitySwitch";
+import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
 
 //RoutineBuilder
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
+  
+//Interactive Games
+import AdminGames from './pages/games/AdminGames.jsx';
 
 // Child Interface
 import ChildAuth from "./pages/child/ChildAuth";
@@ -65,6 +72,7 @@ function Games() {
 }
 function Profile() {
   return <div style={{ padding: 20 }}>👤 Profile (stub)</div>;
+
 }
 
 export default function App() {
@@ -88,6 +96,7 @@ export default function App() {
         <Route path="/cards/:category" element={<CategoryPage />} />
         <Route path="/parent-dashboard" element={<ParentDashboard />} />
         <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
+        <Route path="/TherapistDashboardSpeechStats" element={<TherapistDashboardSpeechStats />} />
 
         {/* Emotion Simulator */}
         <Route path="/lesson" element={<ParallaxMagic />} />
@@ -117,6 +126,7 @@ export default function App() {
         <Route path="/blogs/list" element={<BlogList />} />
         <Route path="/blogs/new" element={<AddBlogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
+         <Route path="/blogs/edit/:id" element={<EditBlogs />} />
 
         {/* Virtual Nursery */}
         <Route path="/virtualNursery" element={<VirtualNursery />} />
@@ -130,13 +140,14 @@ export default function App() {
           path="/nursery/:category/activity-mode"
           element={<ActivitySwitch />}
         />
+        <Route path="/alphabets" element={<AlphabetLearn isMentor={true} />} />
 
         {/* Routine Navigation */}
         <Route path="/routines" element={<RoutineNavigation />} />
         
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />
-        <Route path="/games" element={<Games />} />
+        <Route path="/games" element={<AdminGames />} />
 
         {/* Child Interface */}
         <Route path="/child/login" element={<ChildAuth />} />

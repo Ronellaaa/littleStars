@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import "../../styles/blogsStyles/BlogDetail.css";
-import blogImg from "../../assets/blog6.png"
-
+import blogImg from "../../assets/blog6.png";
 
 export default function BlogDetail() {
   const { id } = useParams();
@@ -12,83 +11,91 @@ export default function BlogDetail() {
   const [err, setErr] = useState("");
 
   const [comments, setComments] = useState([]);
-const [cLoading, setCLoading] = useState(true);
-const [cErr, setCErr] = useState("");
-const [author, setAuthor] = useState("");
-const [body, setBody] = useState("");
+  const [cLoading, setCLoading] = useState(true);
+  const [cErr, setCErr] = useState("");
+  const [author, setAuthor] = useState("");
+  const [body, setBody] = useState("");
 
+  // --- ADD: load comments when blog/id changes ---
+  useEffect(() => {
+    if (!id) return;
+    let on = true;
+    (async () => {
+      try {
+        setCLoading(true);
+        setCErr("");
+        const res = await fetch(
+          `http://localhost:5050/api/blogs/${id}/comments`
+        );
+        if (!res.ok) throw new Error(`Error: ${res.status}`);
+        const data = await res.json();
+        if (on) setComments(Array.isArray(data) ? data : []);
+      } catch (e) {
+        if (on) setCErr("Failed to load comments");
+      } finally {
+        if (on) setCLoading(false);
+      }
+    })();
+    return () => {
+      on = false;
+    };
+  }, [id]);
 
-// --- ADD: load comments when blog/id changes ---
-useEffect(() => {
-  if (!id) return;
-  let on = true;
-  (async () => {
+  // --- ADD: create comment ---
+  const submitComment = async (e) => {
+    e.preventDefault();
+    if (!body.trim()) return;
     try {
-      setCLoading(true);
-      setCErr("");
-      const res = await fetch(`http://localhost:3000/api/blogs/${id}/comments`);
-      if (!res.ok) throw new Error(`Error: ${res.status}`);
-      const data = await res.json();
-      if (on) setComments(Array.isArray(data) ? data : []);
+      const payload = {
+        author: author.trim() || "Anonymous",
+        body: body.trim(),
+      };
+      // optimistic add
+      const temp = {
+        id: `temp-${Date.now()}`,
+        ...payload,
+        createdAt: new Date().toISOString(),
+        _optimistic: true,
+      };
+      setComments((prev) => [temp, ...prev]);
+      setBody("");
+
+      const res = await fetch(
+        `http://localhost:5050/api/blogs/${id}/comments`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!res.ok) throw new Error("Post failed");
+      const saved = await res.json();
+      // swap optimistic with saved
+      setComments((prev) => [saved, ...prev.filter((c) => c.id !== temp.id)]);
     } catch (e) {
-      if (on) setCErr("Failed to load comments");
-    } finally {
-      if (on) setCLoading(false);
+      setCErr("Could not post comment");
+      // rollback optimistic
+      setComments((prev) => prev.filter((c) => !c._optimistic));
     }
-  })();
-  return () => { on = false; };
-}, [id]);
+  };
 
-// --- ADD: create comment ---
-const submitComment = async (e) => {
-  e.preventDefault();
-  if (!body.trim()) return;
-  try {
-    const payload = {
-      author: author.trim() || "Anonymous",
-      body: body.trim(),
-    };
-    // optimistic add
-    const temp = {
-      id: `temp-${Date.now()}`,
-      ...payload,
-      createdAt: new Date().toISOString(),
-      _optimistic: true,
-    };
-    setComments((prev) => [temp, ...prev]);
-    setBody("");
-
-    const res = await fetch(`http://localhost:3000/api/blogs/${id}/comments`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error("Post failed");
-    const saved = await res.json();
-    // swap optimistic with saved
-    setComments((prev) => [saved, ...prev.filter((c) => c.id !== temp.id)]);
-  } catch (e) {
-    setCErr("Could not post comment");
-    // rollback optimistic
-    setComments((prev) => prev.filter((c) => !c._optimistic));
-  }
-};
-
-// --- ADD: delete comment (optional) ---
-const deleteComment = async (commentId) => {
-  const old = comments;
-  setComments((prev) => prev.filter((c) => c.id !== commentId));
-  try {
-    const res = await fetch(`http://localhost:3000/api/blogs/${id}/comments/${commentId}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) throw new Error("Delete failed");
-  } catch {
-    setComments(old); // rollback
-    alert("Delete failed.");
-  }
-};
-
+  // --- ADD: delete comment (optional) ---
+  const deleteComment = async (commentId) => {
+    const old = comments;
+    setComments((prev) => prev.filter((c) => c.id !== commentId));
+    try {
+      const res = await fetch(
+        `http://localhost:5050/api/blogs/${id}/comments/${commentId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!res.ok) throw new Error("Delete failed");
+    } catch {
+      setComments(old); // rollback
+      alert("Delete failed.");
+    }
+  };
 
   useEffect(() => {
     let alive = true;
@@ -96,7 +103,7 @@ const deleteComment = async (commentId) => {
       try {
         setLoading(true);
         setErr("");
-        const res = await fetch(`http://localhost:3000/api/blogs/${id}`);
+        const res = await fetch(`http://localhost:5050/api/blogs/${id}`);
         if (!res.ok) throw new Error(`Error: ${res.status}`);
         const data = await res.json();
         if (alive) setBlog(data);
@@ -161,11 +168,14 @@ const deleteComment = async (commentId) => {
     window.speechSynthesis.speak(utter);
   };
   const stopSpeak = () => window.speechSynthesis?.cancel();
-
+  
+//Delete Blog
   const handleDelete = async () => {
     if (!window.confirm(`Delete “${blog?.title}”? This can’t be undone.`))
       return;
-    const res = await fetch(`/api/blogs/${id}`, { method: "DELETE" });
+    const res = await fetch(`http://localhost:5050/api/blogs/${id}`, {
+      method: "DELETE",
+    });
     if (!res.ok) {
       alert("Delete failed.");
       return;
@@ -181,22 +191,20 @@ const deleteComment = async (commentId) => {
     <div className="nm-wrap">
       {/* tablet frame corner like the screenshot */}
       <div className="nm-glass-card">
-           <div className="nm-actions">
+        <div className="nm-actions">
           <Link to="/blogs" className="nm-chip">
             ← Back
           </Link>
           <div className="flex-spacer" />
-          </div>
+        </div>
         {/* HERO: left = image, right = title + blurb + mini cards */}
         <section className="nm-hero">
-        
-          
           <div className="nm-hero-left">
             {imgSrc ? (
               <img className="nm-hero-img" src={imgSrc} alt="" />
             ) : (
               // <div className="nm-hero-img fallback" aria-hidden="true">
-               <img className="nm-hero-img" src={blogImg} alt="" />
+              <img className="nm-hero-img" src={blogImg} alt="" />
               // </div>
             )}
             <div className="nm-bubbles" aria-hidden="true">
@@ -209,7 +217,7 @@ const deleteComment = async (commentId) => {
           <div className="nm-hero-right">
             <div className="nm-toplinks">
               <span className="nm-link">Profile</span>
-              <span className="nm-link">Settings</span>
+              
             </div>
 
             <div className="nm-titleblock">
@@ -249,8 +257,6 @@ const deleteComment = async (commentId) => {
                 STOP
               </Link>
             </div>
-
-           
           </div>
         </section>
 
@@ -279,67 +285,69 @@ const deleteComment = async (commentId) => {
         </article>
 
         {/* ----- Comments Section ----- */}
-<section className="nm-comments">
-  <div className="nm-comments-top">
-    <h2>Comments</h2>
-    <span className="nm-count">{comments.length}</span>
-  </div>
-
-  <form className="nm-comment-form" onSubmit={submitComment}>
-    <div className="row">
-      <input
-        className="nm-input"
-        type="text"
-        placeholder="Your name (optional)"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
-      />
-    </div>
-    <textarea
-      className="nm-textarea"
-      rows={3}
-      placeholder="Write a friendly comment… (Ctrl/⌘+Enter to send)"
-      value={body}
-      onChange={(e) => setBody(e.target.value)}
-      onKeyDown={(e) => {
-        if ((e.metaKey || e.ctrlKey) && e.key === "Enter") submitComment(e);
-      }}
-    />
-    <div className="nm-form-actions">
-      <button type="submit" className="nm-btn buy">Post Comment</button>
-    </div>
-  </form>
-
-  {cLoading && <div className="nm-cstatus">Loading comments…</div>}
-  {cErr && <div className="nm-cerror">{cErr}</div>}
-
-  <ul className="nm-comment-list">
-    {comments.map((c) => (
-      <li key={c.id} className="nm-comment">
-        <div className="nm-avatar" aria-hidden="true">
-          {(c.author || "A").trim().charAt(0).toUpperCase()}
-        </div>
-        <div className="nm-cbody">
-          <div className="nm-chead">
-            <span className="nm-cname">{c.author || "Anonymous"}</span>
-            <time className="nm-ctime">
-              {new Date(c.createdAt || Date.now()).toLocaleString()}
-            </time>
-            <button
-              className="nm-cdel"
-              title="Delete"
-              onClick={() => deleteComment(c.id)}
-            >
-              ✕
-            </button>
+        <section className="nm-comments">
+          <div className="nm-comments-top">
+            <h2>Comments</h2>
+            <span className="nm-count">{comments.length}</span>
           </div>
-          <p>{c.body}</p>
-        </div>
-      </li>
-    ))}
-  </ul>
-</section>
 
+          <form className="nm-comment-form" onSubmit={submitComment}>
+            <div className="row">
+              <input
+                className="nm-input"
+                type="text"
+                placeholder="Your name (optional)"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
+            </div>
+            <textarea
+              className="nm-textarea"
+              rows={3}
+              placeholder="Write a friendly comment… (Ctrl/⌘+Enter to send)"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              onKeyDown={(e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === "Enter")
+                  submitComment(e);
+              }}
+            />
+            <div className="nm-form-actions">
+              <button type="submit" className="nm-btn buy">
+                Post Comment
+              </button>
+            </div>
+          </form>
+
+          {cLoading && <div className="nm-cstatus">Loading comments…</div>}
+          {cErr && <div className="nm-cerror">{cErr}</div>}
+
+          <ul className="nm-comment-list">
+            {comments.map((c) => (
+              <li key={c.id} className="nm-comment">
+                <div className="nm-avatar" aria-hidden="true">
+                  {(c.author || "A").trim().charAt(0).toUpperCase()}
+                </div>
+                <div className="nm-cbody">
+                  <div className="nm-chead">
+                    <span className="nm-cname">{c.author || "Anonymous"}</span>
+                    <time className="nm-ctime">
+                      {new Date(c.createdAt || Date.now()).toLocaleString()}
+                    </time>
+                    <button
+                      className="nm-cdel"
+                      title="Delete"
+                      onClick={() => deleteComment(c.id)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <p>{c.body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );

@@ -300,19 +300,22 @@
   text-align: center;
   padding: 24px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00c9ff 100%);
+  background-image: url(../../assets/nbg7.png);
+  background-size: cover;
   color: #000000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: "Fredoka";
+  font-weight: 400;
 }
 
 .nursery-review-title {
-  font-size: 2rem;
+  font-size: 3rem;
   margin: 12px 0 4px;
   font-weight: 800;
+  color: white;
 }
 
 .nursery-review-stars {
@@ -344,8 +347,9 @@
 .nursery-review-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 14px;
+  gap: 30px;
   justify-items: center;
+  
 }
 
 /* ===== Review Cells ===== */
@@ -397,4 +401,15 @@
 .nursery-review-play-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+}
+.nursery-container1{
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+padding: 50px;
+width:50%
 }

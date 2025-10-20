@@ -4,18 +4,16 @@ import confetti from "canvas-confetti";
 import yaySfx from "../../../assets/audios/yay.mp3";
 import trySfx from "../../../assets/audios/keeptrying.mp3";
 
-// Sensory-friendly defaults (tweak to taste)
 const CONFETTI_DEFAULTS = {
   spread: 360,
   ticks: 60,
-  gravity: 0.35, // 0 = static burst, 0.3–0.6 = gentle fall
-  decay: 0.92, // how quickly pieces slow down
+  gravity: 0.35,
+  decay: 0.92,
   startVelocity: 28,
-  colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"], // warm palette
-  shapes: ["circle"], // ✅ round pieces only (no stars)
+  colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"],
+  shapes: ["circle"], 
 };
 
-// Fire 3 quick bursts for a nice effect
 function triggerStars() {
   const shoot = (count, scalar, originY) => {
     confetti({
@@ -214,6 +212,14 @@ export default function AlphabetActivity({
 
     return (
       <main className="nursery-review-screen">
+         <button
+          className="nursery-bp-back"
+          onClick={() => window.history.back()}
+          aria-label="Go back"
+        >
+          ← Back
+        </button>
+        <div className="nursery-container1">
         <h1 className="nursery-review-title">Balloon Pop – Alphabet</h1>
 
         <div className="nursery-review-stars">
@@ -245,6 +251,7 @@ export default function AlphabetActivity({
         <button className="nursery-review-play-btn" onClick={resetAll}>
           Play again
         </button>
+        </div>
       </main>
     );
   }

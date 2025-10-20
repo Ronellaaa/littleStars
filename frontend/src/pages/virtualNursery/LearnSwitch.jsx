@@ -5,9 +5,34 @@ import "../../styles/virtualNurseyStyles/LearnSwitch.css";
 const AlphabetLearn = lazy(() =>
   import("../virtualNursery/learn/AlphabetLearn")
 );
+const NumbersLearn = lazy(() =>
+  import("../virtualNursery/learn/NumbersLearn")
+);
+const ShapesLearn = lazy(() =>
+  import("../virtualNursery/learn/ShapesLearn")
+);
+const ColorsLearn = lazy(() =>
+  import("../virtualNursery/learn/ColoursLearn")
+);
+const AnimalsLearn = lazy(() =>
+  import("../virtualNursery/learn/AnimalsLearn")
+);
+const FruitsLearn = lazy(() =>
+  import("../virtualNursery/learn/FruitsLearn")
+);
+const VegetablesLearn = lazy(() =>
+  import("../virtualNursery/learn/VegetablesLearn")
+);
+
 
 const registry = {
   alphabets: AlphabetLearn,
+  numbers: NumbersLearn,
+  shapes: ShapesLearn,
+  colors: ColorsLearn,
+  animals: AnimalsLearn,
+  fruits: FruitsLearn,
+  vegetables: VegetablesLearn,
 };
 
 function Loading() {

@@ -3,7 +3,7 @@ body {
   padding: 0;
 }
 
-.hero-wrap {
+.em-hero {
   width: 100%;
   height: 100vh;
   display: grid;
@@ -16,11 +16,10 @@ body {
   z-index: -1;
 }
 
-/* Calm idle “breathe” */
-.hero-wrap.autopan .scene {
-  animation: scene-breathe 18s ease-in-out infinite;
+.em-hero.em-autopan .em-scene {
+  animation: em-scene-breathe 18s ease-in-out infinite;
 }
-@keyframes scene-breathe {
+@keyframes em-scene-breathe {
   0% {
     transform: perspective(800px) rotateY(-1.2deg) rotateX(0.6deg)
       translateX(-4px);
@@ -35,21 +34,22 @@ body {
   }
 }
 
-.scene {
+.em-scene {
   position: relative;
-  width: min(1100px, 92vw);
+  width: min(1000px, 92vw);
   height: min(620px, 70vh);
   border-radius: 24px;
   overflow: hidden;
   transition: transform 300ms ease;
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.15);
   left: 10%;
-  top: -8%;
+  top: -12%;
   z-index: 1;
+  margin-left: 100px;
 }
 
 /* Background */
-.bg {
+.em-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
@@ -59,30 +59,15 @@ body {
   background-size: 1100px;
 }
 
-/* 
-.bg::before{
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    opacity: 0.3;
-  background-color: black;
-    background-size: cover;
-} */
-
 /* Straight wind streaks */
-.wind {
+.em-wind {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
 }
-.stream {
+.em-stream {
   position: absolute;
   top: var(--y);
   left: -40vw;
@@ -98,27 +83,27 @@ body {
     rgba(255, 255, 255, 0) 100%
   );
   filter: blur(1px);
-  animation: windLeft var(--dur) linear var(--delay) infinite;
+  animation: em-windLeft var(--dur) linear var(--delay) infinite;
   transform: translateX(var(--gust, 0px));
 }
-@keyframes windLeft {
+@keyframes em-windLeft {
   to {
     left: 110vw;
   }
 }
 
 /* Swirly whooshes */
-.swirls {
+.em-swirls {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 2;
 }
-.swirl {
-  animation: swirl-move var(--dur) linear var(--delay) infinite;
+.em-swirl {
+  animation: em-swirl-move var(--dur) linear var(--delay) infinite;
   transform-origin: center;
 }
-@keyframes swirl-move {
+@keyframes em-swirl-move {
   from {
     transform: translateX(-18%) translateY(var(--y))
       translateX(var(--gust, 0px)) scale(var(--scale));
@@ -128,39 +113,39 @@ body {
       translateX(var(--gust, 0px)) scale(var(--scale));
   }
 }
-.swirl path {
+.em-swirl path {
   fill: none;
   stroke: rgba(255, 255, 255, 0.55);
   stroke-width: 2;
   stroke-linecap: round;
   filter: blur(0.4px);
   stroke-dasharray: 120 420;
-  animation: swirl-dash calc(var(--dur) * 0.7) linear var(--delay) infinite;
+  animation: em-swirl-dash calc(var(--dur) * 0.7) linear var(--delay) infinite;
 }
-.swirl .swirl-alt {
+.em-swirl .em-swirl-alt {
   stroke: rgba(255, 255, 255, 0.28);
   stroke-width: 1.5;
   stroke-dasharray: 80 360;
   animation-duration: calc(var(--dur) * 0.9);
   animation-delay: calc(var(--delay) + 0.6s);
 }
-@keyframes swirl-dash {
+@keyframes em-swirl-dash {
   to {
     stroke-dashoffset: -540;
   }
 }
 
-/* NEW: Grass layer (wind-reactive) */
-.grass {
+/* Grass layer */
+.em-grass {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: var(--grass-h, 34%); /* adjust grass band height */
-  z-index: 3; /* below snow / above swirls */
+  height: var(--grass-h, 34%);
+  z-index: 3;
   pointer-events: none;
 }
-.grass::before {
+.em-grass::before {
   content: "";
   position: absolute;
   left: 0;
@@ -173,14 +158,13 @@ body {
     rgba(0, 0, 0, 0.08) 100%
   );
 }
-.blade {
+.em-blade {
   position: absolute;
   bottom: 0;
-  left: calc(var(--x) * 1%); /* --x is 0–100 */
+  left: calc(var(--x) * 1%);
   width: var(--w);
   height: var(--h);
   transform-origin: bottom center;
-  /* taper the top a bit */
   clip-path: polygon(
     50% 0%,
     70% 8%,
@@ -190,14 +174,12 @@ body {
     0 20%,
     30% 8%
   );
-  /* simple two-tone green that fits most cartoon grass */
   background: linear-gradient(to top, #1b8d3e 0%, #3fd170 75%);
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12));
   opacity: 0.95;
-  animation: grass-sway var(--dur) ease-in-out var(--delay) infinite;
+  animation: em-grass-sway var(--dur) ease-in-out var(--delay) infinite;
 }
-/* sway around bottom; respond to shared --gust and per-blade lean */
-@keyframes grass-sway {
+@keyframes em-grass-sway {
   0% {
     transform: translateX(calc(var(--lean) + var(--gust, 0px) * 0.04))
       rotate(calc(var(--bend) * -1));
@@ -212,21 +194,21 @@ body {
   }
 }
 
-/* Snow layer (above grass) */
-.snow {
+/* Snow (unused but kept) */
+.em-snow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 4;
   overflow: hidden;
 }
-.flake {
+.em-flake {
   position: absolute;
   top: -12vh;
   left: var(--x);
-  animation: fall var(--dur) linear var(--delay) infinite;
+  animation: em-fall var(--dur) linear var(--delay) infinite;
 }
-.flake > i {
+.em-flake > i {
   display: block;
   width: var(--size);
   height: var(--size);
@@ -235,17 +217,15 @@ body {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
   filter: blur(var(--blur));
   opacity: 0.95;
-  animation: drift calc(var(--dur) * 0.6) ease-in-out var(--delay) infinite
+  animation: em-drift calc(var(--dur) * 0.6) ease-in-out var(--delay) infinite
     alternate;
 }
-/* Vertical fall */
-@keyframes fall {
+@keyframes em-fall {
   to {
     transform: translateY(120vh);
   }
 }
-/* Horizontal sway + gust */
-@keyframes drift {
+@keyframes em-drift {
   from {
     transform: translateX(calc(var(--sway) * -1 + var(--gust, 0px)));
   }
@@ -254,34 +234,34 @@ body {
   }
 }
 
-/* Butterflies (top-most visuals) */
-.butterfly {
+/* Butterflies */
+.em-butterfly {
   position: absolute;
   width: 60px;
   pointer-events: none;
   opacity: 0.9;
-  animation: float 9s ease-in-out infinite;
+  animation: em-float 9s ease-in-out infinite;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
   z-index: 5;
 }
-.b1 {
+.em-b10 {
   left: 10%;
-  top: 65%;
+  top: 25%;
   animation-duration: 10s;
 }
-.b2 {
+.em-b20 {
   left: 70%;
   top: 25%;
   animation-duration: 12s;
   animation-delay: 1.2s;
 }
-.b3 {
+.em-b30 {
   left: 35%;
   top: 15%;
   animation-duration: 11s;
   animation-delay: 0.6s;
 }
-@keyframes float {
+@keyframes em-float {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
   }
@@ -299,337 +279,58 @@ body {
   }
 }
 
-/* Respect prefers-reduced-motion */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .scene,
-  .stream,
-  .swirl,
-  .blade,
-  .flake,
-  .flake > i,
-  .butterfly {
+  .em-scene,
+  .em-stream,
+  .em-swirl,
+  .em-blade,
+  .em-flake,
+  .em-flake > i,
+  .em-butterfly {
     animation: none !important;
     transform: none !important;
   }
 }
 
-/* ... keep all your existing styles from before ... */
-
-/* Leaves layer (replaces snow) */
-.leaves {
+/* Particle box */
+.em-leaves {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 4; /* above grass, below butterflies */
+  z-index: 4;
   overflow: hidden;
-  /* parent translates a little with gust so GSAP child transforms aren't overridden */
   transform: translateX(var(--gustX, 0px));
   will-change: transform;
 }
-
-.leafWrap {
+.em-leaf-wrap {
   position: absolute;
-  top: -120px; /* start above frame; GSAP sets x/y/rot */
+  top: -120px;
   left: 0;
   width: 35px;
   height: 35px;
   will-change: transform;
 }
-
-.leaf {
-  position: absolute;
-  inset: 0;
-  background-image: url("../../assets/l1.png");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18));
-  opacity: 0.95;
-  will-change: transform;
-}
-
-/* Girl */
-.girl {
-  position: absolute;
-  z-index: 7; /* above puddles/grass/leaves */
-  bottom: 18%; /* adjust to sit on “ground” */
-  left: 8%; /* starting place */
-  width: 190px; /* tune to your sprite */
-  transform: translateZ(0); /* enable GPU smoothing */
-  user-select: none;
-  pointer-events: none;
-}
-
-/* Puddles container */
-.puddles {
-  position: absolute;
-  inset: 0;
-  z-index: 6; /* below girl, above grass/leaves */
-  pointer-events: none; /* re-enable on buttons only */
-  margin-top: -100px;
-}
-
-/* Each puddle is a button but looks like muddy ellipse */
-.puddle {
-  position: absolute;
-  bottom: 4%; /* same “ground” line as girl */
-  width: 200px;
-  height: 150px;
-  border: 0;
-  /* border-radius: 999px; */
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  pointer-events: auto;
-  /* muddy look */
-  background-image: url("../../assets/mud2.png");
-  background-size: 200px;
-  /* background:
-    radial-gradient(ellipse at 50% 60%, rgba(82,46,16,.95) 0%, rgba(82,46,16,.9) 50%, rgba(50,28,9,.75) 70%, rgba(0,0,0,0) 85%),
-    linear-gradient(to bottom, rgba(255,255,255,.18), rgba(0,0,0,0) 40%); */
-  /* box-shadow: 0 10px 24px rgba(0,0,0,.25) inset, 0 8px 26px rgba(0,0,0,.18); */
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-  transition: transform 0.12s ease;
-}
-.puddle:active {
-  transform: scale(0.98);
-}
-
-/* positions (tweak as you like) */
-.happy {
-  left: 22%;
-  font-size: 30px;
-  color: black;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-.puddle.sad {
-  left: 47%;
-  font-size: 30px;
-  color: black;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-.puddle.angry {
-  left: 72%;
-  font-size: 30px;
-  color: black;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Optional: tiny ripple on click (JS already boops scale) */
-.puddle::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    ellipse at 50% 60%,
-    rgba(255, 255, 255, 0.25),
-    transparent 60%
-  );
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-.puddle:active::after {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-/* make sure the absolute bits can anchor */
-.mainb {
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
-  background: linear-gradient(
-    90deg,
-    rgba(42, 123, 155, 1) 0%,
-    rgba(87, 199, 133, 1) 50%,
-    rgba(237, 221, 83, 1) 100%
-  );
-}
-
-/* --- Shared side wrapper --- */
-.side {
-  position: absolute;
-  z-index: 9; /* above scene UI, below Batman */
-  pointer-events: none; /* decorative; doesn’t block clicks */
-}
-
-/* ---------- LEFT PANEL ---------- */
-.left-panel {
-  left: 16px;
-  top: 60px;
-  width: clamp(250px, 30vw, 340px);
-  height: 400px;
-  bottom: -46px;
-}
-
-/* frosted card */
-.left-card {
-  padding: 18px 18px;
-  background: #00c3ff; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #00c3ff,
-    #b6b61a
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #00c3ff, #c2c223);
-  border-radius: 18px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-}
-
-.emotion {
-  width: 300px;
-}
-.emotion1 {
-  padding: 10px 10px 10px 0px;
-}
-.left-card h3 {
-  margin: 0 0 8px;
-  font-size: 25px;
-  line-height: 1.2;
-}
-.left-card p {
-  margin: 0;
-  font-size: 17px;
-  opacity: 0.85;
-}
-
-/* images hugging the card’s bottom */
-/* .left-monster{
-  width:700px;
-  position: absolute; 
-  bottom: -450px; left: -35%;
-  transform: translateX(-10%);
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,.2));
-}
-.left-dog{
-  width:300px;
-  position: absolute; 
-  bottom: -340px; left: 85%;
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,.2));
-} */
-
-/* ---------- RIGHT HERO STACK ---------- */
-.right-stack {
-  right: -10px;
-  bottom: -46px;
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-}
-.heroes-pack {
-  /* width: 340px; */
-  /* filter: drop-shadow(0 8px 16px rgba(0,0,0,.2)); */
-}
-.speech-cloud {
-  align-self: flex-start;
-  padding: 10px 14px;
-  background: #fac9e8;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-  font-weight: 800;
-  font-size: 24px;
-  color: #1b1b1b;
-  animation: cloud-bob 3.6s ease-in-out infinite;
-  position: relative;
-  white-space: nowrap;
-  font-family: sans-serif;
-}
-.speech-cloud::after {
-  content: "";
-  position: absolute;
-  left: 14px;
-  top: 100%;
-  width: 14px;
-  height: 14px;
-  background: #fac9e8;
-  transform: translateY(-6px) rotate(45deg);
-  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08);
-}
-.speech-cloud.hide {
-  opacity: 0;
-  transform: translateY(-2px) scale(0.9);
-  transition: 0.35s;
-  animation: none;
-}
-
-@keyframes cloud-bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-/* ---------- BATMAN FLYOVER ---------- */
-.batman {
-  position: absolute;
-  top: 8px; /* y is animated; this is just a safe default */
-  left: -220px;
-  width: clamp(90px, 9vw, 140px);
-  z-index: 12;
-  pointer-events: none;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.25));
-}
-
-/* ---------- Responsive tweaks ---------- */
-@media (max-width: 1024px) {
-  .left-panel {
-    top: 20px;
-    width: clamp(220px, 36vw, 300px);
-  }
-  .right-stack {
-    right: 12px;
-    bottom: 16px;
-  }
-}
-@media (max-width: 780px) {
-  .left-panel {
-    left: 10px;
-    top: 10px;
-    width: 58vw;
-  }
-  .left-monster,
-  .left-dog {
-    display: none;
-  } /* simplify on small screens */
-  .right-stack {
-    right: 8px;
-    bottom: 8px;
-  }
-}
-
-/* shared particle box */
-.particle {
+.em-particle {
   position: absolute;
   inset: 0;
   will-change: transform, opacity;
 }
-
-/* leaves (you already had one image; keep it) */
-.particle.leaf {
+.em-leaf {
   width: 35px;
   height: 35px;
   background: url("../../assets/l1.png") no-repeat center / 100% 100%;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18));
   opacity: 0.95;
 }
-
-/* petals for HAPPY */
-.particle.petal {
+.em-petal {
   width: 26px;
   height: 26px;
   background: url("../../assets/s2.png") no-repeat center / 100% 100%;
   filter: drop-shadow(0 4px 10px rgba(255, 105, 180, 0.35));
   opacity: 0.95;
 }
-
-/* rain for SAD (no image needed) */
-.particle.drop {
+.em-drop {
   width: 3px;
   height: 18px;
   border-radius: 2px;
@@ -637,9 +338,7 @@ body {
   box-shadow: 0 0 6px rgba(66, 114, 211, 0.35);
   transform-origin: top center;
 }
-
-/* embers for ANGRY (optional) */
-.particle.ember {
+.em-ember {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -651,59 +350,72 @@ body {
   );
   box-shadow: 0 0 10px rgba(255, 140, 0, 0.6);
 }
-.gate-bg {
-  width: 500px;
-}
-/* .gate{
-  left: 16px; 
-  top: 60px; 
-  width: 500px;
-  height: 400px;
-  
-} */
 
-/* shared road styling */
-.road {
+/* Girl */
+.em-girl {
   position: absolute;
+  z-index: 7;
+  bottom: 18%;
+  left: 8%;
+  width: 190px;
+  transform: translateZ(0);
+  user-select: none;
   pointer-events: none;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
 }
 
-/* the road that sits BETWEEN the gates at the bottom */
-.road-outer {
-  left: 50%;
-  bottom: -20%; /* sits on page bottom */
-  transform: translateX(-50%) scale(1);
-  width: 430px; /* widen/narrow to span between gates */
-  z-index: 10; /* above gates artwork if needed */
+/* Puddles */
+.em-puddles {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  margin-top: -100px;
+}
+.em-puddle {
+  position: absolute;
+  bottom: 4%;
+  width: 200px;
+  height: 150px;
+  border: 0;
+  font-weight: 700;
+  color: #6f2626;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  pointer-events: auto;
+  background-image: url("../../assets/mud2.png");
+  background-size: 200px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease;
+  bottom: 40px;
+
+}
+.em-puddle:active {
+  transform: scale(0.98);
 }
 
-/* the road INSIDE the scene so the path looks continuous */
-.road-inner {
-  left: 50%;
-  bottom: -200px; /* tuck under the frame edge */
-  transform: translateX(-50%) scale(0.85); /* smaller to match scene perspective */
-  width: 630px;
-  z-index: 1; /* above .bg, below grass/leaves/puddles */
-  opacity: 0.98;
-
-  /* soft blend so the seam at the bottom edge is invisible */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 8%,
-    #000 92%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 8%,
-    #000 92%,
-    transparent 100%
-  );
+.em-happy {
+  left: 22%;
+  font-size: 30px;
+  color: black;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: transparent;
 }
-.puddle::before {
+.em-puddle.em-sad {
+  left: 47%;
+  font-size: 30px;
+  color: black;
+   background-color: transparent;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.em-puddle.em-angry {
+  left: 72%;
+  font-size: 30px;
+  color: black;
+   background-color: transparent;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.em-puddle::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -717,23 +429,200 @@ body {
   transform: scale(0.8);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
-/* label under each puddle — no white bg pill */
-.puddle::after {
+.em-puddle::after {
   content: attr(data-label);
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -34px;                /* sits below the mud */
+  bottom: -34px;
   padding: 2px 8px;
   font: 800 20px/1 "Segoe UI", system-ui, sans-serif;
   color: #121212;
-  background: transparent;      /* <- no white background */
+  background: transparent;
   pointer-events: none;
   white-space: nowrap;
-  /* light outline so it's readable on any bg */
-  text-shadow:
-    0 1px 0 #fff,
-    0 -1px 0 #fff,
-    1px 0 0 #fff,
-    -1px 0 0 #fff;
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+/* Page wrapper */
+.em-main {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    rgba(42, 123, 155, 1) 0%,
+    rgba(87, 199, 133, 1) 50%,
+    rgba(237, 221, 83, 1) 100%
+  );
+}
+
+/* Sides */
+.em-side {
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+}
+.em-left-panel {
+  left: 16px;
+  top: 60px;
+  width: clamp(250px, 30vw, 340px);
+  height: 400px;
+  bottom: -46px;
+}
+.em-left-card {
+  padding: 18px 18px;
+  background: linear-gradient(to right, #00c3ff, #c2c223);
+  border-radius: 18px;
+  backdrop-filter: blur(8px);
+  margin-top: -30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+.em-emotion {
+  width: 300px;
+}
+.em-emotion1 {
+  padding: 10px 10px 10px 0px;
+}
+.em-left-card h3 {
+  margin: 0 0 8px;
+  font-size: 25px;
+  line-height: 1.2;
+}
+.em-left-card p {
+  margin: 0;
+  font-size: 17px;
+  opacity: 0.85;
+}
+
+/* Right stack */
+.em-right-stack {
+  right: -10px;
+  bottom: -6px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+.em-speech-cloud {
+  align-self: flex-start;
+  padding: 10px 14px;
+  background: #faf4c9;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  font-weight: 800;
+  font-size: 24px;
+  color: #1b1b1b;
+  animation: em-cloud-bob 3.6s ease-in-out infinite;
+  position: relative;
+  white-space: nowrap;
+  font-family: sans-serif;
+ top: -350px;
+  left: -170px;
+}
+.em-speech-cloud::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 100%;
+  width: 14px;
+  height: 14px;
+  background: #faf7c9;
+  transform: translateY(-6px) rotate(45deg);
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08);
+}
+.em-speech-cloud.em-hide {
+  opacity: 0;
+  transform: translateY(-2px) scale(0.9);
+  transition: 0.35s;
+  animation: none;
+}
+@keyframes em-cloud-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .em-left-panel {
+    top: 20px;
+    width: clamp(220px, 36vw, 300px);
+  }
+  .em-right-stack {
+    right: 12px;
+    bottom: 16px;
+  }
+}
+@media (max-width: 780px) {
+  .em-left-panel {
+    left: 10px;
+    top: 10px;
+    width: 58vw;
+  }
+  .em-right-stack {
+    right: 8px;
+    bottom: 8px;
+  }
+}
+
+
+.em-gate{
+  margin-top: -5px;
+}
+.em-gate-bg {
+  width: 400px;
+  margin-bottom: -40px;
+
+}
+.em-road {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
+}
+/* .em-road-outer {
+  left: 50%;
+  bottom: -20%;
+  transform: translateX(-50%) scale(1);
+  width: 430px;
+  z-index: 10;
+} */
+.em-road-inner {
+  left: 50%;
+  bottom: -200px;
+  transform: translateX(-50%) scale(0.95);
+  width: 650px;
+  z-index: 1;
+  opacity: 0.98;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #782a2a 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+
+
+.em-autonav {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  z-index: 9999;
 }

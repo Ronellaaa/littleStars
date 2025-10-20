@@ -1,111 +1,172 @@
 // src/pages/authentication/MonsterAuth.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthAPI } from "../../api/http"; // adjust path if needed
+import { useNavigate, useLocation } from "react-router-dom";
+import { AuthAPI, ChildrenAPI } from "../../api/http";
 import "../../styles/authenticationStyles/monster-auth.css";
-import { useLocation } from "react-router-dom";
-import { ChildrenAPI } from "../../api/http";
-
-
 
 export default function MonsterAuth() {
-  const [mode, setMode] = useState("login");            // "login" | "signup"
-  const [vibe, setVibe] = useState("ok");               // "ok" | "error"
-  const [form, setForm] = useState({ email: "", password: "", role: "parent" });
+  const [mode, setMode] = useState("login");     // "login" | "signup"
+  const [vibe, setVibe] = useState("ok");        // "ok" | "error"
+  const [loading, setLoading] = useState(false);
+  const [showPw, setShowPw] = useState(false);
+  const [remember] = useState(true);             // storage choice; toggle UI is commented out
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "parent",
+  });
+
+  const [errors, setErrors] = useState({});
   const nav = useNavigate();
+  const location = useLocation();
 
-const location = useLocation();
+  // theme -> error = red, signup = green, otherwise yellow
+  const theme =
+    mode === "signup" ? "theme-green2" : vibe === "error" ? "theme-red2" : "theme-yellow2";
 
+  function validateField(name, value, wholeForm, currentMode) {
+    switch (name) {
+      case "email":
+        if (!value) return "Email is required.";
+        if (!/\S+@\S+\.\S+/.test(value)) return "Enter a valid email address.";
+        return "";
+      case "password":
+        if (!value) return "Password is required.";
+        if (value.length < 6) return "Password must be at least 6 characters.";
+        if (currentMode === "signup" && wholeForm.confirmPassword && value !== wholeForm.confirmPassword)
+          return "Passwords do not match.";
+        return "";
+      case "confirmPassword":
+        if (currentMode === "signup") {
+          if (!value) return "Please confirm your password.";
+          if (value !== wholeForm.password) return "Passwords do not match.";
+        }
+        return "";
+      case "role":
+        if (currentMode === "signup" && !["parent", "mentor"].includes(value))
+          return "Please select a role.";
+        return "";
+      default:
+        return "";
+    }
+  }
 
-  // use names that match your CSS (theme-xxx2)
-  const theme = mode === "signup" ? "theme-green2"
-               : vibe === "error" ? "theme-red2"
-               : "theme-yellow2";
+  function validateForm(currentMode, data) {
+    const e = {};
+    e.email = validateField("email", data.email, data, currentMode);
+    e.password = validateField("password", data.password, data, currentMode);
+    if (currentMode === "signup") {
+      e.confirmPassword = validateField("confirmPassword", data.confirmPassword, data, currentMode);
+      e.role = validateField("role", data.role, data, currentMode);
+    }
+    // strip empty messages
+    Object.keys(e).forEach((k) => !e[k] && delete e[k]);
+    return e;
+  }
 
   function onChange(e) {
-    const { name, value } = e.target;
-    setForm((s) => ({ ...s, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    const val = type === "checkbox" ? checked : value;
+    setForm((s) => ({ ...s, [name]: val }));
+    // live-validate just this field
+    setErrors((prev) => {
+      const next = { ...prev };
+      const { [name]: _ignored, ...rest } = next;
+      const single = validateField(name, val, { ...form, [name]: val }, mode);
+      return { ...rest, ...(single ? { [name]: single } : {}) };
+    });
     if (vibe === "error") setVibe("ok");
   }
 
+  async function saveAndGo(user) {
+    const store = remember ? localStorage : sessionStorage;
+    store.setItem("user", JSON.stringify(user));
 
-  // async function submitLogin(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const user = await AuthAPI.login({ email: form.email, password: form.password });
-  //     saveAndGo(user);
-  //   } catch (err) {
-  //     setVibe("error"); // red monster
-  //   }
-  // }
-function decodeJwt(token) {
-  try {
-    const part = token.split(".")[1];
-    const s = part.replace(/-/g, "+").replace(/_/g, "/");
-    const pad = "=".repeat((4 - (s.length % 4)) % 4);
-    return JSON.parse(atob(s + pad));
-  } catch { return null; }
-}
+    if (user.role === "parent") {
+      try {
+        const kids = await ChildrenAPI.list();
+        const child =
+          kids?.[0] ||
+          (await ChildrenAPI.create({
+            name: `${(user.email || "Child").split("@")[0]}'s child`,
+          }));
+
+        store.setItem("currentChild", JSON.stringify({ _id: child._id, name: child.name }));
+      } catch (e) {
+        console.error("Could not ensure child profile", e);
+      }
+      const backTo = location.state?.from ?? "/";
+      return nav(backTo, { replace: true });
+    }
+
+    // mentor
+    store.removeItem("currentChild");
+    const backTo = location.state?.from ?? "/mentor/reports";
+    return nav(backTo, { replace: true });
+  }
 
 
 // make it async
+// Simplified parent flow: no auto child creation, go to /routines
 async function saveAndGo(user) {
-  localStorage.setItem("user", JSON.stringify(user));
-  
-  // Dispatch custom event to notify components about auth change
-  window.dispatchEvent(new CustomEvent('authChange', { detail: user }));
+  const store = remember ? localStorage : sessionStorage;
+  store.setItem("user", JSON.stringify(user));
+
+  // Dispatch global auth event (harmless if nothing listens)
+  try {
+    window.dispatchEvent(new CustomEvent("authChange", { detail: user }));
+  } catch {
+    /* ignore if window not defined */
+  }
 
   if (user.role === "parent") {
-    // No automatic child creation - parents will manually add children
+    // Parents go straight to Routines page
     return nav("/routines", { replace: true });
   }
 
-  // mentors don't need a child in localStorage
-  localStorage.removeItem("currentChild");
+  // Mentors still go to /mentor/reports
+  store.removeItem("currentChild");
   return nav("/mentor/reports", { replace: true });
 }
 
-// make submit handlers await it
-async function submitLogin(e) {
-  e.preventDefault();
-  try {
-    const user = await AuthAPI.login({ email: form.email, password: form.password });
-    await saveAndGo(user);
-  } catch {
-    setVibe("error");
+
+  async function submitSignup(e) {
+    e.preventDefault();
+    const found = validateForm("signup", form);
+    setErrors(found);
+    if (Object.keys(found).length) return;
+
+    try {
+      setLoading(true);
+      const user = await AuthAPI.signup({
+        email: form.email,
+        password: form.password,
+        role: form.role,
+      });
+      await saveAndGo(user);
+    } catch {
+      // keep green theme; shake on server-side validation/duplicate, etc.
+      const card = document.querySelector(".card20");
+      card?.classList.add("shake");
+      setTimeout(() => card?.classList.remove("shake"), 400);
+    } finally {
+      setLoading(false);
+    }
   }
-}
-async function submitSignup(e) {
-  e.preventDefault();
-  try {
-    const user = await AuthAPI.signup({ email: form.email, password: form.password, role: form.role });
-    await saveAndGo(user);
-  } catch {/* shake, etc. */}
-}
-
-
-  // async function submitSignup(e) {
-  //   e.preventDefault();
-  //   try {
-  //     const user = await AuthAPI.signup({
-  //       email: form.email,
-  //       password: form.password,
-  //       role: form.role, // "parent" | "mentor"
-  //     });
-  //     saveAndGo(user);
-  //   } catch (err) {
-  //     // stay green; shake the card on validation/duplicate
-  //     const card = document.querySelector(".card2");
-  //     card?.classList.add("shake");
-  //     setTimeout(() => card?.classList.remove("shake"), 400);
-  //   }
-  // }
 
   const onSubmit = mode === "login" ? submitLogin : submitSignup;
+  const canSubmit =
+    !loading &&
+    !Object.keys(validateForm(mode, form)).length &&
+    form.email &&
+    form.password &&
+    (mode === "login" || (form.confirmPassword && form.role));
 
   return (
     <div className={`auth-wrap2 ${theme}`}>
-      <div className="sky2">
+      <div className="sky9">
         <div className="panel2">
           <header className="heading2">
             <h1>Welcome,</h1>
@@ -114,45 +175,119 @@ async function submitSignup(e) {
 
           <MonsterSVG angry={vibe === "error"} />
 
-          <form className="card2" onSubmit={onSubmit} autoComplete="on">
-            <div className="tabs2">
-              <button type="button"
+          <form className="card20" onSubmit={onSubmit} autoComplete="on" noValidate>
+            <div className="tabs20">
+              <button
+                type="button"
                 className={mode === "login" ? "active" : ""}
-                onClick={() => { setMode("login"); setVibe("ok"); }}>
+                onClick={() => {
+                  setMode("login");
+                  setVibe("ok");
+                  setErrors({});
+                }}
+              >
                 Login
               </button>
-              <button type="button"
+              <button
+                type="button"
                 className={mode === "signup" ? "active" : ""}
-                onClick={() => { setMode("signup"); setVibe("ok"); }}>
+                onClick={() => {
+                  setMode("signup");
+                  setVibe("ok");
+                  setErrors({});
+                }}
+              >
                 Sign up
               </button>
             </div>
 
-            {/* Email / Password */}
+            {/* Email */}
             <label className="input2">
-              <input name="email" type="email" placeholder="Email"
-                     value={form.email} onChange={onChange} />
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={onChange}
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "err-email" : undefined}
+              />
             </label>
-            <label className="input2">
-              <input name="password" type="password" placeholder="Password"
-                     value={form.password} onChange={onChange} />
-            </label>
+            {errors.email && <div id="err-email" className="field-error">{errors.email}</div>}
 
-            {/* Role picker (only in signup) */}
+            {/* Password + toggle */}
+            <label className="input2 input2-password">
+              <input
+                name="password"
+                type={showPw ? "text" : "password"}
+                placeholder="Password (min 6)"
+                value={form.password}
+                onChange={onChange}
+                aria-invalid={!!errors.password}
+                aria-describedby={errors.password ? "err-password" : undefined}
+              />
+              <button
+                className="pw-toggle"
+                type="button"
+                onClick={() => setShowPw((s) => !s)}
+                aria-label={showPw ? "Hide password" : "Show password"}
+              >
+                {showPw ? "Hide" : "Show"}
+              </button>
+            </label>
+            {errors.password && <div id="err-password" className="field-error">{errors.password}</div>}
+
+            {/* Confirm password + role (signup only) */}
             {mode === "signup" && (
-              <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-                <label><input type="radio" name="role" value="parent"
-                              checked={form.role === "parent"} onChange={onChange}/> Parent</label>
-                <label><input type="radio" name="role" value="mentor"
-                              checked={form.role === "mentor"} onChange={onChange}/> Mentor</label>
-              </div>
+              <>
+                <label className="input2">
+                  <input
+                    name="confirmPassword"
+                    type={showPw ? "text" : "password"}
+                    placeholder="Confirm password"
+                    value={form.confirmPassword}
+                    onChange={onChange}
+                    aria-invalid={!!errors.confirmPassword}
+                    aria-describedby={errors.confirmPassword ? "err-confirm" : undefined}
+                  />
+                </label>
+                {errors.confirmPassword && (
+                  <div id="err-confirm" className="field-error">{errors.confirmPassword}</div>
+                )}
+
+                <div className="role-row">
+                  <label>
+                    <input
+                      type="radio"
+                      name="role"
+                      value="parent"
+                      checked={form.role === "parent"}
+                      onChange={onChange}
+                    />{" "}
+                    Parent
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="role"
+                      value="mentor"
+                      checked={form.role === "mentor"}
+                      onChange={onChange}
+                    />{" "}
+                    Mentor
+                  </label>
+                </div>
+                {errors.role && <div className="field-error">{errors.role}</div>}
+              </>
             )}
 
             {vibe === "error" && mode === "login" && (
               <div className="error2">Oops! Email or password is incorrect.</div>
             )}
 
-            <button className="go2" type="submit">go</button>
+            <button className="go20" type="submit" disabled={!canSubmit}>
+              {loading ? "..." : "go"}
+            </button>
           </form>
         </div>
       </div>

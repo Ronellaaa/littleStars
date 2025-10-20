@@ -1,34 +1,48 @@
-/* CATEGORY PAGE CONTAINER */
+/* -------------------------------
+   CATEGORY PAGE CONTAINER
+   Wraps the entire Speech Therapy Category page and centers content nicely
+--------------------------------*/
 .speech-therapy-category-page {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
+  padding: 2rem;               /* breathing room on all sides */
+  max-width: 1200px;           /* prevent things from stretching too wide */
+  margin: auto;                /* center it horizontally */
 }
 
-/* Page Title */
+/* -------------------------------
+   PAGE TITLE
+   Large, bold, and gradient-colored heading at the top
+--------------------------------*/
 .speech-therapy-category-title {
-  text-align: center;
-  font-size: 2.4rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #6e8efb, #a777e3);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 2.5rem;
+  text-align: center;          /* center the heading text */
+  font-size: 2.4rem;           /* big enough to stand out */
+  font-weight: 700;            /* make it heavy/bold */
+  background: linear-gradient(90deg, #6e8efb, #a777e3); /* pretty gradient */
+  -webkit-background-clip: text;   /* clip gradient to letters */
+  -webkit-text-fill-color: transparent; /* make gradient visible instead of solid */
+  margin-bottom: 2.5rem;       /* nice gap below the title */
 }
 
-/* SpeechCard grid */
+/* -------------------------------
+   SPEECH CARD GRID
+   Lays out cards responsively, adapting to screen size
+--------------------------------*/
 .speech-therapy-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* responsive */
-  gap: 2.5rem;  /* ✅ same spacing as TherapistDashboard */
-  margin-top: 1rem;
-  justify-items: center; /* center cards in columns */
+  display: grid;                                /* enable grid layout */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* auto-fit makes it wrap cards;
+     each card is min 260px but can grow to fit column space */
+  gap: 2.5rem;                                   /* consistent spacing (matches TherapistDashboard) */
+  margin-top: 1rem;                              /* small buffer above grid */
+  justify-items: center;                         /* center cards within their columns */
 }
 
-/* Subtle loading message */
+/* -------------------------------
+   LOADING MESSAGE
+   Displays while cards/data are being fetched
+--------------------------------*/
 .speech-therapy-loading {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #666;
-  padding: 2rem 0;
+  text-align: center;        /* centered so it looks intentional */
+  font-size: 1.1rem;         /* modest but legible */
+  color: #666;               /* neutral gray tone */
+  padding: 2rem 0;           /* vertical space to keep layout balanced */
 }

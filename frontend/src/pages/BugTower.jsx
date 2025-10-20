@@ -15,10 +15,10 @@ import chNursery from "../assets/em7.png";
 
 const FEATURES = [
   { id:"emotion",  label:"Emotion Simulator",  to:"/lesson",  bg:bgEmotion,  char:chEmotion,  icon:"😊" },
-  { id:"speech",   label:"Speech Therapy Tool",to:"/speech",  bg:bgSpeech,   char:chSpeech,   icon:"🗣️" },
+  { id:"speech",   label:"Speech Therapy Tool",to:"/speech-home",  bg:bgSpeech,   char:chSpeech,   icon:"🗣️" },
   { id:"routine",  label:"Routine Builder",    to:"/routine", bg:bgRoutine,  char:chRoutine,  icon:"📅" },
   { id:"games",    label:"Interactive Games",  to:"/games",   bg:bgGames,    char:chGames,    icon:"🎮" },
-  { id:"nursery",  label:"Virtual Nursery",    to:"/nursery", bg:bgNursery,  char:chNursery,  icon:"🌼" },
+  { id:"nursery",  label:"Virtual Nursery",    to:"/virtualNursery", bg:bgNursery,  char:chNursery,  icon:"🌼" },
 ];
 
 export default function BugTower({ routeOnClick = true }) {
