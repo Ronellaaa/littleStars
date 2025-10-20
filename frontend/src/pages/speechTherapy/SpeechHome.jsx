@@ -37,7 +37,7 @@ const SpeechHome = () => {
     <div className="home-container">
       {/* Header with Therapist + Parent Dashboards */}
       <div className="home-header">
-        <button className="therapist-btn" onClick={handleTherapistDashboardClick}> {/* Therapist Dashboard Button */}
+        <button className="therapist-btn" style={{ visibility: "hidden" }} onClick={handleTherapistDashboardClick}> {/* Therapist Dashboard Button */}
           Therapist Dashboard
         </button>
 
