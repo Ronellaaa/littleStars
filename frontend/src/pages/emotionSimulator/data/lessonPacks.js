@@ -7,6 +7,11 @@ import f4 from "../../../assets/gr.png";
 import f5 from "../../../assets/gr2.png";
 import f6 from "../../../assets/astr.png";
 import f7 from "../../../assets/gr1.png";
+import f8 from "../../../assets/em6.png";
+import f9 from "../../../assets/em2.png";
+import f44 from "../../../assets/em3.png";
+import f78 from "../../../assets/em4.png";
+import f77 from "../../../assets/em5.png";
 
 export const LESSONS = {
   happy: {
@@ -23,7 +28,7 @@ export const LESSONS = {
         type: "talk",
         title: "Sunny Sam",
         image: f5,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Musician Max",
         bgWordSize: 58,
         text: "Happiness is the warm, bright feeling you get when life plays your favorite song.",
       },
@@ -32,8 +37,8 @@ export const LESSONS = {
         color: "#F7A6C9",
         title: "Sunny Sam",
         emoji: "🌞",
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: frogDJ,
+        bgWord: "Sunny Sam",
         bgWordSize: 58,
         type: "talk",
         text: "Smiles are like sunshine! When you share one, you light up somebody’s day.",
@@ -45,7 +50,7 @@ export const LESSONS = {
         emoji: "👩‍🚀",
         type: "quiz",
         image: f3,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Astronaut Ava",
         bgWordSize: 58,
         text: "Which picture shows a happy choice?",
         options: [
@@ -64,7 +69,7 @@ export const LESSONS = {
         title: "Hero Halo",
 
         image: f6,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Hero Halo",
         bgWordSize: 58,
         emoji: "🦸‍♂️",
         type: "talk",
@@ -75,7 +80,7 @@ export const LESSONS = {
         id: 6,
         color: "#5CD3C5",
         image: f4,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Artie",
         bgWordSize: 58,
         title: "Artie",
         emoji: "🎨",
@@ -89,7 +94,7 @@ export const LESSONS = {
         title: "Coach Coco",
         emoji: "🌟",
         image: f7,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Coach Coco",
         bgWordSize: 58,
         type: "talk",
         text: "Amazing! Happiness grows when we help, move, and notice good moments.",
@@ -105,8 +110,8 @@ export const LESSONS = {
       {
         id: 1,
         color: "#69BFF7",
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f6,
+        bgWord: "Captain\nCloud",
         bgWordSize: 58,
         title: "Captain Cloud",
         emoji: "☁️",
@@ -115,10 +120,10 @@ export const LESSONS = {
       },
       {
         id: 2,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f3,
+         bgWord: "Listener\nLee",
         bgWordSize: 58,
-        color: "#BFD6FF",
+        color: "#ffbfe3ff",
         title: "Listener Lee",
         emoji: "👂",
         type: "talk",
@@ -126,10 +131,10 @@ export const LESSONS = {
       },
       {
         id: 3,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f4,
+        bgWord: "Kind\nQuest",
         bgWordSize: 58,
-        color: "#8EC5FF",
+        color: "#ffe58eff",
         title: "Kind Quest",
         emoji: "🧭",
         type: "quiz",
@@ -152,10 +157,10 @@ export const LESSONS = {
       },
       {
         id: 4,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f7,
+        bgWord: "Breathy\nBea",
         bgWordSize: 58,
-        color: "#A9CCFF",
+        color: "#acffa9ff",
         title: "Breathy Bea",
         emoji: "🍃",
         type: "talk",
@@ -163,10 +168,10 @@ export const LESSONS = {
       },
       {
         id: 5,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: frogDJ,
+        bgWord: "Comfort\nKit",
         bgWordSize: 58,
-        color: "#B2E4F7",
+        color: "#f39cb8ff",
         title: "Comfort Kit",
         emoji: "🧸",
         type: "prompt",
@@ -176,9 +181,9 @@ export const LESSONS = {
       {
         id: 6,
         image: f5,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Coach\nCalm",
         bgWordSize: 58,
-        color: "#6DB0FF",
+        color: "#b16dffff",
         title: "Coach Calm",
         emoji: "🫶",
         type: "talk",
@@ -194,8 +199,8 @@ export const LESSONS = {
     cards: [
       {
         id: 1,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f4,
+        bgWord: "Spark\nScout",
         bgWordSize: 58,
         color: "#F87272",
         title: "Spark Scout",
@@ -206,9 +211,9 @@ export const LESSONS = {
       {
         id: 2,
         image: f5,
-        bgWord: "SUMMER\nISLAND",
+        bgWord: "Body\nBoss",
         bgWordSize: 58,
-        color: "#F9A8A8",
+        color: "#a8ebf9ff",
         title: "Body Boss",
         emoji: "💪",
         type: "talk",
@@ -216,10 +221,10 @@ export const LESSONS = {
       },
       {
         id: 3,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f6,
+        bgWord: "Cool-Down\nGame",
         bgWordSize: 58,
-        color: "#FDBA74",
+        color: "#ffa443ff",
         title: "Cool-Down Game",
         emoji: "🧊",
         type: "quiz",
@@ -237,8 +242,8 @@ export const LESSONS = {
       },
       {
         id: 4,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f7,
+        bgWord: "Power\nPause",
         bgWordSize: 58,
         color: "#FCD34D",
         title: "Power Pause",
@@ -248,10 +253,10 @@ export const LESSONS = {
       },
       {
         id: 5,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: frogDJ,
+        bgWord: "Plan\nBuilder",
         bgWordSize: 58,
-        color: "#FACC15",
+        color: "#8a048dff",
         title: "Plan Builder",
         emoji: "🛠️",
         type: "prompt",
@@ -260,10 +265,10 @@ export const LESSONS = {
       },
       {
         id: 6,
-        image: f5,
-        bgWord: "SUMMER\nISLAND",
+        image: f3,
+        bgWord: "Coach\nBrave",
         bgWordSize: 58,
-        color: "#FB7185",
+        color: "#e9147bff",
         title: "Coach Brave",
         emoji: "🛡️",
         type: "talk",

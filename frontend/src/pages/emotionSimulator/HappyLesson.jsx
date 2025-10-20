@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/emotionSimulatorStyles/lesson.css";
 
-// (Optional) local assets used by the fallback cards
 import frogDJ from "../../assets/foggy.png";
 import f3 from "../../assets/bear.png";
 import f4 from "../../assets/gr.png";
@@ -12,9 +11,6 @@ import f7 from "../../assets/gr1.png";
 
 import { LESSONS } from "../emotionSimulator/data/lessonPacks";
 
-/* -----------------------------
-   Tiny TTS hook
------------------------------ */
 function useTTS({ muted } = {}) {
   const utterRef = useRef(null);
   const speak = (text) => {
@@ -46,9 +42,6 @@ function useTTS({ muted } = {}) {
 
 
 
-/* -----------------------------
-   Fallback cards (used if LESSONS has no pack)
------------------------------ */
 const FALLBACK_CARDS = [
   {
     id: 1,
@@ -253,9 +246,6 @@ function CardModal({
   );
 }
 
-/* -----------------------------
-   InteractiveLesson (grid + modal)
------------------------------ */
 function InteractiveLesson({ pack, emotion}) {
   const CARDS = pack?.cards ?? FALLBACK_CARDS;
   const title = pack?.title ?? "Happiness Lab";
@@ -385,9 +375,6 @@ const [i, setI] = useState(0);
   );
 }
 
-/* -----------------------------
-   Wrapper: reads /lesson/:emotion and renders the lesson
------------------------------ */
 export default function HappyLesson() {
   const { emotion = "happy" } = useParams();
   const pack = LESSONS?.[emotion] || { title: "Happiness Lab", cards: FALLBACK_CARDS };
