@@ -8,34 +8,35 @@ const CategoryPage = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { // Fetch cards for the given category in the background
     const fetchCards = async () => {
       try {
-        const res = await fetch(`http://localhost:5050/api/cards/${category}`);
+        const res = await fetch(`http://localhost:5000/api/cards/${category}`); // Fetch cards by category
         const json = await res.json();
         if (json.success) {
-          setCards(json.data);
+          setCards(json.data); // Set fetched cards to state
         }
       } catch (err) {
         console.error("Error fetching cards:", err);
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading spinner
       }
     };
-    fetchCards();
-  }, [category]);
+    fetchCards(); // Call the async function
+  }, [category]); // Re-run effect if category changes and on mount
 
-  if (loading) return <p className="speech-therapy-loading">Loading cards...</p>;
+  if (loading) return <p className="speech-therapy-loading">Loading cards...</p>; // Show loading state
 
   return (
     <div className="speech-therapy-category-page">
       <h1 className="speech-therapy-category-title">
-        {category.charAt(0).toUpperCase() + category.slice(1)} Cards
+        {category.charAt(0).toUpperCase() + category.slice(1)} Cards {/* Capitalize first letter */}
       </h1>
 
       {/* Grid of Speech Cards */}
+      {/* Map over cards and render SpeechCard components */}
       <div className="speech-therapy-grid">
-        {cards.map((card) => (
+        {cards.map((card) => ( 
           <SpeechCard
             key={card._id}
             title={card.title}

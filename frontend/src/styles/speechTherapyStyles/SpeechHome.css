@@ -86,11 +86,11 @@ body {
 
 /* Parent Dashboard Button */
 .dashboard-btn {
-  background: #4c6ef5;
+  background: #8e44ad;
 }
 .dashboard-btn:hover {
   transform: translateY(-2px) scale(1.05);
-  background: #364fc7;
+  background: #732d91;
 }
 
 /* Therapist Dashboard Button */
