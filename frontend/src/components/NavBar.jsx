@@ -18,9 +18,44 @@ function useAuthSafe() {
     try { return JSON.parse(localStorage.getItem("user") || "null"); } catch { return null; }
   });
   const navigate = useNavigate();
+  
+  // Listen for localStorage changes and update state
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        const newUser = JSON.parse(localStorage.getItem("user") || "null");
+        setUser(newUser);
+      } catch {
+        setUser(null);
+      }
+    };
+
+    const handleAuthChange = (event) => {
+      // Custom event from login/signup
+      setUser(event.detail);
+    };
+
+    // Listen for storage events (from other tabs/windows)
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Listen for custom auth change events (same tab)
+    window.addEventListener('authChange', handleAuthChange);
+    
+    // Fallback: check for changes periodically
+    const interval = setInterval(handleStorageChange, 500);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('authChange', handleAuthChange);
+      clearInterval(interval);
+    };
+  }, []);
+  
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent('authChange', { detail: null }));
     navigate("/login", { replace: true });
   };
   return { user, logout, setUser };

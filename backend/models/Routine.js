@@ -1,4 +1,4 @@
-﻿import mongoose from "mongoose";
+import mongoose from "mongoose";
 import { detectOverlaps, hhmmToMinutes, minutesToHHmm } from "../utils/time.js";
 
 const routineStepSchema = new mongoose.Schema(
@@ -29,11 +29,16 @@ const routineStepSchema = new mongoose.Schema(
 
 const routineSchema = new mongoose.Schema(
   {
+    parentUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
     parentName: { type: String, required: true, trim: true, maxlength: 120 },
     name: { type: String, required: true, trim: true, maxlength: 120 },
     description: { type: String, default: "" },
     scheduledFor: { type: Date, required: true },
     steps: { type: [routineStepSchema], default: [] },
+    child: { type: mongoose.Schema.Types.ObjectId, ref: "Child", index: true, default: null },
+    childSnapshot: {
+      name: { type: String, trim: true },
+    },
   },
   { timestamps: true }
 );

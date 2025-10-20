@@ -50,6 +50,17 @@ import RoutineHome from "./pages/routineBuilder/RoutineHome";
 //Interactive Games
 import AdminGames from './pages/games/AdminGames.jsx';
 
+// Child Interface
+import ChildAuth from "./pages/child/ChildAuth";
+import ChildDashboard from "./pages/child/ChildDashboard";
+import RoutineTimer from "./pages/child/RoutineTimer";
+
+// Parent Child Management
+import ChildRegistration from "./pages/parent/ChildRegistration";
+
+// Navigation
+import RoutineNavigation from "./pages/RoutineNavigation";
+
 import Example from "./Example";
 
 // Simple stubs
@@ -131,9 +142,22 @@ export default function App() {
         />
         <Route path="/alphabets" element={<AlphabetLearn isMentor={true} />} />
 
+        {/* Routine Navigation */}
+        <Route path="/routines" element={<RoutineNavigation />} />
+        
         {/* Routine Builder */}
         <Route path="/routine" element={<RoutineHome />} />
         <Route path="/games" element={<AdminGames />} />
+
+        {/* Child Interface */}
+        <Route path="/child/login" element={<ChildAuth />} />
+        <Route path="/child/dashboard" element={<ChildDashboard />} />
+        <Route path="/child/routine/:routineId" element={<RoutineTimer />} />
+
+        {/* Parent Child Management */}
+        <Route element={<RequireAuth roles={["parent"]} />}>
+          <Route path="/parent/children" element={<ChildRegistration />} />
+        </Route>
 
         {/* Example */}
         <Route path="/example" element={<Example />} />

@@ -12,6 +12,8 @@ import {
   updateRoutine,
 } from '../../services/api';
 
+import { ChildrenAPI } from '../../api/http';
+
 import { detectOverlaps, hhmmToMinutes, minutesToHHmm, sortByStartTime } from '../../utils/time';
 
 const generateId = () =>
@@ -121,7 +123,6 @@ export default function RoutineHome() {
   const [activitiesLoading, setActivitiesLoading] = useState(true);
   const [activitiesError, setActivitiesError] = useState('');
 
-  const [parentName, setParentName] = useState('');
   const [routineName, setRoutineName] = useState('');
   const [description, setDescription] = useState('');
   const [scheduledFor, setScheduledFor] = useState(todayDateInput());
@@ -143,11 +144,18 @@ export default function RoutineHome() {
   const [editingRoutineId, setEditingRoutineId] = useState('');
   const [routineDeletingId, setRoutineDeletingId] = useState('');
 
+  // Child assignment
+  const [children, setChildren] = useState([]);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [assigningRoutineId, setAssigningRoutineId] = useState('');
+  const [selectedChildId, setSelectedChildId] = useState('');
+
   const libraryRef = useRef(null);
   const heroRef = useRef(null);
   const plannerRef = useRef(null);
   const historyRef = useRef(null);
   const activityManagerRef = useRef(null);
+  const activityNameInputRef = useRef(null);
 
   const scrollToSection = (ref) => {
     if (ref?.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -160,12 +168,15 @@ export default function RoutineHome() {
   const totalDuration = steps.reduce((total, step) => total + Number(step.durationMin || 0), 0);
   const nextStartTime = computeNextStart(steps);
 
+  const closeActivityForm = () => {
+    setShowActivityForm(false);
+    setActivityFormErrors({});
+  };
   const focusActivityForm = () => {
     setShowActivityForm(true);
-    setTimeout(() => scrollToSection(activityManagerRef), 60);
   };
   const focusActivityLibrary = () => {
-    setShowActivityForm(false);
+    closeActivityForm();
     scrollToLibrary();
   };
   const resetRoutine = () => {
@@ -204,6 +215,18 @@ export default function RoutineHome() {
         setRoutinesError(error.message || 'Unable to load routines');
       });
 
+    // Load children for assignment
+    ChildrenAPI.mine()
+      .then((data) => {
+        if (!isMounted) return;
+        console.log('Loaded children for assignment:', data);
+        setChildren(data || []);
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        console.error('Failed to load children:', error);
+      });
+
     return () => {
       isMounted = false;
     };
@@ -214,6 +237,34 @@ export default function RoutineHome() {
     const timer = setTimeout(() => setFeedback(''), 3500);
     return () => clearTimeout(timer);
   }, [feedback]);
+
+  useEffect(() => {
+    if (!showActivityForm) return undefined;
+    if (typeof window === 'undefined' || typeof document === 'undefined') return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const timer = window.setTimeout(() => {
+      activityNameInputRef.current?.focus();
+    }, 80);
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setActivityFormErrors({});
+        setShowActivityForm(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.clearTimeout(timer);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showActivityForm]);
 
   const addActivityToRoutine = (activity) => {
     if (!activity) return;
@@ -259,7 +310,6 @@ export default function RoutineHome() {
 
   const validateRoutine = () => {
     const errors = {};
-    if (!parentName.trim()) errors.parentName = 'Tell us who is building this routine.';
     if (!routineName.trim()) errors.routineName = 'Give your routine a name.';
     if (steps.length === 0) errors.steps = 'Add at least one step to your routine.';
 
@@ -284,8 +334,7 @@ export default function RoutineHome() {
     return Object.keys(errors).length === 0;
   };
 
-  const clearRoutineState = ({ preserveParentName = true } = {}) => {
-    if (!preserveParentName) setParentName('');
+  const clearRoutineState = () => {
     setRoutineName('');
     setDescription('');
     setScheduledFor(todayDateInput());
@@ -303,7 +352,6 @@ export default function RoutineHome() {
     setSaving(true);
     try {
       const payload = {
-        parentName: parentName.trim(),
         name: routineName.trim(),
         description: description.trim(),
         scheduledFor,
@@ -325,12 +373,12 @@ export default function RoutineHome() {
           );
           setRoutinesError('');
         }
-        clearRoutineState({ preserveParentName: true });
+        clearRoutineState();
       } else {
         const response = await createRoutine(payload);
         setFeedback('Routine saved! Your child will see it today.');
         setFeedbackType('success');
-        clearRoutineState({ preserveParentName: true });
+        clearRoutineState();
         if (response?.routine) {
           setExistingRoutines((prev) => [response.routine, ...prev]);
           setRoutinesError('');
@@ -465,7 +513,6 @@ export default function RoutineHome() {
       setFeedback('Some steps reference missing activities. Re-add them from the library before saving.');
     }
 
-    setParentName(routine.parentName || '');
     setRoutineName(routine.name || '');
     setDescription(routine.description || '');
     setScheduledFor(toDateInputValue(routine.scheduledFor));
@@ -491,13 +538,100 @@ export default function RoutineHome() {
       setFeedback('Routine deleted.');
       setRoutinesError('');
       if (editingRoutineId === routineId) {
-        clearRoutineState({ preserveParentName: true });
+        clearRoutineState();
       }
     } catch (error) {
       setFeedbackType('error');
       setFeedback(error.message || 'Unable to delete routine right now.');
     } finally {
       setRoutineDeletingId('');
+    }
+  };
+
+  const handleAssignChild = (routineId) => {
+    setAssigningRoutineId(routineId);
+    setShowAssignModal(true);
+    setSelectedChildId('');
+  };
+
+  const handleAssignmentSubmit = async () => {
+    if (!assigningRoutineId || !selectedChildId) return;
+    
+    console.log('Assigning routine:', assigningRoutineId, 'to child:', selectedChildId);
+    console.log('Available children:', children);
+    
+    try {
+      const response = await fetch(`http://localhost:5050/api/routines/${assigningRoutineId}/assign`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token || ''}`
+        },
+        body: JSON.stringify({ childId: selectedChildId })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Assignment error response:', response.status, errorData);
+        let errorMessage = 'Failed to assign routine';
+        try {
+          const parsed = JSON.parse(errorData);
+          errorMessage = parsed.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorData || errorMessage;
+        }
+        throw new Error(`${response.status}: ${errorMessage}`);
+      }
+
+      const data = await response.json();
+      
+      // Update the routine in the list
+      setExistingRoutines((prev) =>
+        prev.map((routine) =>
+          routine._id === assigningRoutineId ? data.routine : routine
+        )
+      );
+
+      setFeedback('Routine assigned successfully!');
+      setFeedbackType('success');
+      setShowAssignModal(false);
+      setAssigningRoutineId('');
+      setSelectedChildId('');
+    } catch (error) {
+      setFeedback(error.message || 'Failed to assign routine');
+      setFeedbackType('error');
+    }
+  };
+
+  const handleUnassignChild = async (routineId) => {
+    if (!window.confirm('Remove child assignment from this routine?')) return;
+    
+    try {
+      const response = await fetch(`http://localhost:5050/api/routines/${routineId}/unassign`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token || ''}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to unassign routine');
+      }
+
+      const data = await response.json();
+      
+      // Update the routine in the list
+      setExistingRoutines((prev) =>
+        prev.map((routine) =>
+          routine._id === routineId ? data.routine : routine
+        )
+      );
+
+      setFeedback('Child assignment removed');
+      setFeedbackType('success');
+    } catch (error) {
+      setFeedback(error.message || 'Failed to unassign routine');
+      setFeedbackType('error');
     }
   };
 
@@ -520,9 +654,13 @@ export default function RoutineHome() {
           <button type="button" onClick={() => scrollToSection(plannerRef)}>Planner</button>
           <button type="button" onClick={() => scrollToSection(historyRef)}>History</button>
           <button type="button" onClick={focusActivityLibrary}>Library</button>
-        </div>
-        <div className="routine-nav-user">
-          <div className="routine-avatar">LS</div>
+          <button 
+            type="button" 
+            className="routine-manage-children-btn"
+            onClick={() => window.location.href = '/parent/children'}
+          >
+            👶 Manage Children
+          </button>
         </div>
       </nav>
 
@@ -601,19 +739,6 @@ export default function RoutineHome() {
                   </div>
                   <div className="routine-form-grid">
                     <label className="routine-field">
-                      <span>Parent name</span>
-                      <input
-                        type="text"
-                        value={parentName}
-                        onChange={(event) => {
-                          setParentName(event.target.value);
-                          setFormErrors((prev) => ({ ...prev, parentName: undefined }));
-                        }}
-                        placeholder="e.g. Taylor"
-                      />
-                      {formErrors.parentName && <small className="routine-error-text">{formErrors.parentName}</small>}
-                    </label>
-                    <label className="routine-field">
                       <span>Routine name</span>
                       <input
                         type="text"
@@ -668,33 +793,13 @@ export default function RoutineHome() {
                         <ul className="routine-timeline-list">
                           {steps.map((step, index) => (
                             <li key={step.id} className="routine-timeline-item">
-                              <div className="routine-step-order">
-                                <span>{index + 1}</span>
-                                <div className="routine-step-order-controls">
-                                  <button
-                                    type="button"
-                                    onClick={() => moveStep(step.id, -1)}
-                                    disabled={index === 0}
-                                    title="Move up"
-                                  >
-                                    Up
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => moveStep(step.id, 1)}
-                                    disabled={index === steps.length - 1}
-                                    title="Move down"
-                                  >
-                                    Down
-                                  </button>
-                                </div>
-                              </div>
-                              <div className="routine-step-details">
-                                <div className="routine-step-heading">
+                              <header className="routine-step-header">
+                                <div className="routine-step-meta">
+                                  <span className="routine-step-number">{index + 1}</span>
                                   <div className="routine-activity-icon routine-large">{step.activity?.icon || '?'}</div>
-                                  <div>
+                                  <div className="routine-step-copy">
                                     <p className="routine-activity-name">{step.activity?.name}</p>
-                                    <label>
+                                    <label className="routine-step-label">
                                       <span>Label for your child</span>
                                       <input
                                         type="text"
@@ -705,8 +810,39 @@ export default function RoutineHome() {
                                     </label>
                                   </div>
                                 </div>
-                                <div className="routine-step-inputs">
-                                  <label>
+                                <div className="routine-step-header-actions">
+                                  <div className="routine-step-order-controls">
+                                    <button
+                                      type="button"
+                                      className="routine-step-move"
+                                      onClick={() => moveStep(step.id, -1)}
+                                      disabled={index === 0}
+                                      aria-label="Move step up"
+                                    >
+                                      &uarr;
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="routine-step-move"
+                                      onClick={() => moveStep(step.id, 1)}
+                                      disabled={index === steps.length - 1}
+                                      aria-label="Move step down"
+                                    >
+                                      &darr;
+                                    </button>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    className="routine-remove-step"
+                                    onClick={() => removeStep(step.id)}
+                                  >
+                                    Remove step
+                                  </button>
+                                </div>
+                              </header>
+                              <div className="routine-step-body">
+                                <div className="routine-step-fields">
+                                  <label className="routine-step-field">
                                     <span>Start at</span>
                                     <input
                                       type="time"
@@ -714,7 +850,7 @@ export default function RoutineHome() {
                                       onChange={(event) => updateStep(step.id, { startTime: event.target.value })}
                                     />
                                   </label>
-                                  <label>
+                                  <label className="routine-step-field">
                                     <span>Duration (min)</span>
                                     <input
                                       type="number"
@@ -732,9 +868,6 @@ export default function RoutineHome() {
                                   </div>
                                 </div>
                               </div>
-                              <button type="button" className="routine-remove-step" onClick={() => removeStep(step.id)}>
-                                Remove
-                              </button>
                             </li>
                           ))}
                         </ul>
@@ -789,6 +922,17 @@ export default function RoutineHome() {
                               </span>
                             ))}
                           </div>
+                          <div className="routine-assignment">
+                            {routine.childSnapshot?.name ? (
+                              <div className="routine-assigned-child">
+                                <span className="routine-child-indicator">👶 Assigned to: {routine.childSnapshot.name}</span>
+                              </div>
+                            ) : (
+                              <div className="routine-unassigned">
+                                <span className="routine-child-indicator">⚠️ Not assigned to any child</span>
+                              </div>
+                            )}
+                          </div>
                           <div className="routine-history-actions">
                             <button
                               type="button"
@@ -797,6 +941,14 @@ export default function RoutineHome() {
                               disabled={saving || routineDeletingId === routine._id}
                             >
                               {isEditing ? 'Editing...' : 'Edit'}
+                            </button>
+                            <button
+                              type="button"
+                              className="routine-ghost routine-primary"
+                              onClick={() => handleAssignChild(routine._id)}
+                              disabled={saving}
+                            >
+                              Assign Child
                             </button>
                             <button
                               type="button"
@@ -827,101 +979,13 @@ export default function RoutineHome() {
                   <button
                     type="button"
                     className={`routine-outline${showActivityForm ? ' routine-outline--active' : ''}`}
-                    onClick={() => setShowActivityForm((prev) => !prev)}
+                    onClick={() => (showActivityForm ? closeActivityForm() : setShowActivityForm(true))}
                   >
                     {showActivityForm ? 'Close form' : 'New activity'}
                   </button>
                 </div>
               </header>
               <div className="routine-card-body routine-activity-body">
-                {showActivityForm && (
-                  <div className="routine-activity-form-panel">
-                    <div className="routine-column-heading">
-                      <h3>Create activity</h3>
-                      <p>Fill in the details to add it to your library.</p>
-                    </div>
-                    <form className="routine-stack" onSubmit={handleCreateActivity}>
-                      <label className="routine-field">
-                        <span>Name</span>
-                        <input
-                          name="name"
-                          type="text"
-                          value={activityForm.name}
-                          onChange={handleActivityInputChange}
-                          placeholder="Brush teeth with blue toothbrush"
-                        />
-                        {activityFormErrors.name && (
-                          <small className="routine-error-text">{activityFormErrors.name}</small>
-                        )}
-                      </label>
-                      <div className="routine-form-inline">
-                        <label className="routine-field">
-                          <span>Icon</span>
-                          <input
-                            name="icon"
-                            type="text"
-                            value={activityForm.icon}
-                            onChange={handleActivityInputChange}
-                            placeholder="e.g. star"
-                            maxLength={4}
-                          />
-                        </label>
-                        <label className="routine-field">
-                          <span>Default duration</span>
-                          <input
-                            name="defaultDurationMin"
-                            type="number"
-                            min={1}
-                            max={480}
-                            value={activityForm.defaultDurationMin}
-                            onChange={handleActivityInputChange}
-                          />
-                          {activityFormErrors.defaultDurationMin && (
-                            <small className="routine-error-text">
-                              {activityFormErrors.defaultDurationMin}
-                            </small>
-                          )}
-                        </label>
-                      </div>
-                      <label className="routine-field">
-                        <span>Description</span>
-                        <textarea
-                          name="description"
-                          rows={2}
-                          value={activityForm.description}
-                          onChange={handleActivityInputChange}
-                          placeholder="Add a friendly hint or reminder."
-                        />
-                      </label>
-                      <label className="routine-field">
-                        <span>Tags (comma separated)</span>
-                        <input
-                          name="tags"
-                          type="text"
-                          value={activityForm.tags}
-                          onChange={handleActivityInputChange}
-                          placeholder="morning, hygiene"
-                        />
-                      </label>
-                      {activityFormErrors.general && (
-                        <small className="routine-error-text">{activityFormErrors.general}</small>
-                      )}
-                      <div className="routine-form-actions">
-                        <button
-                          type="button"
-                          className="routine-secondary"
-                          onClick={resetActivityForm}
-                          disabled={creatingActivity}
-                        >
-                          Clear
-                        </button>
-                        <button type="submit" className="routine-primary" disabled={creatingActivity}>
-                          {creatingActivity ? 'Adding...' : 'Save activity'}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                )}
                 <div ref={libraryRef} className="routine-activity-panel routine-library-panel">
                   <div className="routine-column-heading">
                     <h3>Activity library</h3>
@@ -973,6 +1037,211 @@ export default function RoutineHome() {
           </aside>
         </div>
       </main>
+      {showActivityForm && (
+        <div
+          className="routine-modal-backdrop"
+          role="presentation"
+          onClick={closeActivityForm}
+        >
+          <div
+            className="routine-modal routine-activity-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="routine-create-activity-heading"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="routine-modal-header">
+              <div>
+                <p className="routine-modal-kicker">Activity manager</p>
+                <h2 id="routine-create-activity-heading">Create activity</h2>
+                <p className="routine-modal-sub">
+                  Fill in the details to add it to your library.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="routine-modal-close"
+                onClick={closeActivityForm}
+                aria-label="Close activity form"
+              >
+                X
+              </button>
+            </header>
+            <form className="routine-modal-body routine-stack" onSubmit={handleCreateActivity}>
+              <label className="routine-field">
+                <span>Name</span>
+                <input
+                  ref={activityNameInputRef}
+                  name="name"
+                  type="text"
+                  value={activityForm.name}
+                  onChange={handleActivityInputChange}
+                  placeholder="Brush teeth with blue toothbrush"
+                />
+                {activityFormErrors.name && (
+                  <small className="routine-error-text">{activityFormErrors.name}</small>
+                )}
+              </label>
+              <div className="routine-form-inline">
+                <label className="routine-field">
+                  <span>Icon</span>
+                  <input
+                    name="icon"
+                    type="text"
+                    value={activityForm.icon}
+                    onChange={handleActivityInputChange}
+                    placeholder="e.g. star"
+                    maxLength={4}
+                  />
+                </label>
+                <label className="routine-field">
+                  <span>Default duration</span>
+                  <input
+                    name="defaultDurationMin"
+                    type="number"
+                    min={1}
+                    max={480}
+                    value={activityForm.defaultDurationMin}
+                    onChange={handleActivityInputChange}
+                  />
+                  {activityFormErrors.defaultDurationMin && (
+                    <small className="routine-error-text">
+                      {activityFormErrors.defaultDurationMin}
+                    </small>
+                  )}
+                </label>
+              </div>
+              <label className="routine-field">
+                <span>Description</span>
+                <textarea
+                  name="description"
+                  rows={2}
+                  value={activityForm.description}
+                  onChange={handleActivityInputChange}
+                  placeholder="Add a friendly hint or reminder."
+                />
+              </label>
+              <label className="routine-field">
+                <span>Tags (comma separated)</span>
+                <input
+                  name="tags"
+                  type="text"
+                  value={activityForm.tags}
+                  onChange={handleActivityInputChange}
+                  placeholder="morning, hygiene"
+                />
+              </label>
+              {activityFormErrors.general && (
+                <small className="routine-error-text">{activityFormErrors.general}</small>
+              )}
+              <div className="routine-modal-actions">
+                <button
+                  type="button"
+                  className="routine-secondary"
+                  onClick={resetActivityForm}
+                  disabled={creatingActivity}
+                >
+                  Clear
+                </button>
+                <button type="submit" className="routine-primary" disabled={creatingActivity}>
+                  {creatingActivity ? 'Adding...' : 'Save activity'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Child Assignment Modal */}
+      {showAssignModal && (
+        <div 
+          className="routine-modal-backdrop"
+          onClick={() => setShowAssignModal(false)}
+        >
+          <div
+            className="routine-modal-dialog"
+            aria-modal="true"
+            aria-labelledby="routine-assign-child-heading"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="routine-modal-header">
+              <div>
+                <p className="routine-modal-kicker">Routine Assignment</p>
+                <h2 id="routine-assign-child-heading">Assign to Child</h2>
+                <p className="routine-modal-sub">
+                  Choose which child should see this routine.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="routine-modal-close"
+                onClick={() => setShowAssignModal(false)}
+                aria-label="Close assignment modal"
+              >
+                X
+              </button>
+            </header>
+            <div className="routine-modal-body routine-stack">
+              {children.length === 0 ? (
+                <div className="routine-empty-state">
+                  <p>No children registered yet.</p>
+                  <p>
+                    <a href="/parent/children" className="routine-link">
+                      Register a child first
+                    </a>
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="routine-field">
+                    <span>Select Child:</span>
+                    <div className="routine-child-options">
+                      {children.map((child) => (
+                        <label key={child._id} className="routine-child-option">
+                          <input
+                            type="radio"
+                            name="selectedChild"
+                            value={child._id}
+                            checked={selectedChildId === child._id}
+                            onChange={(e) => setSelectedChildId(e.target.value)}
+                          />
+                          <div className="routine-child-info">
+                            <strong>{child.name}</strong>
+                            {child.account ? (
+                              <span className="routine-child-status routine-success">✓ Has login account</span>
+                            ) : (
+                              <span className="routine-child-status routine-warning">⚠ No login account</span>
+                            )}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="routine-modal-actions">
+                    <button
+                      type="button"
+                      className="routine-ghost"
+                      onClick={() => setShowAssignModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="routine-primary"
+                      onClick={handleAssignmentSubmit}
+                      disabled={!selectedChildId}
+                    >
+                      Assign Routine
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+

@@ -107,25 +107,30 @@ export default function MonsterAuth() {
     return nav(backTo, { replace: true });
   }
 
-  async function submitLogin(e) {
-    e.preventDefault();
-    const found = validateForm("login", form);
-    setErrors(found);
-    if (Object.keys(found).length) return;
 
-    try {
-      setLoading(true);
-      const user = await AuthAPI.login({ email: form.email, password: form.password });
-      await saveAndGo(user);
-    } catch {
-      setVibe("error");
-      const card = document.querySelector(".card20");
-      card?.classList.add("shake");
-      setTimeout(() => card?.classList.remove("shake"), 400);
-    } finally {
-      setLoading(false);
-    }
+// make it async
+// Simplified parent flow: no auto child creation, go to /routines
+async function saveAndGo(user) {
+  const store = remember ? localStorage : sessionStorage;
+  store.setItem("user", JSON.stringify(user));
+
+  // Dispatch global auth event (harmless if nothing listens)
+  try {
+    window.dispatchEvent(new CustomEvent("authChange", { detail: user }));
+  } catch {
+    /* ignore if window not defined */
   }
+
+  if (user.role === "parent") {
+    // Parents go straight to Routines page
+    return nav("/routines", { replace: true });
+  }
+
+  // Mentors still go to /mentor/reports
+  store.removeItem("currentChild");
+  return nav("/mentor/reports", { replace: true });
+}
+
 
   async function submitSignup(e) {
     e.preventDefault();

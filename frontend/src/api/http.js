@@ -83,9 +83,39 @@ export const ThresholdsAPI = {
 
 function authHeader() {
   try {
-    const u = JSON.parse(localStorage.getItem("user") || "null");
-    return u?.token ? { Authorization: `Bearer ${u.token}` } : {};
-  } catch { return {}; }
+    // Check current URL to determine which token to prioritize
+    const currentPath = window.location.pathname;
+    const isChildPath = currentPath.startsWith('/child/');
+    
+    if (isChildPath) {
+      // For child paths, prioritize child auth
+      const childAuth = JSON.parse(localStorage.getItem("childAuth") || "null");
+      if (childAuth?.token) {
+        return { Authorization: `Bearer ${childAuth.token}` };
+      }
+    } else {
+      // For parent/mentor paths, prioritize parent auth
+      const u = JSON.parse(localStorage.getItem("user") || "null");
+      if (u?.token) {
+        return { Authorization: `Bearer ${u.token}` };
+      }
+    }
+    
+    // Fallback: check the other token type
+    const childAuth = JSON.parse(localStorage.getItem("childAuth") || "null");
+    const parentAuth = JSON.parse(localStorage.getItem("user") || "null");
+    
+    if (childAuth?.token) {
+      return { Authorization: `Bearer ${childAuth.token}` };
+    }
+    if (parentAuth?.token) {
+      return { Authorization: `Bearer ${parentAuth.token}` };
+    }
+    
+    return {};
+  } catch { 
+    return {}; 
+  }
 }
 
 export const AuthAPI = {
@@ -116,9 +146,27 @@ export const ChildrenAPI = {
 
   list:   () => http("/api/children"),            // mentor view
   mine:   () => http("/api/children/mine"),       // parent view
-  create: (name) => http("/api/children", { method: "POST", body: { name } }),
+  create: (data) => http("/api/children", { method: "POST", body: data }),
   assign: (childId, mentorId) =>
     http(`/api/children/${childId}/assign`, { method: "PUT", body: { mentorId } }),
+  createAccount: (childId, data) =>
+    http(`/api/children/${childId}/account`, { method: "POST", body: data }),
+  delete: (childId) =>
+    http(`/api/children/${childId}`, { method: "DELETE" }),
+};
+
+export const ChildAuthAPI = {
+  login: (data) => http("/api/child-auth/login", { method: "POST", body: data }),
+  me: () => http("/api/child-auth/me"),
+};
+
+export const ChildRoutinesAPI = {
+  list: () => http("/api/child-routines"),
+  get: (id) => http(`/api/child-routines/${id}`),
+  start: (id) => http(`/api/child-routines/${id}/start`, { method: "POST" }),
+  completeStep: (id, stepIndex) => 
+    http(`/api/child-routines/${id}/step/${stepIndex}/complete`, { method: "POST" }),
+  finish: (id) => http(`/api/child-routines/${id}/finish`, { method: "POST" }),
 };
 
 
@@ -127,3 +175,4 @@ export const ChildrenAPI = {
 //   fd.append("file", file);
 //   return http("/api/upload/single", { method: "POST", body: fd });
 // }
+

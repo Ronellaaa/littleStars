@@ -1,0 +1,296 @@
+/* Child Authentication Styles */
+.child-auth-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.child-auth-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.child-auth-header {
+  margin-bottom: 30px;
+}
+
+.star-icon {
+  font-size: 60px;
+  margin-bottom: 10px;
+  animation: twinkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.1) rotate(10deg); }
+}
+
+.child-auth-header h1 {
+  color: #4a5568;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.child-auth-header p {
+  color: #718096;
+  font-size: 16px;
+  margin: 0;
+}
+
+.child-auth-form {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.child-input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.child-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.pin-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.pin-dot.filled {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-color: #667eea;
+  color: white;
+}
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+  max-width: 240px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pin-key {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  background: white;
+  font-size: 20px;
+  font-weight: 600;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pin-key:hover:not(:disabled) {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border-color: #667eea;
+  transform: scale(1.05);
+}
+
+.pin-key:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.backspace-key {
+  grid-column: span 2;
+  width: auto;
+  border-radius: 30px;
+}
+
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 16px 0;
+}
+
+.child-login-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.child-login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.child-login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.child-auth-footer {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 20px;
+}
+
+.child-auth-footer p {
+  color: #718096;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.parent-login-link {
+  background: transparent;
+  border: 2px solid #667eea;
+  color: #667eea;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.parent-login-link:hover {
+  background: #667eea;
+  color: white;
+}
+
+/* Floating Stars Animation */
+.floating-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  font-size: 24px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.star-1 {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.star-2 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.star-3 {
+  bottom: 30%;
+  left: 15%;
+  animation-delay: 2s;
+}
+
+.star-4 {
+  bottom: 15%;
+  right: 10%;
+  animation-delay: 3s;
+}
+
+.star-5 {
+  top: 50%;
+  left: 5%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .child-auth-card {
+    padding: 30px 20px;
+    margin: 10px;
+  }
+  
+  .child-auth-header h1 {
+    font-size: 28px;
+  }
+  
+  .pin-keypad {
+    max-width: 200px;
+  }
+  
+  .pin-key {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+}
