@@ -413,3 +413,22 @@ border: 1px solid rgba(255, 255, 255, 0.3);
 padding: 50px;
 width:50%
 }
+
+.nursery-simple-report {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.nursery-simple-report h3 {
+  text-align: center;
+  color: #ff7f50;
+  margin-bottom: 10px;
+}
+.nursery-simple-report p { margin: 5px 0; }

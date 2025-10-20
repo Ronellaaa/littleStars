@@ -69,6 +69,7 @@ export default function NumbersActivity({
   const [finished, setFinished] = useState(false);
   const [lockInput, setLockInput] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(-1);
+  const [showReport, setShowReport] = useState(false);
 
   const target = queue[index];
   const progress = Math.round((index / queue.length) * 100);
@@ -108,7 +109,6 @@ export default function NumbersActivity({
     setMessage("");
     setSelectedIdx(-1);
     setLockInput(false);
-  
   }, [target, numbersAll, choicesCount]);
 
   const playSound = (ref) => {
@@ -167,7 +167,7 @@ export default function NumbersActivity({
     const total = queue.length;
     return (
       <main className="nm-wrap review">
-         <button
+        <button
           className="nursery-bp-back"
           onClick={() => window.history.back()}
           aria-label="Go back"
@@ -201,10 +201,55 @@ export default function NumbersActivity({
             })}
           </div>
         </div>
+        <div className="nm-report-sec">
+          <button className="nm-btn primary" onClick={resetAll}>
+            Play again
+          </button>
 
-        <button className="nm-btn primary" onClick={resetAll}>
-          Play again
-        </button>
+          <button
+            className="nm-btn primary"
+            onClick={() => setShowReport(!showReport)}
+            style={{ marginTop: 10 }}
+          >
+           
+            {showReport ? "Hide Report" : "Generate Report"}
+          </button>
+    </div>
+          {showReport && (
+            <div className="numbers-simple-report">
+              <h3>🌼 LittleStars – Activity Report</h3>
+              <p>
+                <b>Date:</b> {new Date().toLocaleDateString()}
+              </p>
+              <p>
+                <b>Activity:</b> Numbers
+              </p>
+              <p>
+                <b>Total Items:</b> {queue.length}
+              </p>
+              <p>
+                <b>Correct Answers:</b> {score}
+              </p>
+              <p>
+                <b>Accuracy:</b> {Math.round((score / queue.length) * 100)}%
+              </p>
+              <p>
+                <b>Mistakes:</b>{" "}
+                {Object.values(mistakes).reduce((a, b) => a + (b || 0), 0)}
+              </p>
+              <p>
+                <b>Comment:</b>{" "}
+                {score / queue.length >= 0.9
+                  ? "Excellent!"
+                  : score / queue.length >= 0.7
+                  ? "Good job!"
+                  : score / queue.length >= 0.5
+                  ? "Keep improving!"
+                  : "Needs more practice."}
+              </p>
+            </div>
+          )}
+     
       </main>
     );
   }
@@ -225,7 +270,6 @@ export default function NumbersActivity({
 
         <h2 className="nm-instruction">
           Pick the <strong>jar</strong> with <strong>{target}</strong>{" "}
-          
         </h2>
 
         <div className="nm-progress" aria-label="Progress">

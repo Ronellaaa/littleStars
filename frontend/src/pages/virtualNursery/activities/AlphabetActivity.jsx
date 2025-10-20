@@ -11,7 +11,7 @@ const CONFETTI_DEFAULTS = {
   decay: 0.92,
   startVelocity: 28,
   colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"],
-  shapes: ["circle"], 
+  shapes: ["circle"],
 };
 
 function triggerStars() {
@@ -90,7 +90,8 @@ export default function AlphabetActivity({
   const [finished, setFinished] = useState(false);
   const [poppedIdx, setPoppedIdx] = useState(-1);
   const [lockInput, setLockInput] = useState(false);
-  const [confettiOn, setConfettiOn] = useState(false); // NEW
+  const [confettiOn, setConfettiOn] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const target = queue[index];
 
@@ -212,7 +213,7 @@ export default function AlphabetActivity({
 
     return (
       <main className="nursery-review-screen">
-         <button
+        <button
           className="nursery-bp-back"
           onClick={() => window.history.back()}
           aria-label="Go back"
@@ -220,37 +221,78 @@ export default function AlphabetActivity({
           ← Back
         </button>
         <div className="nursery-container1">
-        <h1 className="nursery-review-title">Balloon Pop – Alphabet</h1>
+          <h1 className="nursery-review-title">Balloon Pop – Alphabet</h1>
 
-        <div className="nursery-review-stars">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <span key={i}>⭐</span>
-          ))}
-        </div>
-
-        <div className="nursery-review-card">
-          <div className="nursery-review-header">Review</div>
-          <div className="nursery-review-grid">
-            {queue.map((l) => {
-              const c = mistakes[l] || 0;
-              return (
-                <div
-                  key={l}
-                  className={`nursery-review-cell ${
-                    c === 0 ? "perfect" : c <= 2 ? "ok" : "bad"
-                  }`}
-                >
-                  <div className="nursery-letter">{l}</div>
-                  <div className="nursery-count">x{c}</div>
-                </div>
-              );
-            })}
+          <div className="nursery-review-stars">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <span key={i}>⭐</span>
+            ))}
           </div>
-        </div>
 
-        <button className="nursery-review-play-btn" onClick={resetAll}>
-          Play again
-        </button>
+          <div className="nursery-review-card">
+            <div className="nursery-review-header">Review</div>
+            <div className="nursery-review-grid">
+              {queue.map((l) => {
+                const c = mistakes[l] || 0;
+                return (
+                  <div
+                    key={l}
+                    className={`nursery-review-cell ${
+                      c === 0 ? "perfect" : c <= 2 ? "ok" : "bad"
+                    }`}
+                  >
+                    <div className="nursery-letter">{l}</div>
+                    <div className="nursery-count">x{c}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <button className="nursery-review-play-btn" onClick={resetAll}>
+            Play again
+          </button>
+          <button
+            className="nursery-review-play-btn"
+            onClick={() => setShowReport(!showReport)}
+          >
+            {showReport ? "Hide Report" : "Generate Report"}
+          </button>
+
+          {showReport && (
+            <div className="nursery-simple-report">
+              <h3>🌼 LittleStars – Activity Report</h3>
+              <p>
+                <b>Date:</b> {new Date().toLocaleDateString()}
+              </p>
+              <p>
+                <b>Activity:</b> Alphabet
+              </p>
+              <p>
+                <b>Total Letters:</b> {queue.length}
+              </p>
+              <p>
+                <b>Correct Answers:</b> {score}
+              </p>
+              <p>
+                <b>Accuracy:</b> {Math.round((score / queue.length) * 100)}%
+              </p>
+              <p>
+                <b>Mistakes:</b>{" "}
+                {Object.values(mistakes).reduce((a, b) => a + b, 0)}
+              </p>
+              <p>
+                <b>Comment:</b>{" "}
+                {score / queue.length >= 0.9
+                  ? "Excellent!"
+                  : score / queue.length >= 0.7
+                  ? "Good job!"
+                  : score / queue.length >= 0.5
+                  ? "Keep improving!"
+                  : "Needs more practice."}
+              </p>
+            </div>
+          )}
         </div>
       </main>
     );

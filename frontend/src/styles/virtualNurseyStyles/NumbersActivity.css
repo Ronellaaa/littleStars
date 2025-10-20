@@ -344,3 +344,36 @@
   font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans",
     sans-serif;
 }
+
+.numbers-simple-report {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Poppins", sans-serif;
+}
+.numbers-simple-report h3 {
+  text-align: center;
+  color: #ff7f50;
+  margin-bottom: 10px;
+}
+.numbers-simple-report p { margin: 6px 0; }
+.nm-btn.secondary {
+  background: #eee;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.nm-btn.secondary:hover { filter: brightness(0.97); }
+.nm-report-sec{
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+ align-items: center;
+}
