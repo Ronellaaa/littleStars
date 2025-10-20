@@ -23,7 +23,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/cards/categories/list"); // Fetch all categories
+        const res = await fetch("http://localhost:5050/api/cards/categories/list"); // Fetch all categories
         const json = await res.json();
         if (json.success) setCategories(json.data); // Set categories to state
       } catch (err) {
@@ -41,8 +41,8 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
         // Determine URL based on selected category
         const url =
           selectedCategory === "all"
-            ? "http://localhost:5000/api/cards" // Fetch all cards
-            : `http://localhost:5000/api/cards/${selectedCategory}`; // Fetch cards by category
+            ? "http://localhost:5050/api/cards" // Fetch all cards
+            : `http://localhost:5050/api/cards/${selectedCategory}`; // Fetch cards by category
 
         const res = await fetch(url); // Fetch cards from backend
         const json = await res.json(); // Parse the JSON response
@@ -77,7 +77,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
     formData.append("image", file); // Append file to form data
 
     try {
-      const res = await fetch("http://localhost:5000/api/upload", { // Upload endpoint to backend Cloudinary
+      const res = await fetch("http://localhost:5050/api/upload", { // Upload endpoint to backend Cloudinary
         method: "POST",
         body: formData,
       });
@@ -105,7 +105,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/cards", { // Create card endpoint
+      const res = await fetch("http://localhost:5050/api/cards", { // Create card endpoint
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, category, image, audio: "N/A" }), // Send card data to backend 
@@ -127,7 +127,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
   const handleEditCard = async (e) => {
     e.preventDefault(); // Prevent form submission reload
     try {
-      const res = await fetch(`http://localhost:5000/api/cards/${editingCard._id}`, { // Update card endpoint
+      const res = await fetch(`http://localhost:5050/api/cards/${editingCard._id}`, { // Update card endpoint
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newCard), // Send updated card data to backend
@@ -151,7 +151,7 @@ const TherapistDashboard = ({ therapistId = "therapist123" }) => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/cards/${id}`, { method: "DELETE" }); // Delete card by ID by calling backend
+      const res = await fetch(`http://localhost:5050/api/cards/${id}`, { method: "DELETE" }); // Delete card by ID by calling backend
       const json = await res.json();
       if (json.success) {
         alert("Card deleted!");

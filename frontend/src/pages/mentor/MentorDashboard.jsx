@@ -87,12 +87,20 @@ export default function MentorDashboard() {
                 </FeatureCard>
 
                 {/* Speech */}
-                <FeatureCard item={FEATURES[1]} onOpen={() => nav("/mentor/speech")} />
+                <FeatureCard item={FEATURES[1]}>
+                 <button onClick={() => nav("/therapist-dashboard")} className="md-linkbtn">Speech Therapy Tool▸</button>
+                </FeatureCard>
 
                 {/* Nursery → Alphabet Learn (top-level /alphabets) */}
                 <FeatureCard item={FEATURES[2]}>
                   <div className="md-quick-col">
                     <button onClick={() => nav("/alphabets")} className="md-linkbtn">Alphabet Learn ▸</button>
+                     <button onClick={()=>nav("/numbers")} className="md-linkbtn">Numbers Learn ▸</button>
+                  <button onClick={()=>nav("/shapes")} className="md-linkbtn">Shapes Learn ▸ </button>
+                  <button onClick={()=>nav("/colors")} className="md-linkbtn">Colours Learn ▸ </button>
+                  <button onClick={()=>nav("/animals")} className="md-linkbtn">Animals Learn ▸ </button>
+                  <button onClick={()=>nav("/fruits")} className="md-linkbtn">Fruits Learn ▸ </button>
+                  <button onClick={()=>nav("/vegetables")} className="md-linkbtn">Vegetables Learn ▸</button>
                   </div>
                 </FeatureCard>
 
@@ -119,6 +127,12 @@ export default function MentorDashboard() {
                 <div className="md-shortcuts">
                   <button onClick={() => nav("/mentor/reports")}>Emotion ▸ Reports</button>
                   <button onClick={() => nav("/alphabets")}>Nursery ▸ Alphabet</button>
+                  <button onClick={()=>nav("/numbers")}>Nursery ▸ Numbers</button>
+                  <button onClick={()=>nav("/shapes")}>Nursery ▸ Shapes</button>
+                  <button onClick={()=>nav("/colors")}>Nursery ▸ Colors</button>
+                  <button onClick={()=>nav("/animals")}>Nursery ▸ Animals</button>
+                  <button onClick={()=>nav("/fruits")}>Nursery ▸ Fruits</button>
+                  <button onClick={()=>nav("/vegetables")}>Nursery ▸ Vegetables</button>
                   <button onClick={() => nav("/mentor/progress/123")}>Demo ▸ Progress</button>
                 </div>
               </div>

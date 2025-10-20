@@ -1,15 +1,17 @@
 // src/pages/authentication/MonsterAuth.jsx
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AuthAPI, ChildrenAPI } from "../../api/http";
+import { AuthAPI } from "../../api/http";
 import "../../styles/authenticationStyles/monster-auth.css";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function MonsterAuth() {
   const [mode, setMode] = useState("login");     // "login" | "signup"
   const [vibe, setVibe] = useState("ok");        // "ok" | "error"
   const [loading, setLoading] = useState(false);
   const [showPw, setShowPw] = useState(false);
-  const [remember] = useState(true);             // storage choice; toggle UI is commented out
+  const [remember] = useState(true);             // storage choice
+  const { loginAs } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -61,7 +63,6 @@ export default function MonsterAuth() {
       e.confirmPassword = validateField("confirmPassword", data.confirmPassword, data, currentMode);
       e.role = validateField("role", data.role, data, currentMode);
     }
-    // strip empty messages
     Object.keys(e).forEach((k) => !e[k] && delete e[k]);
     return e;
   }
@@ -70,7 +71,6 @@ export default function MonsterAuth() {
     const { name, value, type, checked } = e.target;
     const val = type === "checkbox" ? checked : value;
     setForm((s) => ({ ...s, [name]: val }));
-    // live-validate just this field
     setErrors((prev) => {
       const next = { ...prev };
       const { [name]: _ignored, ...rest } = next;
@@ -80,57 +80,24 @@ export default function MonsterAuth() {
     if (vibe === "error") setVibe("ok");
   }
 
+  // Single, simplified redirect helper
   async function saveAndGo(user) {
     const store = remember ? localStorage : sessionStorage;
     store.setItem("user", JSON.stringify(user));
 
+    // Ensure any previous child session can't hijack navigation
+    try {
+      localStorage.removeItem("childAuth");
+      localStorage.removeItem("currentChild");
+      window.dispatchEvent(new CustomEvent("authChange", { detail: user }));
+    } catch { /* ignore */ }
+
     if (user.role === "parent") {
-      try {
-        const kids = await ChildrenAPI.list();
-        const child =
-          kids?.[0] ||
-          (await ChildrenAPI.create({
-            name: `${(user.email || "Child").split("@")[0]}'s child`,
-          }));
-
-        store.setItem("currentChild", JSON.stringify({ _id: child._id, name: child.name }));
-      } catch (e) {
-        console.error("Could not ensure child profile", e);
-      }
-      const backTo = location.state?.from ?? "/";
-      return nav(backTo, { replace: true });
+      return nav("/routines", { replace: true });
     }
-
     // mentor
-    store.removeItem("currentChild");
-    const backTo = location.state?.from ?? "/mentor/reports";
-    return nav(backTo, { replace: true });
+    return nav("/mentor/reports", { replace: true });
   }
-
-
-// make it async
-// Simplified parent flow: no auto child creation, go to /routines
-async function saveAndGo(user) {
-  const store = remember ? localStorage : sessionStorage;
-  store.setItem("user", JSON.stringify(user));
-
-  // Dispatch global auth event (harmless if nothing listens)
-  try {
-    window.dispatchEvent(new CustomEvent("authChange", { detail: user }));
-  } catch {
-    /* ignore if window not defined */
-  }
-
-  if (user.role === "parent") {
-    // Parents go straight to Routines page
-    return nav("/routines", { replace: true });
-  }
-
-  // Mentors still go to /mentor/reports
-  store.removeItem("currentChild");
-  return nav("/mentor/reports", { replace: true });
-}
-
 
   async function submitSignup(e) {
     e.preventDefault();
@@ -145,9 +112,35 @@ async function saveAndGo(user) {
         password: form.password,
         role: form.role,
       });
+      // update context + navigate
+      loginAs(user);
       await saveAndGo(user);
     } catch {
-      // keep green theme; shake on server-side validation/duplicate, etc.
+      const card = document.querySelector(".card20");
+      card?.classList.add("shake");
+      setTimeout(() => card?.classList.remove("shake"), 400);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function submitLogin(e) {
+    e.preventDefault();
+    const found = validateForm("login", form);
+    setErrors(found);
+    if (Object.keys(found).length) return;
+
+    try {
+      setLoading(true);
+      const user = await AuthAPI.login({
+        email: form.email,
+        password: form.password,
+      });
+      // update context + navigate
+      loginAs(user);
+      await saveAndGo(user);
+    } catch {
+      setVibe("error");
       const card = document.querySelector(".card20");
       card?.classList.add("shake");
       setTimeout(() => card?.classList.remove("shake"), 400);

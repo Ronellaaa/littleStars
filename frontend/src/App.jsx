@@ -43,6 +43,12 @@ import NurseryActivity from "./pages/virtualNursery/NurseryActivity";
 import NurseryLearnActivity from "./pages/virtualNursery/LearnSwitch";
 import ActivitySwitch from "./pages/virtualNursery/ActivitySwitch";
 import AlphabetLearn from "./pages/virtualNursery/learn/AlphabetLearn"
+import NumbersLearn from "./pages/virtualNursery/learn/NumbersLearn.jsx";
+import ShapesLearn from "./pages/virtualNursery/learn/ShapesLearn.jsx";
+import ColorsLearn from "./pages/virtualNursery/learn/ColoursLearn.jsx";
+import AnimalsLearn from "./pages/virtualNursery/learn/AnimalsLearn.jsx";
+import FruitsLearn from "./pages/virtualNursery/learn/FruitsLearn.jsx";
+import VegetablesLearn from "./pages/virtualNursery/learn/VegetablesLearn.jsx";
 
 //RoutineBuilder
 import RoutineHome from "./pages/routineBuilder/RoutineHome";
@@ -95,8 +101,7 @@ export default function App() {
         <Route path="/speech-home" element={<SpeechHome />} />
         <Route path="/cards/:category" element={<CategoryPage />} />
         <Route path="/parent-dashboard" element={<ParentDashboard />} />
-        <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
-        <Route path="/TherapistDashboardSpeechStats" element={<TherapistDashboardSpeechStats />} />
+       
 
         {/* Emotion Simulator */}
         <Route path="/lesson" element={<ParallaxMagic />} />
@@ -119,6 +124,9 @@ export default function App() {
             <Route path="scenarios" element={<ScenariosPage />} />
             <Route path="content" element={<ContentManager />} />
           </Route>
+
+          <Route path="/therapist-dashboard" element={<TherapistDashboard />} />
+          <Route path="/TherapistDashboardSpeechStats" element={<TherapistDashboardSpeechStats />} />
         </Route>
 
         {/* Blogs */}
@@ -141,6 +149,12 @@ export default function App() {
           element={<ActivitySwitch />}
         />
         <Route path="/alphabets" element={<AlphabetLearn isMentor={true} />} />
+        <Route path="/numbers" element={<NumbersLearn isMentor={true} />} />
+        <Route path="/shapes" element={<ShapesLearn isMentor={true} />} />
+        <Route path="/colors" element={<ColorsLearn isMentor={true} />} />
+        <Route path="/animals" element={<AnimalsLearn isMentor={true} />} />
+        <Route path="/fruits" element={<FruitsLearn isMentor={true} />} />
+        <Route path="/vegetables" element={<VegetablesLearn isMentor={true} />} />
 
         {/* Routine Navigation */}
         <Route path="/routines" element={<RoutineNavigation />} />

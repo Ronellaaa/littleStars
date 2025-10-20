@@ -152,7 +152,7 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
       };
 
       try {
-        const res = await fetch("http://localhost:5000/api/speech/attempts", { // Send attempt data to backend
+        const res = await fetch("http://localhost:5050/api/speech/attempts", { // Send attempt data to backend
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(attemptData), // Convert data to JSON
