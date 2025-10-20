@@ -61,7 +61,7 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
 
     const shouldEncourage = Math.random() > 0.7; // 30% chance to add encouragement
     if (shouldEncourage) { //if encouragement is to be added
-      const encouragements = ["Great job, kiddo!", "Well done, kiddo!", "You're amazing, kiddo!"];
+      const encouragements = ["Great job!", "Well done!", "You're amazing!"];
       const msg =
         encouragements[Math.floor(Math.random() * encouragements.length)]; // Pick a random encouragement
       speak(title, () => speak(msg)); // Speak title then encouragement
