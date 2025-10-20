@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Bar } from "react-chartjs-2"; // Chart.js wrapper in React
 import {
   Chart as ChartJS, 
@@ -10,10 +10,14 @@ import {
   Legend, // legend display
 } from "chart.js";
 import "../../styles/speechTherapyStyles/ParentDashboard.css";
+import { useAuth } from "../../auth/AuthContext";
+import { getUserIdFromToken } from "../../Utils/authHelpers";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend); // Register Chart.js components
 
-const ParentDashboard = ({ childId = "child123" }) => {
+const ParentDashboard = () => {
+  const { user } = useAuth();                // <- get current user from context
+    const childId = useRef(getUserIdFromToken(user?.token)).current;
   const [categories, setCategories] = useState([]);
   const [stats, setStats] = useState([]);
   const [attempts, setAttempts] = useState([]);
@@ -24,7 +28,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:5050/api/cards/categories/list"); // Fetch all categories
+        const res = await fetch("http://localhost:5000/api/cards/categories/list"); // Fetch all categories
         const json = await res.json();
         if (json.success) setCategories(json.data); // Set categories to state
       } catch (err) {
@@ -39,7 +43,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
     const fetchStats = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5050/api/speech/attempts/stats/category?childId=${childId}&period=week` // Fetch stats for the child for the past week
+          `http://localhost:5000/api/speech/attempts/stats/category?childId=${childId}&period=week` // Fetch stats for the child for the past week
         );
         const json = await res.json();
         if (json.success) setStats(json.data); // Set stats to state
@@ -81,7 +85,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
   const handleViewResults = async () => { // Fetch attempts based on selected filters
     try {
       const res = await fetch(
-        `http://localhost:5050/api/speech/attempts?childId=${childId}&category=${selectedCategory}&period=${selectedPeriod}` // Fetch attempts for the child with filters
+        `http://localhost:5000/api/speech/attempts?childId=${childId}&category=${selectedCategory}&period=${selectedPeriod}` // Fetch attempts for the child with filters
       );
       const json = await res.json();
       if (json.success) setAttempts(json.data); // Set attempts to state
@@ -95,7 +99,7 @@ const ParentDashboard = ({ childId = "child123" }) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attempt?"); // Confirm before deleting
     if (!confirmDelete) return; // If user cancels, do nothing
     try {
-      const res = await fetch(`http://localhost:5050/api/speech/attempts/${id}`, { // Delete attempt by ID
+      const res = await fetch(`http://localhost:5000/api/speech/attempts/${id}`, { // Delete attempt by ID
         method: "DELETE",
       });
       const json = await res.json();

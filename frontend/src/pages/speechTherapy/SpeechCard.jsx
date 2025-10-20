@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { getVoice } from "../../Utils/voiceHelper";
+import { useAuth } from "../../auth/AuthContext";
+import { getUserIdFromToken } from "../../Utils/authHelpers";
 import "../../styles/speechTherapyStyles/SpeechCard.css";
 
-const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
+const SpeechCard = ({ title, imageUrl, category }) => {
+   const { user } = useAuth();                // <- get current user from context
+  const childId = useRef(getUserIdFromToken(user?.token)).current;
   const [recognizedText, setRecognizedText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isVoiceReady, setIsVoiceReady] = useState(false);
@@ -152,7 +156,7 @@ const SpeechCard = ({ title, imageUrl, childId = "child123", category }) => {
       };
 
       try {
-        const res = await fetch("http://localhost:5050/api/speech/attempts", { // Send attempt data to backend
+        const res = await fetch("http://localhost:5000/api/speech/attempts", { // Send attempt data to backend
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(attemptData), // Convert data to JSON
